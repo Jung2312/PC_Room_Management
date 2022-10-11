@@ -1,5 +1,3 @@
-package swing;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -106,8 +104,8 @@ public class MainLogin {
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-
+/*
 	public static void main(String[] args) {
 		new MainLogin();
-	}
+	}*/
 }
