@@ -1,15 +1,11 @@
-package swing;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -75,7 +71,7 @@ public class Loginpage {
 		frame.add(okbtn); //확인 버튼 출력
 		
 		cancle.setSize(110, 50);
-		cancle.setLocation(785, 700);
+		cancle.setLocation(795, 700);
 		cancle.setBorderPainted(false); //취소 버튼 테두리(외곽선) 없앰
 		cancle.setFocusPainted(false); //취소 버튼이 선택되었을 때 생기는 테두리 사용 안함
 		cancle.setContentAreaFilled(false); //취소 버튼 영역 채우지 않음
@@ -103,7 +99,7 @@ public class Loginpage {
 		
 		login.setFont(new Font("맑은 고딕", Font.BOLD, 58)); //로그인 라벨 글씨체, 굵기, 크기 설정
 		login.setSize(200,200); //로그인 라벨 크기 설정
-		login.setLocation(675, 90); //로그인 라벨 위치 설정
+		login.setLocation(680, 90); //로그인 라벨 위치 설정
 		frame.add(login); //로그인 라벨 출력
 		
 		IDlabel.setFont(new Font("맑은 고딕", Font.BOLD, 45)); //아이디 라벨 글씨체, 긁기, 크기 설정
