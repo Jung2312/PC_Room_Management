@@ -44,9 +44,9 @@ public class SeatFood_select extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // x를 누를 경우 종료
 		getContentPane().setBackground(Color.WHITE); // 프레임 bg color
 	}
-
+/*
 	public static void main(String[] args) {
 		new SeatFood_select();
 	}
-
+*/
 }
