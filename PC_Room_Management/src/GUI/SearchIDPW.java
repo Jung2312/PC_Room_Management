@@ -1,4 +1,4 @@
-package swing;
+package GUI;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -83,7 +83,8 @@ public class SearchIDPW {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //창닫기 버튼을 활성화 시켜 X를 누르면 프로그램 종료
 	}
 	
+	/*
 	public static void main(String[] args) {
 		new SearchIDPW();
-	}
+	}*/
 }

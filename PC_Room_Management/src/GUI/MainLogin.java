@@ -105,9 +105,9 @@ public class MainLogin {
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-
+/*
 	public static void main(String[] args) {
 		new MainLogin();
-	}
+	}*/
 }
 

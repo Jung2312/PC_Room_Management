@@ -127,8 +127,8 @@ public class Loginpage {
 		frame.setLocationRelativeTo(null); //화면을 중간에 띄움
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //창닫기 버튼을 활성화 시켜 X를 누르면 프로그램 종료
 	}
-	
+	/*
 	public static void main(String[] args) {
 		new Loginpage();
-	}
+	}*/
 }
