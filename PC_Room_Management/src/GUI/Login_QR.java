@@ -39,7 +39,7 @@ public class Login_QR {
         Login.setBorderPainted(false);
         Login.setFocusPainted(false);
         Login.setContentAreaFilled(false);
-        frame.add(Login);)
+        frame.add(Login);
 
         QR.setSize(331, 330);
         QR.setLocation(380, 260);
@@ -71,11 +71,11 @@ public class Login_QR {
         frame.add(setting); //설정 버튼 출력
 
     }
-
+/*
 	public static void main(String[] args) {
 		new Login_QR();
     }
 
-
+*/
 }
 
