@@ -26,11 +26,11 @@ public class SeatFood_select extends JFrame{
 		input_btn(setting_icon, 1470, 20, 40, 40);
 		add(setting_icon); // 프레임에 버튼을 붙임
 		
-		JButton seat_select = new JButton(new ImageIcon("./image/seat_select_btn.png")); // 문의 버튼
+		JButton seat_select = new JButton(new ImageIcon("./image/seat_select_btn.png")); // 좌석선택 버튼
 		input_btn(seat_select, 380, 260,331, 330);
 		add(seat_select); // 프레임에 버튼을 붙임
 		
-		JButton food_select = new JButton(new ImageIcon("./image/food_select_btn.png")); // 관리자 버튼
+		JButton food_select = new JButton(new ImageIcon("./image/food_select_btn.png")); // 음식 선택 버튼
 		input_btn(food_select,820, 260, 331, 330);
 		add(food_select); // 프레임에 버튼을 붙임
 		
