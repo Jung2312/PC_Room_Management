@@ -18,7 +18,7 @@ public class MySQL_connection {
 		 try {
 			 conn = DriverManager.getConnection(
 					 "jdbc:mysql://localhost:3306/sys"
-					 ,"root","2312"
+					 ,"root","####"
 					 );
 			 System.out.println("데이터베이스 연결 성공");
 		 }catch (SQLException e) {
