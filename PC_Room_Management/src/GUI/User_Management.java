@@ -19,12 +19,14 @@ public class User_Management extends JFrame {
 				{"A0002", "아무개", "000102", "010-2222-2222", "mu2@gmail.com"}, //회원 정보
 				{"A0003", "김이박", "000103", "010-3333-3333", "kim3@gmail.com"}
 		};
+		
 		DefaultTableModel user = new DefaultTableModel(Info, colName)
 		{
 			 public boolean isCellEditable(int i, int c) {
 	                return false; // 셀 내용 수정 불가
 			 }
 		}; //user와 데이터 연결
+		
 		
 		//테이블에 scroll 구현
 		JTable userinfo = new JTable(user); //테이블에 정보, 회원 정보를 나타낼 열 이름 넘겨줌
@@ -37,7 +39,7 @@ public class User_Management extends JFrame {
 		userinfo.getTableHeader().setFont(new Font("맑은 고딕", Font.BOLD, 20)); //회원정보 나타낼 행 글씨체, 굵기, 크기 변경
 		userinfo.setFont(new Font("맑은 고딕", Font.BOLD, 15)); //회원정보 나타낼 행 글씨체, 굵기, 크기 변경
 		userinfo.getParent().setBackground(Color.white); //테이블 배경 색 변경
-		scroll.setBounds(75, 130, 1390, 650); //테이블 위치, 크기 설정
+		scroll.setBounds(75, 130, 1390, 500); //테이블 위치, 크기 설정
 		add(scroll); //프레임에 테이블 추가
 		
 		
@@ -61,6 +63,14 @@ public class User_Management extends JFrame {
 		input_btn(setting_icon, 1460, 20, 40, 40);
 		add(setting_icon); // 프레임에 버튼을 붙임
 		
+		RoundedButton ok_btn = new RoundedButton("삭제"); // 삭제 버튼
+		input_btn(ok_btn, 620, 700, 120, 30);
+		add(ok_btn); // 프레임에 버튼을 붙임
+		
+		RoundedButton cancle_btn = new RoundedButton("뒤로"); // 뒤로가기 버튼
+		input_btn(cancle_btn, 770, 700, 120, 30);
+		add(cancle_btn); // 프레임에 버튼을 붙임
+		
 		
 		//화면 설정
 		//setUndecorated(true); //엑스창 없앰
@@ -73,7 +83,7 @@ public class User_Management extends JFrame {
 		getContentPane().setBackground(Color.WHITE); // 프레임 bg color
 	}
 
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 		new User_Management();
-	}*/
+	}
 }
