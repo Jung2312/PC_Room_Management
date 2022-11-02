@@ -1,9 +1,17 @@
 package GUI;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 
-public class User_Management extends JFrame {
+import java.awt.Color;
+import java.awt.Font;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+public class Sales_Management extends JFrame{
+
 	public static void input_btn(JButton btn, int x, int y, int xsize, int ysize) {
 		// 버튼 생성 메소드
 		btn.setContentAreaFilled(false);
@@ -12,12 +20,11 @@ public class User_Management extends JFrame {
 		btn.setBounds(x, y, xsize+2, ysize+2); // 버튼 위치, 사이즈
 	}
 	
-	public User_Management() {
-		String[] colName = { "회원 ID", "회원명", "생년월일", "전화번호", "이메일" }; //회원 정보를 나타낼 열 값
+	public Sales_Management() {
+		String[] colName = { "날짜", "상품명", "총매출액"}; //회원 정보를 나타낼 열 값
 		String[][] Info = {
-				{"A0001", "홍길동", "000101", "010-1111-1111", "hong1@gmail.com"},
-				{"A0002", "아무개", "000102", "010-2222-2222", "mu2@gmail.com"}, //회원 정보
-				{"A0003", "김이박", "000103", "010-3333-3333", "kim3@gmail.com"}
+				{"2022-10-23", "라면", "200000"},
+				{"2022-10-23", "라면", "202000"},
 		};
 		
 		DefaultTableModel user = new DefaultTableModel(Info, colName)
@@ -63,13 +70,9 @@ public class User_Management extends JFrame {
 		input_btn(setting_icon, 1460, 20, 40, 40);
 		add(setting_icon); // 프레임에 버튼을 붙임
 		
-		RoundedButton ok_btn = new RoundedButton("삭제"); // 삭제 버튼
-		input_btn(ok_btn, 620, 700, 120, 30);
+		RoundedButton ok_btn = new RoundedButton("확인"); // 삭제 버튼
+		input_btn(ok_btn, 720, 700, 120, 30);
 		add(ok_btn); // 프레임에 버튼을 붙임
-		
-		RoundedButton cancle_btn = new RoundedButton("뒤로"); // 뒤로가기 버튼
-		input_btn(cancle_btn, 770, 700, 120, 30);
-		add(cancle_btn); // 프레임에 버튼을 붙임
 		
 		
 		//화면 설정
@@ -82,8 +85,10 @@ public class User_Management extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // x를 누를 경우 종료
 		getContentPane().setBackground(Color.WHITE); // 프레임 bg color
 	}
-/*
+	
 	public static void main(String[] args) {
-		new User_Management();
-	}*/
+		new Sales_Management();
+
+	}
+
 }
