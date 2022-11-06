@@ -17,8 +17,8 @@ public class MySQL_connection {
 		 Connection conn = null;
 		 try {
 			 conn = DriverManager.getConnection(
-					 "jdbc:mysql://localhost:3306/sys"
-					 ,"root","####"
+					 "jdbc:mysql://localhost:3306/sys"  // 서버 이름
+					 ,"root","####" // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
 					 );
 			 System.out.println("데이터베이스 연결 성공");
 		 }catch (SQLException e) {
