@@ -3,8 +3,12 @@ package User;
 import javax.swing.*;
 
 import Btn_Design.RoundedButton;
+import Chat.InquiryPage;
+import Main.MainLogin;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 // 큐알 로그인
 public class QR_Login extends JFrame{
@@ -53,6 +57,19 @@ public class QR_Login extends JFrame{
 		setLocationRelativeTo(null); //창 모니터 가운데 정렬
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // x를 누를 경우 종료
 		getContentPane().setBackground(Color.WHITE); // 프레임 bg color
+		
+		//이벤트 처리 추가
+		home_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
+			}
+		});
+
+		user_inquiry.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
+			}
+		});
 	}
 	
 	public static void main(String[] args) {

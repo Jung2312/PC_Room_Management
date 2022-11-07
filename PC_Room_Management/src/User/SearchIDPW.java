@@ -3,6 +3,8 @@ package User;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -12,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import Btn_Design.RoundedButton;
+import Chat.InquiryPage;
+import Main.MainLogin;
 
 // 아이디 비밀번호 찾기
 public class SearchIDPW {
@@ -84,6 +88,9 @@ public class SearchIDPW {
 		frame.setPreferredSize(new Dimension(1920,1080)); //Dimension객체를 인자로 받으면서 해당 컴포넌트 기본크기를 결정
 		frame.setLocationRelativeTo(null); //화면을 중간에 띄움
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //창닫기 버튼을 활성화 시켜 X를 누르면 프로그램 종료
+		
+		//이벤트 처리 추가
+		//홈버튼과 문의 버튼이 없어 생략
 	}
 	
 	

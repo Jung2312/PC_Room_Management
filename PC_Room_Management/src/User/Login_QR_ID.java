@@ -14,6 +14,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import Btn_Design.RoundedButton;
+import Chat.InquiryPage;
+import Main.MainLogin;
+import Manager.manager_login;
 
 // qr, 일반 로그인 선택
 @SuppressWarnings("unused")
@@ -74,6 +77,20 @@ public class Login_QR_ID {
 		frame.setLayout(null); // 배치관리자 해제(절대 위치 지정)
 		frame.setLocationRelativeTo(null); //화면을 중간에 띄움
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //창닫기 버튼을 활성화 시켜 X를 누르면 프로그램 종료
+		
+		//이벤트 처리 추가
+		home.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
+			}
+		});
+
+		inquiry.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
+			}
+		});
+			
     }
 
     public static void main(String[] args) {
