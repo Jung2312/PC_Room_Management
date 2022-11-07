@@ -83,17 +83,20 @@ public class InquiryPage extends JFrame {
 					if(CIbtn == choose_inquiry[0]) { //결제 문의 버튼 선택 시
 						for(int i = 0; i < 4; i++)
 							btn[i].setText(pm[i]);
+						btn[0].setBounds(810, 580, 310, 100); //첫번째 상세 버튼 위치, 사이즈
 					}
 					else if(CIbtn == choose_inquiry[1]) { //로그인 문의 버튼 선택 시
 						for(int i = 0; i < 4; i++)
 							btn[i].setText(lgin[i]);
+						btn[0].setBounds(810, 580, 310, 100); //첫번째 상세 버튼 위치, 사이즈
 					}
 					else if(CIbtn == choose_inquiry[2]) { //회원가입 문의 버튼 선택 시
 						for(int i = 0; i < 4; i++)
 							btn[i].setText(sgin[i]);
+						btn[0].setBounds(810, 580, 310, 100); //첫번째 상세 버튼 위치, 사이즈
 					}
 					else if(CIbtn == choose_inquiry[3]) { //관리자 호출 버튼 선택 시
-						btn[0].setBounds(810, 580, 620, 200); //결제 문의 상세 버튼 위치, 사이즈
+						btn[0].setBounds(810, 580, 620, 200); //관리자 호출 상세 버튼 위치, 사이즈
 						btn[0].setText("관리자 호출");
 					}
 						
