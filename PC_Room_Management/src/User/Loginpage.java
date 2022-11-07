@@ -2,6 +2,8 @@ package User;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -11,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import Btn_Design.*;
+import Chat.InquiryPage;
+import Main.MainLogin;
 
 import javax.swing.JPasswordField;
 
@@ -130,6 +134,19 @@ public class Loginpage {
 		frame.setPreferredSize(new Dimension(1920,1080)); //Dimension객체를 인자로 받으면서 해당 컴포넌트 기본크기를 결정
 		frame.setLocationRelativeTo(null); //화면을 중간에 띄움
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //창닫기 버튼을 활성화 시켜 X를 누르면 프로그램 종료
+		
+		//이벤트 처리 추가
+		home.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
+			}
+		});
+
+		inquiry.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
+			}
+		});
 	}
 	
 	public static void main(String[] args) {
