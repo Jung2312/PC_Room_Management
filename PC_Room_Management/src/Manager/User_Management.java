@@ -6,6 +6,8 @@ import Btn_Design.RoundedButton;
 import Btn_Design.RoundedButton4;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 // 회원 관리
 public class User_Management extends JFrame {
@@ -76,7 +78,18 @@ public class User_Management extends JFrame {
 		input_btn(cancle_btn, 770, 700, 120, 30);
 		add(cancle_btn); // 프레임에 버튼을 붙임
 		
-		
+		// 뒤로 가기 버튼 이벤트
+		cancle_btn.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				
+				if(e.getSource() == cancle_btn) {
+					new Manager_menu();
+					setVisible(false); // 프레임 비활성화
+				}
+			}
+		});
+				
 		//화면 설정
 		//setUndecorated(true); //엑스창 없앰
 		setLayout(null); // 배치관리자 해제(절대 위치 지정)
@@ -87,8 +100,8 @@ public class User_Management extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // x를 누를 경우 종료
 		getContentPane().setBackground(Color.WHITE); // 프레임 bg color
 	}
-/*
+
 	public static void main(String[] args) {
 		new User_Management();
-	}*/
+	}
 }

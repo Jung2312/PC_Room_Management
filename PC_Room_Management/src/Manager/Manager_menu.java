@@ -5,6 +5,8 @@ import javax.swing.*;
 import Btn_Design.RoundedButton4;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 // 관리자 로그인시 들어오는 첫 화면(좌석 확인)
 public class Manager_menu extends JFrame{
@@ -184,7 +186,17 @@ public class Manager_menu extends JFrame{
 		seat_image.setBounds(150, 30, 1206, 743);
 		add(seat_image);
 		
-		
+		// 회원 관리 버튼 이벤트
+		user_management.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				
+				if(e.getSource() == user_management) {
+					new User_Management();
+					setVisible(false); // 프레임 비활성화
+				}
+			}
+		});
 		
 		//화면 설정
 		//setUndecorated(true); //엑스창 없앰

@@ -13,6 +13,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import User.*;
+import Chat.*;
+import Manager.*;
 
 // 메인 화면 로그인
 public class MainLogin {
@@ -64,34 +67,32 @@ public class MainLogin {
 		setting.setFocusPainted(false);
 		setting.setContentAreaFilled(false);
 		
+		//이벤트 처리 추가
 		signin.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				
-				if(e.getSource() == signin) {
-					JOptionPane.showMessageDialog(null, "회원가입");		//회원가입 버튼 누르면 생성되는 메세지	
-				}
+				new Signin_frame(); //회원가입 버튼을 누르면 회원가입 페이지로 이동
 			}
 		});
 	
 		login.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "로그인");
+				new Login_QR_ID(); //로그인 버튼을 누르면 로그인 페이지로 이동
 			}
 		});
 		
 		inquiry.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "문의");
+				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
 			}
 		});
 		
 		setting.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "설정");
+				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
 			}
 			
 		});
