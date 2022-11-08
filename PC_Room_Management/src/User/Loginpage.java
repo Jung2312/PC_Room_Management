@@ -93,6 +93,7 @@ public class Loginpage {
 		frame.add(searchbtn);
 		
 		
+		
 		getID.setFont(new Font("맑은 고딕", Font.PLAIN, 38)); //로그인 입력 창 글씨체, 굵기, 크기 설정
 		getID.setSize(615, 55); //로그인 입력 창 크기
 		getID.setLocation(580, 355); //로그인 입력 창 위치
@@ -126,6 +127,7 @@ public class Loginpage {
 		frame.add(search); //아이디, 비밀번호 찾기 위치 출력
 		
 		
+		
 		frame.add(panel);
 		
 		frame.setResizable(false); //창 크기 조절 불가
@@ -147,6 +149,21 @@ public class Loginpage {
 				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
 			}
 		});
+		
+		searchbtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new SearchIDPW(); //아이디 찾기를 누를시 아이디 찾는 페이지로 이동
+			}
+		});
+		
+		cancle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Login_QR_ID(); //취소 버튼을 누르면 로그인선택 페이지로 이동
+			}
+		});
+		
+		
+		
 	}
 	
 	public static void main(String[] args) {
