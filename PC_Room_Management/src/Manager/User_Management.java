@@ -9,6 +9,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import Main.MainLogin;
+
+
 // 회원 관리
 public class User_Management extends JFrame {
 	public static void input_btn(JButton btn, int x, int y, int xsize, int ysize) {
@@ -78,15 +81,34 @@ public class User_Management extends JFrame {
 		input_btn(cancle_btn, 770, 700, 120, 30);
 		add(cancle_btn); // 프레임에 버튼을 붙임
 		
-		// 뒤로 가기 버튼 이벤트
-		cancle_btn.addActionListener(new ActionListener() {
-
+		//이벤트 처리 추가
+		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				if(e.getSource() == cancle_btn) {
-					new Manager_menu();
-					setVisible(false); // 프레임 비활성화
-				}
+				new MainLogin(); //홈버튼을 누르면 첫 화면으로 이동
+			}
+		});
+		
+		user_management.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new User_Management(); //회원관리 버튼을 누르면 회원관리 페이지로 이동
+			}
+		});
+		
+		sales_check.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Sales_Management(); //매출확인 버튼을 누르면 매출확인 페이지로 이동
+			}
+		});
+		
+		inquiry_check.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new inquiry_management(); //문의확인 버튼을 누르면 문의 확인 페이지로 이동
+			}
+		});
+		
+		setting_icon.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
 			}
 		});
 				

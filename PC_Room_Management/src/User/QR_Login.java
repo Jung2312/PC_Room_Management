@@ -70,6 +70,12 @@ public class QR_Login extends JFrame{
 				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
 			}
 		});
+		
+		cancle_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Login_QR_ID(); //취소 버튼을 누르면 로그인선택 페이지로 이동
+			}
+		});
 	}
 	
 	public static void main(String[] args) {

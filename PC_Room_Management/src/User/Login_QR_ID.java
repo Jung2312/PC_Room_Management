@@ -90,6 +90,18 @@ public class Login_QR_ID {
 				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
 			}
 		});
+		
+		Login.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Loginpage(); //ID로그인을 누르면 ID로그인 페이지로 이동
+			}
+		});	
+		
+		QR.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new QR_Login(); //QR로그인을 누를시 QR로그인 페이지로 이동
+			}
+		});	
 			
     }
 

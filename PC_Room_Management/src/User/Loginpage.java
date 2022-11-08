@@ -147,6 +147,18 @@ public class Loginpage {
 				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
 			}
 		});
+		
+		searchbtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new SearchIDPW(); //아이디 찾기를 누를시 아이디 찾는 페이지로 이동
+			}
+		});
+		
+		cancle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Login_QR_ID(); //취소 버튼을 누르면 로그인선택 페이지로 이동
+			}
+		});
 	}
 	
 	public static void main(String[] args) {

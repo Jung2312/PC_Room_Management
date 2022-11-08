@@ -228,6 +228,12 @@ public class Signin_frame extends JFrame{
 			}
 		});
 		
+		cancle_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new MainLogin(); //취소 버튼을 누르면 로그인 페이지로 이동
+			}
+		});
+		
 	}
 
 	public static void main(String[] args) {

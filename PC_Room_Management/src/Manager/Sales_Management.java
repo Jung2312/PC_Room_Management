@@ -1,6 +1,8 @@
 package Manager;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.Font;
 
 import javax.swing.ImageIcon;
@@ -12,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Btn_Design.RoundedButton;
 import Btn_Design.RoundedButton4;
+import Main.MainLogin;
 
 // 매출 내역
 public class Sales_Management extends JFrame{
@@ -78,6 +81,42 @@ public class Sales_Management extends JFrame{
 		input_btn(ok_btn, 720, 700, 120, 30);
 		add(ok_btn); // 프레임에 버튼을 붙임
 		
+		//이벤트 처리 추가
+		home_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new MainLogin(); //홈버튼을 누르면 첫 화면으로 이동
+			}
+		});
+		
+		user_management.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new User_Management(); //회원관리 버튼을 누르면 회원관리 페이지로 이동
+			}
+		});
+		
+		sales_check.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Sales_Management(); //매출확인 버튼을 누르면 매출확인 페이지로 이동
+			}
+		});
+		
+		inquiry_check.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new inquiry_management(); //문의확인 버튼을 누르면 문의 확인 페이지로 이동
+			}
+		});
+		
+		setting_icon.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
+			}
+		});
+		
+		ok_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Manager_menu(); //확인 버튼을 누르면 매니저 메뉴 페이지로 이동
+			}
+		});
 		
 		//화면 설정
 		//setUndecorated(true); //엑스창 없앰

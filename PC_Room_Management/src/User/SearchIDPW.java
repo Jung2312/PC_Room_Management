@@ -1,6 +1,6 @@
 package User;
 
-import java.awt.Color;
+import java.awt.Color;	
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -90,7 +90,11 @@ public class SearchIDPW {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //창닫기 버튼을 활성화 시켜 X를 누르면 프로그램 종료
 		
 		//이벤트 처리 추가
-		//홈버튼과 문의 버튼이 없어 생략
+		backbtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Loginpage(); //뒤로 버튼을 누를시 로그인 페이지로 이동
+			}
+		});
 	}
 	
 	
