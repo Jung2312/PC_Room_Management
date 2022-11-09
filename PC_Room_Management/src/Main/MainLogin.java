@@ -72,6 +72,8 @@ public class MainLogin {
 
 			public void actionPerformed(ActionEvent e) {
 				new Signin_frame(); //회원가입 버튼을 누르면 회원가입 페이지로 이동
+				frame.setVisible(false);
+				
 			}
 		});
 	
@@ -79,6 +81,7 @@ public class MainLogin {
 
 			public void actionPerformed(ActionEvent e) {
 				new Login_QR_ID(); //로그인 버튼을 누르면 로그인 페이지로 이동
+				frame.setVisible(false);
 			}
 		});
 		
@@ -86,6 +89,7 @@ public class MainLogin {
 
 			public void actionPerformed(ActionEvent e) {
 				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
+				frame.setVisible(false);
 			}
 		});
 		
@@ -93,6 +97,7 @@ public class MainLogin {
 
 			public void actionPerformed(ActionEvent e) {
 				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
+				frame.setVisible(false);
 			}
 			
 		});

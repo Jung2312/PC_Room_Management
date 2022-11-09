@@ -73,9 +73,9 @@ public class User_Management extends JFrame {
 		input_btn(setting_icon, 1460, 20, 40, 40);
 		add(setting_icon); // 프레임에 버튼을 붙임
 		
-		RoundedButton ok_btn = new RoundedButton("삭제"); // 삭제 버튼
-		input_btn(ok_btn, 620, 700, 120, 30);
-		add(ok_btn); // 프레임에 버튼을 붙임
+		RoundedButton del_btn = new RoundedButton("삭제"); // 삭제 버튼
+		input_btn(del_btn, 620, 700, 120, 30);
+		add(del_btn); // 프레임에 버튼을 붙임
 		
 		RoundedButton cancle_btn = new RoundedButton("뒤로"); // 뒤로가기 버튼
 		input_btn(cancle_btn, 770, 700, 120, 30);
@@ -85,32 +85,45 @@ public class User_Management extends JFrame {
 		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new MainLogin(); //홈버튼을 누르면 첫 화면으로 이동
+				setVisible(false);
 			}
 		});
 		
 		user_management.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new User_Management(); //회원관리 버튼을 누르면 회원관리 페이지로 이동
+				setVisible(false);
 			}
 		});
 		
 		sales_check.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new Sales_Management(); //매출확인 버튼을 누르면 매출확인 페이지로 이동
+				setVisible(false);
 			}
 		});
 		
 		inquiry_check.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new inquiry_management(); //문의확인 버튼을 누르면 문의 확인 페이지로 이동
+				setVisible(false);
 			}
 		});
 		
 		setting_icon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
+				setVisible(false);
 			}
 		});
+		
+		del_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// 클릭한 테이블 데이터 삭제
+			}
+		});
+		
+		
 				
 		//화면 설정
 		//setUndecorated(true); //엑스창 없앰

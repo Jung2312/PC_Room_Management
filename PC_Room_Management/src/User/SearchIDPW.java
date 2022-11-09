@@ -90,9 +90,18 @@ public class SearchIDPW {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //창닫기 버튼을 활성화 시켜 X를 누르면 프로그램 종료
 		
 		//이벤트 처리 추가
+		okbtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// 데이터가 있는 경우 레이블에 비밀번호 출력
+				
+				// 없는 경우 없다는 레이블 출력
+			}
+		});
+		
 		backbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new Loginpage(); //뒤로 버튼을 누를시 로그인 페이지로 이동
+				frame.setVisible(false);
 			}
 		});
 	}

@@ -77,19 +77,33 @@ public class manager_login {
 		//이벤트 처리 추가
 		manager_Login.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new Manager_menu(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
+				String name = JOptionPane.showInputDialog("관리자 비밀번호를 입력하세요.");
+				
+				if(name.equals("one1234"))
+				{
+					new Manager_menu(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
+					frame.setVisible(false);
+				}
+				
+				else
+				{
+					JOptionPane.showMessageDialog(null, "잘못된 비밀번호 입니다.");
+				}
+				
 			}
 		});
 		
 		home.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new MainLogin(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
+				new MainLogin(); //설정 버튼을 누르면 메인 로그인 페이지로 이동
+				frame.setVisible(false);
 			}
 		});
 		
 		inquiry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new InquiryPage(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
+				frame.setVisible(false);
 			}
 		});
     }

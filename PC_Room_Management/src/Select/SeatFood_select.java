@@ -4,6 +4,7 @@ import javax.swing.*;
 import Btn_Design.RoundedButton;
 import Chat.InquiryPage;
 import Main.MainLogin;
+import Manager.manager_login;
 import User.QR_Login;
 
 import java.awt.*;
@@ -56,22 +57,36 @@ public class SeatFood_select extends JFrame{
 		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
+				setVisible(false);
 			}
 		});
 
 		user_inquiry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
+				setVisible(false);
 			}
 		});
+		
+		setting_icon.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
+				setVisible(false);
+			}
+			
+		});
+		
 		seat_select.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new Seat_select(); //좌석 선택 버튼을 누르면 좌석선택 페이지로 이동 
+				setVisible(false);
 			}
 		});
 		food_select.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new Menu_select(); //음식 주문 버튼을 누르면 음식선택 페이지로 이동
+				setVisible(false);
 			}
 		});
 		

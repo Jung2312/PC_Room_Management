@@ -1,9 +1,15 @@
 package Select;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 
 import Btn_Design.RoundedButton;
+import Chat.InquiryPage;
+import Main.MainLogin;
+import Manager.manager_login;
 
 // 좌석 선택
 public class Seat_select extends JFrame{
@@ -181,6 +187,30 @@ public class Seat_select extends JFrame{
 		add(seat_image);
 		
 		
+		//이벤트 처리 추가
+		home_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
+				setVisible(false);
+			}
+		});
+
+		user_inquiry.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
+				setVisible(false);
+			}
+		});
+		
+		setting_icon.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
+				setVisible(false);
+			}
+			
+		});
+				
 		
 		//화면 설정
 		//setUndecorated(true); //엑스창 없앰
