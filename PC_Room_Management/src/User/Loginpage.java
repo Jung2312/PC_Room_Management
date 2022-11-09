@@ -22,10 +22,10 @@ import javax.swing.JPasswordField;
 // 회원 로그인
 public class Loginpage {
 	public Loginpage() {
-		RoundedButton2 okbtn = new RoundedButton2("확인"); // 확인 버튼
-		RoundedButton2 cancle = new RoundedButton2("취소"); // 취소 버튼
+		RoundedButton okbtn = new RoundedButton("확인"); // 확인 버튼
+		RoundedButton cancle = new RoundedButton("취소"); // 취소 버튼
 		JButton home = new JButton(new ImageIcon("image/home_btn.png")); //홈 버튼 할당
-		RoundedButton2 inquiry = new RoundedButton2("문의"); // 문의 버튼
+		RoundedButton inquiry = new RoundedButton("문의"); // 문의 버튼
 		JButton setting = new JButton(new ImageIcon("image/setting_icon.png")); //설정 버튼 할당
 		JButton searchbtn = new JButton(); //아이디, 비밀번호 찾기 버튼 할당
 		
@@ -41,7 +41,7 @@ public class Loginpage {
 		JPanel panel = new JPanel();
 		JPanel btnPanel = new JPanel(); //버튼 패널
 		
-		panel.setBackground(new Color(246,246,246,255)); //흰색 RGB코드, 불투명하게
+		panel.setBackground(Color.WHITE); //흰색 RGB코드, 불투명하게
 		
 		btnPanel.add(inquiry); //문의 버튼
 		btnPanel.add(setting); //설정 버튼
