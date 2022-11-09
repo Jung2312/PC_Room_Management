@@ -5,6 +5,7 @@ import Btn_Design.RoundedButton;
 import Btn_Design.RoundedButton3;
 import Chat.InquiryPage;
 import Main.MainLogin;
+import Manager.manager_login;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -216,21 +217,47 @@ public class Signin_frame extends JFrame{
 		getContentPane().setBackground(Color.WHITE); // 프레임 bg color
 		
 		//이벤트 처리 추가
+		ID_checkicon.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// 중복 확인 버튼 이벤트 처리
+			}
+		});
+		
+		ok_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// 확인 버튼 눌렀을 때 모든 텍스트 필드가 비지 않았을 경우만 이벤트 처리
+				
+				// 텍스트 필드가 빈 경우 메세지 박스로 오류 메세지 전송
+			}
+		});
+		
 		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
+				setVisible(false);
 			}
 		});
 
 		user_inquiry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
+				setVisible(false);
 			}
+		});
+		
+		setting_icon.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
+				setVisible(false);
+			}
+			
 		});
 		
 		cancle_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new MainLogin(); //취소 버튼을 누르면 로그인 페이지로 이동
+				setVisible(false);
 			}
 		});
 		

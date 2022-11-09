@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import Btn_Design.*;
 import Chat.InquiryPage;
 import Main.MainLogin;
+import Manager.manager_login;
 
 import javax.swing.JPasswordField;
 
@@ -139,24 +140,45 @@ public class Loginpage {
 		home.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
+				frame.setVisible(false);
 			}
+		});
+		
+		setting.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
+				frame.setVisible(false);
+			}
+			
 		});
 
 		inquiry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
+				frame.setVisible(false);
 			}
 		});
 		
 		searchbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new SearchIDPW(); //아이디 찾기를 누를시 아이디 찾는 페이지로 이동
+				frame.setVisible(false);
+			}
+		});
+		
+		okbtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// 아이디, 비밀번호가 동일한 경우를 디비에서 검색하여 있는 경우에만 확인 이벤트
+				
+				// 존재하지 않을 경우 존재하지 않음 메세지 박스 
 			}
 		});
 		
 		cancle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new Login_QR_ID(); //취소 버튼을 누르면 로그인선택 페이지로 이동
+				frame.setVisible(false);
 			}
 		});
 	}

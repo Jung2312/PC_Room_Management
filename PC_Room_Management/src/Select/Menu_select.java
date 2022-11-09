@@ -1,10 +1,15 @@
 package Select;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
 import Btn_Design.RoundedButton;
+import Chat.InquiryPage;
+import Main.MainLogin;
+import Manager.manager_login;
 
 // 음식 선택
 public class Menu_select {
@@ -126,7 +131,30 @@ public class Menu_select {
 		wonlabel[4].setBounds(300, 640, 100, 100); //2000원 라벨 위치
 		wonlabel[5].setBounds(645, 640, 100, 100); //2400원 라벨 위치
 		
+		//이벤트 처리 추가
+		home.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
+				frame.setVisible(false);
+			}
+		});
+
+		inquiry.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
+				frame.setVisible(false);
+			}
+		});
 		
+		setting.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
+				frame.setVisible(false);
+			}
+			
+		});
+				
 		//프레임 설정
 		frame.add(menu_select); //음식 결제 출력
 		frame.add(panel);
