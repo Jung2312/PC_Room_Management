@@ -32,7 +32,7 @@ public class Loginpage {
 		JPanel panel = new JPanel();
 		JPanel btnPanel = new JPanel(); //버튼 패널
 		
-		panel.setBackground(new Color(246,246,246,255)); //흰색 RGB코드, 불투명하게
+		panel.setBackground(Color.WHITE); //흰색 RGB코드, 불투명하게
 		
 		btnPanel.add(inquiry); //문의 버튼
 		btnPanel.add(setting); //설정 버튼
