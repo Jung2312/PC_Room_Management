@@ -16,7 +16,7 @@ import java.util.Date;
 
 public class InquiryPage extends JFrame {
 	Connection conn = null;
-	String a = "1. 결제 문의";
+	String a = "";
 	String b = "";
 	public static void input_btn(JButton btn, int x, int y, int xsize, int ysize) {
 		// 버튼 생성 메소드
@@ -107,6 +107,7 @@ public class InquiryPage extends JFrame {
 		//문의 선택 버튼
 		JButton[] choose_inquiry = new JButton[4]; //문의 선택 버튼
 		String[] CI = new String[] {"1. 결제 문의", "2. 로그인 문의", "3. 회원가입 문의", "4. 관리자 호출"}; //문의 버튼 생성 시 버튼 이름
+		a = CI[0];
 		for(int i = 0; i < 4; i++) {
 			choose_inquiry[i] = new JButton(CI[i]); //문의 선택 버튼 생성
 			choose_inquiry[i].setFont(new Font("맑은 고딕", Font.BOLD, 40)); //문의 선택 버튼 글씨체 설정

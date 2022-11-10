@@ -3,6 +3,13 @@ package Manager;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.Font;
 
 import javax.swing.ImageIcon;
@@ -14,16 +21,14 @@ import javax.swing.table.DefaultTableModel;
 
 import Btn_Design.RoundedButton;
 import Btn_Design.RoundedButton4;
+import Chat.InquiryPage;
 import Main.*;
 
 // 문의 내역
 public class inquiry_management extends JFrame{
+	Connection conn = null;
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
 	public static void input_btn(JButton btn, int x, int y, int xsize, int ysize) {
 		// 버튼 생성 메소드
 		btn.setContentAreaFilled(false);
@@ -33,11 +38,28 @@ public class inquiry_management extends JFrame{
 	}
 	
 	public inquiry_management() {
+		try { 
+			 Class.forName("com.mysql.cj.jdbc.Driver");
+			 System.out.println("드라이버 검색 성공");
+		 }catch(ClassNotFoundException e) {
+			 System.err.println("드라이버 검색 실패");
+			 System.exit(0);
+		 }
+		 try {
+			 conn = DriverManager.getConnection(
+					 "jdbc:mysql://localhost:3306/connectdb?serverTimezone=UTC"  // 서버 이름
+					 ,"root","ejqmftnld1!" // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
+					 );
+			 System.out.println("데이터베이스 연결 성공");
+		 }catch (SQLException e) {
+			 System.out.println(e);
+			 System.err.println("데이터베이스 연결 실패");
+			 System.exit(0);
+		 }
 		String[] colName = { "날짜", "문의", "상세내용"}; //회원 정보를 나타낼 열 값
-		String[][] Info = {
-				{"2022-10-23", "로그인 문의", "카드 결제 오류"},
-				{"2022-10-23", "회원가입 문의", "결제 취소"},
-		};
+		int num = db_amount();
+		String[][] Info = new String[num][3];
+		inquiry_check(Info);
 		
 		@SuppressWarnings("serial")
 		DefaultTableModel user = new DefaultTableModel(Info, colName)
@@ -91,18 +113,42 @@ public class inquiry_management extends JFrame{
 		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new MainLogin(); //홈버튼을 누르면 첫 화면으로 이동
+				try {
+					 if(conn != null) {
+						 conn.close();
+						 System.out.println("닫기 성공");
+					 }
+				 }catch (SQLException e1) {
+					 e1.printStackTrace();
+				 }
 			}
 		});
 		
 		user_management.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new User_Management(); //회원관리 버튼을 누르면 회원관리 페이지로 이동
+				try {
+					 if(conn != null) {
+						 conn.close();
+						 System.out.println("닫기 성공");
+					 }
+				 }catch (SQLException e1) {
+					 e1.printStackTrace();
+				 }
 			}
 		});
 		
 		sales_check.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new Sales_Management(); //매출확인 버튼을 누르면 매출확인 페이지로 이동
+				try {
+					 if(conn != null) {
+						 conn.close();
+						 System.out.println("닫기 성공");
+					 }
+				 }catch (SQLException e1) {
+					 e1.printStackTrace();
+				 }
 			}
 		});
 		
@@ -121,6 +167,14 @@ public class inquiry_management extends JFrame{
 		ok_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new Manager_menu(); //확인 버튼을 누르면 매니저 메뉴 페이지로 이동
+				try {
+					 if(conn != null) {
+						 conn.close();
+						 System.out.println("닫기 성공");
+					 }
+				 }catch (SQLException e1) {
+					 e1.printStackTrace();
+				 }
 			}
 		});
 				
@@ -134,10 +188,44 @@ public class inquiry_management extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // x를 누를 경우 종료
 		getContentPane().setBackground(Color.WHITE); // 프레임 bg color
 	}
-	
-	public static void main(String[] args) {
-		new inquiry_management();
-
+	public int db_amount() {
+		String sql = "select count(*) from inquiry where inquiry > 0;";
+		PreparedStatement pstmt = null;
+		int count = 0;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+		} catch (Exception e) {
+            System.out.println("select 메서드 예외발생");
+        }
+		return count;
 	}
-
+	
+	public void inquiry_check(String [][] a) {
+		String sql = "select day, inquiry, detailedInquiry from inquiry where inquiry > 0;";
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            List<String[]> jobList = new ArrayList<String[]>();
+            while (rs.next()) {
+              String[] arrStr = {rs.getString("day"),rs.getString("inquiry"),rs.getString("detailedInquiry")};
+              jobList.add(arrStr);
+            }
+            for (int i = 0; i < jobList.size(); i++) {
+            		a[i][0] = jobList.get(i)[0];
+            		a[i][1] = jobList.get(i)[1];
+            		a[i][2] = jobList.get(i)[2];
+            	}
+  
+        } catch (Exception e) {
+            System.out.println("select 메서드 예외발생");
+        }
+	}
+	public static void main(String args[]) {
+		new inquiry_management();
+	}
 }
