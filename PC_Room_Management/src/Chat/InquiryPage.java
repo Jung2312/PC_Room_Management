@@ -7,10 +7,19 @@ import Main.MainLogin;
 import Manager.manager_login;
 
 import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import Btn_Design.*;
 
 public class InquiryPage extends JFrame {
+	Connection conn = null;
+	String a = "1. 결제 문의";
+	String b = "";
 	public static void input_btn(JButton btn, int x, int y, int xsize, int ysize) {
 		// 버튼 생성 메소드
 		btn.setContentAreaFilled(false);
@@ -20,6 +29,26 @@ public class InquiryPage extends JFrame {
 	}
 	
 	public InquiryPage() {
+		try { 
+			 Class.forName("com.mysql.cj.jdbc.Driver");
+			 System.out.println("드라이버 검색 성공");
+		 }catch(ClassNotFoundException e) {
+			 System.err.println("드라이버 검색 실패");
+			 System.exit(0);
+		 }
+		 
+
+		 try {
+			 conn = DriverManager.getConnection(
+					 "jdbc:mysql://localhost:3306/connectdb?serverTimezone=UTC"  // 서버 이름
+					 ,"root","ejqmftnld1!" // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
+					 );
+			 System.out.println("데이터베이스 연결 성공");
+		 }catch (SQLException e) {
+			 System.out.println(e);
+			 System.err.println("데이터베이스 연결 실패");
+			 System.exit(0);
+		 }
 		//Container c = getContentPane();
 		//c.setLayout(new FlowLayout());
 		
@@ -62,6 +91,10 @@ public class InquiryPage extends JFrame {
 			btn[i] = new JButton(pm[i]); //결제 문의 상세 버튼 
 			btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 20)); //결제 문의 상세 버튼 글씨체 설정
 			btn[i].setBackground(Color.WHITE); //결제 문의 상세 버튼 배경색 설정
+			btn[i].addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				}
+			});
 		}
 		btn[0].setBounds(810, 580, 310, 100); //결제 문의 상세 버튼 위치, 사이즈
 		btn[1].setBounds(1120, 580, 310, 100); //결제 문의 상세 버튼 위치, 사이즈
@@ -87,29 +120,56 @@ public class InquiryPage extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					JButton CIbtn = (JButton)e.getSource();
 					if(CIbtn == choose_inquiry[0]) { //결제 문의 버튼 선택 시
-						for(int i = 0; i < 4; i++)
-							btn[i].setText(pm[i]);
+						a = CIbtn.getText();
+						for(int i = 0; i < 4; i++) 
+							btn[i].setText(pm[i]);					
 						btn[0].setBounds(810, 580, 310, 100); //첫번째 상세 버튼 위치, 사이즈 (추가)
 					}
 					else if(CIbtn == choose_inquiry[1]) { //로그인 문의 버튼 선택 시
+						a = CIbtn.getText();
 						for(int i = 0; i < 4; i++)
 							btn[i].setText(lgin[i]);
 						btn[0].setBounds(810, 580, 310, 100); //첫번째 상세 버튼 위치, 사이즈 (추가)
 					}
 					else if(CIbtn == choose_inquiry[2]) { //회원가입 문의 버튼 선택 시
+						a = CIbtn.getText();
 						for(int i = 0; i < 4; i++)
 							btn[i].setText(sgin[i]);
 						btn[0].setBounds(810, 580, 310, 100); //첫번째 상세 버튼 위치, 사이즈 (추가)
 					}
 					else if(CIbtn == choose_inquiry[3]) { //관리자 호출 버튼 선택 시
+						a = CIbtn.getText();
 						btn[0].setBounds(810, 580, 620, 200); //결제 문의 상세 버튼 위치, 사이즈
 						btn[0].setText("관리자 호출");
-					}
-						
-				}
-				
+					}	
+				}	
 			});
 		}
+		for(int i = 0; i < 4; i++) {
+			btn[i].addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					JButton btn2 = (JButton)e.getSource();
+					b = btn2.getText();
+					insert(a,b);
+				}
+			});
+		}
+		
+		home_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new MainLogin(); //홈버튼을 누르면 첫 화면으로 이동
+				 try {
+					 if(conn != null) {
+						 conn.close();
+						 System.out.println("닫기 성공");
+					 }
+				 }catch (SQLException e1) {
+					 e1.printStackTrace();
+				 }
+			}
+		});
+		
+
 		
 		//이벤트 처리 추가
 		home_btn.addActionListener(new ActionListener() {
@@ -138,6 +198,30 @@ public class InquiryPage extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // x를 누를 경우 종료
 		getContentPane().setBackground(Color.WHITE); // 프레임 bg color
 	}
+	
+	public void insert(String inquiry, String inquiry_detail) {
+		SimpleDateFormat a = new SimpleDateFormat("yyyy-MM-dd");
+		Date now = new Date();
+		String now1 = a.format(now);
+        String sql = "insert into inquiry(day, inquiry, detailedInquiry) values(?,?,?)";
+        PreparedStatement pstmt = null;
+        try {
+        	pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, now1);
+            pstmt.setString(2, inquiry);
+            pstmt.setString(3, inquiry_detail);
+            
+            int result = pstmt.executeUpdate();
+            if(result==1) {
+                System.out.println("데이터 삽입 성공!");
+                
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            System.out.println("실패");
+        }
+    }
 
 	public static void main(String[] args) {
 		new InquiryPage();
