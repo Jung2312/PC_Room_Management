@@ -11,19 +11,53 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import Btn_Design.RoundedButton;
 import Chat.InquiryPage;
 import Main.MainLogin;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+
+
 // 아이디 비밀번호 찾기
 public class SearchIDPW {
+	Connection conn = null; //DB 접속
 	public SearchIDPW() {
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("드라이버 검색 성공");
+			
+		}
+		catch(ClassNotFoundException e) {
+			System.err.println("드라이버 검색 실패");
+			System.exit(0);
+		}
+		try {
+			 conn = DriverManager.getConnection(
+					 "jdbc:mysql://www.jftt.kr:49176/PC?severTimezone=UTC"  // 서버 이름
+					 ,"root","jeong_oo" // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
+					 );
+			 System.out.println("데이터베이스 연결 성공");
+		 }catch (SQLException e) {
+			 System.out.println(e);
+			 System.err.println("데이터베이스 연결 실패");
+			 System.exit(0);
+		 }
+		
+		
 		RoundedButton okbtn = new RoundedButton("확인"); // 확인 버튼
 		RoundedButton backbtn = new RoundedButton("뒤로"); // 취소 버튼
 		
-		JLabel SearchIDPW = new JLabel("아이디/비밀번호 찾기");
+		JLabel SearchIDPW = new JLabel("비밀번호 찾기");
 		JLabel IDlabel = new JLabel("아이디");
 		JLabel Tellabel = new JLabel("전화번호");
 		
@@ -92,9 +126,38 @@ public class SearchIDPW {
 		//이벤트 처리 추가
 		okbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// 데이터가 있는 경우 레이블에 비밀번호 출력
+				String user_ID = getID.getText();
+				String user_Phone = getTel.getText();
+				String sql = "select userPassword, userID, userPhone from user where userID = ? and userPhone = ?";
+		        PreparedStatement pstmt = null; //sql 실행
 				
-				// 없는 경우 없다는 레이블 출력
+				if(user_ID.equals("") || user_Phone.equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "아이디와 전화번호를 입력해주세요");
+					return;
+				}
+				else
+				{
+					try {
+			            pstmt = conn.prepareStatement(sql);
+			            pstmt.setString(1, user_ID);
+			            pstmt.setString(2, user_Phone);
+			            ResultSet rs = pstmt.executeQuery(); //실행 결과
+			            	if(rs.next())
+				            {
+					            JOptionPane.showMessageDialog(null, "비밀번호는 " + rs.getString("userPassword")+ "입니다."); // 데이터가 있는 경우 레이블에 비밀번호 출력
+					            new Loginpage();
+				            }
+				            else
+				            {
+				            	JOptionPane.showMessageDialog(null, "일치하는 정보가 없습니다."); // 없는 경우 없다는 레이블 출력
+				            	return;
+				            }
+					}
+					catch(Exception e1) {
+						System.out.println(e1.toString());	
+					}
+				}
 			}
 		});
 		
@@ -105,8 +168,6 @@ public class SearchIDPW {
 			}
 		});
 	}
-	
-	
 	public static void main(String[] args) {
 		new SearchIDPW();
 	}
