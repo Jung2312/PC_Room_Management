@@ -2,8 +2,14 @@ package Select;
 import javax.swing.*;
 
 import Btn_Design.RoundedButton;
+import Chat.InquiryPage;
+import Main.MainLogin;
+import Manager.manager_login;
+import User.QR_Login;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.applet.*;
 
 // 좌석 or 틈색 선택
@@ -47,6 +53,43 @@ public class SeatFood_select extends JFrame{
 		setLocationRelativeTo(null); //창 모니터 가운데 정렬
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // x를 누를 경우 종료
 		getContentPane().setBackground(Color.WHITE); // 프레임 bg color
+		//이벤트 처리 추가
+		home_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
+				setVisible(false);
+			}
+		});
+
+		user_inquiry.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
+				setVisible(false);
+			}
+		});
+		
+		setting_icon.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
+				setVisible(false);
+			}
+			
+		});
+		
+		seat_select.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Seat_select(); //좌석 선택 버튼을 누르면 좌석선택 페이지로 이동 
+				setVisible(false);
+			}
+		});
+		food_select.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Menu_select(); //음식 주문 버튼을 누르면 음식선택 페이지로 이동
+				setVisible(false);
+			}
+		});
+		
 	}
 
 	public static void main(String[] args) {

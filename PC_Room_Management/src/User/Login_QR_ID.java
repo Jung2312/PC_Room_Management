@@ -1,6 +1,6 @@
 package User;
 
-import java.awt.Color;
+import java.awt.Color;	
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import Btn_Design.RoundedButton;
 import Chat.InquiryPage;
 import Main.MainLogin;
-import Manager.manager_login;
+import Manager.*;
 
 // qr, 일반 로그인 선택
 @SuppressWarnings("unused")
@@ -82,34 +82,44 @@ public class Login_QR_ID {
 		home.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
+				frame.setVisible(false);
+			}
+		});
+		
+		setting.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Manager_menu(); //홈 버튼을 누르면 첫 화면으로 이동
+				frame.setVisible(false);
 			}
 		});
 
 		inquiry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
+				frame.setVisible(false);
 			}
 		});
 		
 		Login.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new Loginpage(); //ID로그인을 누르면 ID로그인 페이지로 이동
+				frame.setVisible(false);
 			}
 		});	
 		
 		QR.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new QR_Login(); //QR로그인을 누를시 QR로그인 페이지로 이동
+				frame.setVisible(false);
 			}
 		});	
+			
     }
 
     public static void main(String[] args) {
 		new Login_QR_ID();
 
 	}
-
-
 }
 
 

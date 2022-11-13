@@ -1,6 +1,8 @@
 package Manager;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -71,26 +73,39 @@ public class manager_login {
 		frame.setLayout(null); // 배치관리자 해제(절대 위치 지정)
 		frame.setLocationRelativeTo(null); //화면을 중간에 띄움
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //창닫기 버튼을 활성화 시켜 X를 누르면 프로그램 종료
-		
+    
 		//이벤트 처리 추가
 		manager_Login.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new Manager_menu(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
+				String name = JOptionPane.showInputDialog("관리자 비밀번호를 입력하세요.");
+				
+				if(name.equals("one1234"))
+				{
+					new Manager_menu(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
+					frame.setVisible(false);
+				}
+				
+				else
+				{
+					JOptionPane.showMessageDialog(null, "잘못된 비밀번호 입니다.");
+				}
+				
 			}
 		});
 		
 		home.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new MainLogin(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
+				new MainLogin(); //설정 버튼을 누르면 메인 로그인 페이지로 이동
+				frame.setVisible(false);
 			}
 		});
 		
 		inquiry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new InquiryPage(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
+				frame.setVisible(false);
 			}
 		});
-		
     }
 
     public static void main(String[] args) {

@@ -1,15 +1,14 @@
 package Chat;
 
-import java.awt.*;
+import java.awt.*;	
 import javax.swing.*;
 
 import Main.MainLogin;
 import Manager.manager_login;
-import User.Signin_frame;
 
 import java.awt.event.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+import Btn_Design.*;
 
 public class InquiryPage extends JFrame {
 	public static void input_btn(JButton btn, int x, int y, int xsize, int ysize) {
@@ -112,6 +111,23 @@ public class InquiryPage extends JFrame {
 			});
 		}
 		
+		//이벤트 처리 추가
+		home_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
+				setVisible(false);
+			}
+		});
+		
+		setting_icon.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
+				setVisible(false);
+			}
+			
+		});
+		
 		//화면 설정
 		//setUndecorated(true); //엑스창 없앰
 		setLayout(null); // 배치관리자 해제(절대 위치 지정)
@@ -121,18 +137,6 @@ public class InquiryPage extends JFrame {
 		setLocationRelativeTo(null); //창 모니터 가운데 정렬
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // x를 누를 경우 종료
 		getContentPane().setBackground(Color.WHITE); // 프레임 bg color
-		
-		//이벤트 처리 추가
-		home_btn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new MainLogin(); //홈버튼을 누르면 메인로그인 페이지로 이동
-			}
-		});
-		setting_icon.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new manager_login(); //홈버튼을 누르면 메인로그인 페이지로 이동
-			}
-		});
 	}
 
 	public static void main(String[] args) {

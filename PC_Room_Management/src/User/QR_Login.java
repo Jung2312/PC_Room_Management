@@ -5,6 +5,7 @@ import javax.swing.*;
 import Btn_Design.RoundedButton;
 import Chat.InquiryPage;
 import Main.MainLogin;
+import Manager.manager_login;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -71,9 +72,27 @@ public class QR_Login extends JFrame{
 			}
 		});
 		
+		setting_icon.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
+				setVisible(false);
+			}
+			
+		});
+		
+		ok_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// 확인을 눌렀을 경우 로그인 체크 여부가 1이 되어있는 데이터가 있는 경우에만 다음 화면으로
+				
+				// 전부 0인 경우 로그인 되지 않았다는 메세지 박스 출력
+			}
+		});
+		
 		cancle_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new Login_QR_ID(); //취소 버튼을 누르면 로그인선택 페이지로 이동
+				setVisible(false);
 			}
 		});
 	}

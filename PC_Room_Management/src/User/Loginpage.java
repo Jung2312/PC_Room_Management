@@ -10,19 +10,26 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import Btn_Design.*;
 import Chat.InquiryPage;
 import Main.MainLogin;
+import Manager.manager_login;
+import Select.Seat_select;
+import UserDAO.Database;
 
 import javax.swing.JPasswordField;
 
 // 회원 로그인
 public class Loginpage {
+	Database db = new Database();
+
 	public Loginpage() {
-		RoundedButton2 okbtn = new RoundedButton2("확인"); // 확인 버튼
-		RoundedButton2 cancle = new RoundedButton2("취소"); // 취소 버튼
+
+		RoundedButton okbtn = new RoundedButton("확인"); // 확인 버튼
+		RoundedButton cancle = new RoundedButton("취소"); // 취소 버튼
 		JButton home = new JButton(new ImageIcon("image/home_btn.png")); //홈 버튼 할당
 		RoundedButton2 inquiry = new RoundedButton2("문의"); // 문의 버튼
 		JButton setting = new JButton(new ImageIcon("image/setting_icon.png")); //설정 버튼 할당
@@ -93,7 +100,6 @@ public class Loginpage {
 		frame.add(searchbtn);
 		
 		
-		
 		getID.setFont(new Font("맑은 고딕", Font.PLAIN, 38)); //로그인 입력 창 글씨체, 굵기, 크기 설정
 		getID.setSize(615, 55); //로그인 입력 창 크기
 		getID.setLocation(580, 355); //로그인 입력 창 위치
@@ -127,7 +133,6 @@ public class Loginpage {
 		frame.add(search); //아이디, 비밀번호 찾기 위치 출력
 		
 		
-		
 		frame.add(panel);
 		
 		frame.setResizable(false); //창 크기 조절 불가
@@ -141,32 +146,77 @@ public class Loginpage {
 		home.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
+				frame.setVisible(false);
 			}
+		});
+		
+		setting.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
+				frame.setVisible(false);
+			}
+			
 		});
 
 		inquiry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
+				frame.setVisible(false);
 			}
 		});
 		
 		searchbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new SearchIDPW(); //아이디 찾기를 누를시 아이디 찾는 페이지로 이동
+				frame.setVisible(false);
+			}
+		});
+		
+		okbtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JButton b = (JButton)e.getSource();
+				
+				/* TextField에 입력된 아이디와 비밀번호를 변수에 초기화 */
+				String uid = getID.getText();
+				String upass = "";
+				for(int i=0; i<getPW.getPassword().length; i++) {
+					upass = upass + getPW.getPassword()[i];
+				}
+							
+				
+				/* 로그인 버튼 이벤트 */
+				if(b.getText().equals("확인")) {
+					if(uid.equals("") || upass.equals("")) {
+						JOptionPane.showMessageDialog(null, "아이디와 비밀번호 모두 입력해주세요", "로그인 실패", JOptionPane.ERROR_MESSAGE);
+						System.out.println("로그인 실패 > 로그인 정보 미입력");
+					}
+					
+					else if(uid != null && upass != null) {
+						/* 로그인 데이터를 DB와 비교하는 문장 */
+						if(db.logincheck(uid, upass)) {	
+							System.out.println("로그인 성공");
+							JOptionPane.showMessageDialog(null, "로그인에 성공하였습니다");
+							new Seat_select(); //로그인 성공시 자리배치 페이지로 이동
+							frame.setVisible(false);
+						} else {
+							System.out.println("로그인 실패 > 로그인 정보 불일치");
+							JOptionPane.showMessageDialog(null, "로그인에 실패하였습니다");
+						}
+					}
+				}
 			}
 		});
 		
 		cancle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new Login_QR_ID(); //취소 버튼을 누르면 로그인선택 페이지로 이동
+				frame.setVisible(false);
 			}
 		});
-		
-		
-		
 	}
-	
 	public static void main(String[] args) {
 		new Loginpage();
 	}
 }
+	

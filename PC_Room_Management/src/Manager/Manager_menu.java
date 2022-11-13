@@ -20,7 +20,7 @@ public class Manager_menu extends JFrame{
 		btn.setBounds(x, y, xsize+2, ysize+2); // 버튼 위치, 사이즈
 	}
 	
-	Manager_menu()
+	public Manager_menu()
 	{
 		int cnt = 0;
 		String[] btn_Title = { "1", "2", "3",
@@ -187,15 +187,39 @@ public class Manager_menu extends JFrame{
 		seat_image.setBounds(150, 30, 1206, 743);
 		add(seat_image);
 		
-		// 회원 관리 버튼 이벤트
-		user_management.addActionListener(new ActionListener() {
-
+		//이벤트 처리 추가
+		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				if(e.getSource() == user_management) {
-					new User_Management();
-					setVisible(false); // 프레임 비활성화
-				}
+				new MainLogin(); //홈버튼을 누르면 첫 화면으로 이동
+				setVisible(false);
+			}
+		});
+		
+		user_management.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new User_Management(); //회원관리 버튼을 누르면 회원관리 페이지로 이동
+				setVisible(false);
+			}
+		});
+		
+		sales_check.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Sales_Management(); //매출확인 버튼을 누르면 매출확인 페이지로 이동
+				setVisible(false);
+			}
+		});
+		
+		inquiry_check.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new inquiry_management(); //문의확인 버튼을 누르면 문의 확인 페이지로 이동
+				setVisible(false);
+			}
+		});
+		
+		setting_icon.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new manager_login(); //설정 버튼을 누르면 메인 로그인 페이지로 이동
+				setVisible(false);
 			}
 		});
 		
@@ -208,42 +232,10 @@ public class Manager_menu extends JFrame{
 		setLocationRelativeTo(null); //창 모니터 가운데 정렬
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // x를 누를 경우 종료
 		getContentPane().setBackground(Color.WHITE); // 프레임 bg color
-		
-		//이벤트 처리 추가
-		home_btn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new MainLogin(); //홈버튼을 누르면 첫 화면으로 이동
-			}
-		});
-		
-		user_management.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new User_Management(); //회원관리 버튼을 누르면 회원관리 페이지로 이동
-			}
-		});
-		
-		sales_check.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new Sales_Management(); //매출확인 버튼을 누르면 매출확인 페이지로 이동
-			}
-		});
-		
-		inquiry_check.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new inquiry_management(); //문의확인 버튼을 누르면 문의 확인 페이지로 이동
-			}
-		});
-		
-		setting_icon.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
-			}
-		});
 	
 	}
 	public static void main(String[] args) {
 		new Manager_menu();
-
 	}
 
 }
