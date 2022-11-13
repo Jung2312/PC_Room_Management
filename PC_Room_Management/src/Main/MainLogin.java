@@ -14,11 +14,13 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import User.*;
+import UserDAO.Database;
 import Chat.*;
 import Manager.*;
 
 // 메인 화면 로그인
 public class MainLogin {
+	Database db = new Database();
 	public MainLogin() {
 		final JButton signin = new JButton(new ImageIcon("image/user_sign_in.png")); //회원가입 버튼 배경 이미지 설정
 		JButton login = new JButton(new ImageIcon("image/user_login.png")); //로그인 버튼 배경 이미지 설정

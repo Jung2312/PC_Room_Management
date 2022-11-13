@@ -10,17 +10,21 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import Btn_Design.*;
 import Chat.InquiryPage;
 import Main.MainLogin;
 import Manager.manager_login;
+import Select.Seat_select;
+import UserDAO.Database;
 
 import javax.swing.JPasswordField;
 
 // 회원 로그인
 public class Loginpage {
+	Database db = new Database();
 	public Loginpage() {
 		RoundedButton okbtn = new RoundedButton("확인"); // 확인 버튼
 		RoundedButton cancle = new RoundedButton("취소"); // 취소 버튼
@@ -169,9 +173,36 @@ public class Loginpage {
 		
 		okbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// 아이디, 비밀번호가 동일한 경우를 디비에서 검색하여 있는 경우에만 확인 이벤트
+JButton b = (JButton)e.getSource();
 				
-				// 존재하지 않을 경우 존재하지 않음 메세지 박스 
+				/* TextField에 입력된 아이디와 비밀번호를 변수에 초기화 */
+				String uid = getID.getText();
+				String upass = "";
+				for(int i=0; i<getPW.getPassword().length; i++) {
+					upass = upass + getPW.getPassword()[i];
+				}
+							
+				
+				/* 로그인 버튼 이벤트 */
+				if(b.getText().equals("확인")) {
+					if(uid.equals("") || upass.equals("")) {
+						JOptionPane.showMessageDialog(null, "아이디와 비밀번호 모두 입력해주세요", "로그인 실패", JOptionPane.ERROR_MESSAGE);
+						System.out.println("로그인 실패 > 로그인 정보 미입력");
+					}
+					
+					else if(uid != null && upass != null) {
+						/* 로그인 데이터를 DB와 비교하는 문장 */
+						if(db.logincheck(uid, upass)) {	
+							System.out.println("로그인 성공");
+							JOptionPane.showMessageDialog(null, "로그인에 성공하였습니다");
+							new Seat_select(); //로그인 성공시 자리배치 페이지로 이동
+							frame.setVisible(false);
+						} else {
+							System.out.println("로그인 실패 > 로그인 정보 불일치");
+							JOptionPane.showMessageDialog(null, "로그인에 실패하였습니다");
+						}
+					}
+				}
 			}
 		});
 		
