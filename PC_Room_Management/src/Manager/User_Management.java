@@ -1,5 +1,7 @@
 package Manager;
-import javax.swing.*;
+import javax.swing.*;	
+import java.sql.*;
+import java.util.*;
 import javax.swing.table.DefaultTableModel;
 
 import Btn_Design.RoundedButton;
@@ -22,24 +24,50 @@ public class User_Management extends JFrame {
 		btn.setBounds(x, y, xsize+2, ysize+2); // 버튼 위치, 사이즈
 	}
 	
+	public String Phonecheck(String num)
+	{
+		String pnum = num.substring(0,3)+"-"+num.substring(3,7)+"-"+num.substring(7,11);
+		return pnum;
+		
+	}
+	
 	public User_Management() {
 		String[] colName = { "회원 ID", "회원명", "생년월일", "전화번호", "이메일" }; //회원 정보를 나타낼 열 값
-		String[][] Info = {
-				{"A0001", "홍길동", "000101", "010-1111-1111", "hong1@gmail.com"},
-				{"A0002", "아무개", "000102", "010-2222-2222", "mu2@gmail.com"}, //회원 정보
-				{"A0003", "김이박", "000103", "010-3333-3333", "kim3@gmail.com"}
-		};
+		DefaultTableModel tableModel = new DefaultTableModel(colName, 0);
 		
-		DefaultTableModel user = new DefaultTableModel(Info, colName)
+		try
 		{
-			 public boolean isCellEditable(int i, int c) {
-	                return false; // 셀 내용 수정 불가
-			 }
-		}; //user와 데이터 연결
+			Connection conn = DriverManager.getConnection(
+					 "@"  // 서버 이름
+					 ,"@","@" // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
+					 );
+			Statement stmt = null;
+			ResultSet rs = null;
+			
+			stmt = conn.createStatement(); //쿼리 준비 단계
+	        String selectSql = "SELECT userID, userName, userBrith, userPhone, userEmail FROM user"; //전송할 쿼리문
+	        stmt.executeQuery(selectSql); //쿼리문 전송
+	        
+			rs = stmt.executeQuery(selectSql);
+			
+			while (rs.next()) {
+			    // create a single array of one row's worth of data
+			    String[] data = { rs.getString("userID"), rs.getString("userName"), rs.getString("userBrith"),
+			    		Phonecheck(rs.getString("userPhone")) ,rs.getString("userEmail")} ;
+			    
+			    Phonecheck(rs.getString("userPhone"));
+
+			    // and add this row of data into the table model
+			    tableModel.addRow(data);
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
 		
 		
 		//테이블에 scroll 구현
-		JTable userinfo = new JTable(user); //테이블에 정보, 회원 정보를 나타낼 열 이름 넘겨줌
+		JTable userinfo = new JTable(tableModel); //테이블에 정보, 회원 정보를 나타낼 열 이름 넘겨줌
 		JScrollPane scroll = new JScrollPane(userinfo); //스크롤테이블에 정보 넘겨줌
 		
 		userinfo.setRowHeight(30); //행 너비 조절

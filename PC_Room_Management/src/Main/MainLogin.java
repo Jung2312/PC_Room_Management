@@ -1,5 +1,5 @@
 package Main;
-import Btn_Design.*;
+import Btn_Design.*;	
 
 import java.awt.Color;
 import java.awt.*;
@@ -16,10 +16,12 @@ import javax.swing.JPanel;
 import User.*;
 import Chat.*;
 import Manager.*;
+import DB.*;
 
 // 메인 화면 로그인
 public class MainLogin {
 	public MainLogin() {
+		Database db = new Database();
 		final JButton signin = new JButton(new ImageIcon("image/user_sign_in.png")); //회원가입 버튼 배경 이미지 설정
 		JButton login = new JButton(new ImageIcon("image/user_login.png")); //로그인 버튼 배경 이미지 설정
 		RoundedButton inquiry = new RoundedButton("문의"); //문의 버튼
