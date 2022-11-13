@@ -43,8 +43,8 @@ public class SearchIDPW {
 		}
 		try {
 			 conn = DriverManager.getConnection(
-					 "url"  // 서버 이름
-					 ,"root","####" // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
+					 "@"  // 서버 이름
+					 ,"@","@" // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
 					 );
 			 System.out.println("데이터베이스 연결 성공");
 		 }catch (SQLException e) {
@@ -102,7 +102,7 @@ public class SearchIDPW {
 		
 		SearchIDPW.setFont(new Font("맑은 고딕", Font.BOLD, 58)); //아이디, 비밀번호 찾기 라벨 글씨체, 굵기, 크기 설정
 		SearchIDPW.setSize(800,200); //아이디, 비밀번호 찾기 라벨 크기 설정
-		SearchIDPW.setLocation(485, 90); //아이디, 비밀번호 찾기 라벨 위치 설정
+		SearchIDPW.setLocation(600, 90); //아이디, 비밀번호 찾기 라벨 위치 설정
 		frame.add(SearchIDPW); //아이디, 비밀번호 찾기 라벨 출력
 		
 		IDlabel.setFont(new Font("맑은 고딕", Font.BOLD, 45)); //아이디 라벨 글씨체, 긁기, 크기 설정
@@ -147,6 +147,7 @@ public class SearchIDPW {
 				            {
 					            JOptionPane.showMessageDialog(null, "비밀번호는 " + rs.getString("userPassword")+ "입니다."); // 데이터가 있는 경우 레이블에 비밀번호 출력
 					            new Loginpage();
+					            frame.setVisible(false);
 				            }
 				            else
 				            {

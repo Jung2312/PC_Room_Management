@@ -1,11 +1,13 @@
 package User;
-import javax.swing.*;
+import javax.swing.*;	
+import java.time.LocalDate;
 
 import Btn_Design.RoundedButton;
 import Btn_Design.RoundedButton3;
 import Chat.InquiryPage;
 import Main.MainLogin;
 import Manager.manager_login;
+import DB.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,7 +15,30 @@ import java.awt.event.ActionListener;
 
 // 회원 가입
 public class Signin_frame extends JFrame{
+	Database db = new Database();
 	
+	public String Birthcheck(String str, String m, String d)
+	{
+		int size = str.length();
+        
+        if(size==7) {
+        	if(m.length() == 1)
+        	str = str.substring(0,4)+"-0"+str.substring(4,5)+"-"+str.substring(5,7);
+        	else if(d.length() == 1)
+        	{
+        		str = str.substring(0,4)+"-"+str.substring(4,6)+"-0"+str.substring(5,7);
+        	}
+        }
+        else if(size==8) {
+            str = str.substring(0,4)+"-"+str.substring(4,6)+"-"+str.substring(6,8);
+        }
+        else if(size==6) {
+        	str = str.substring(0,4)+"-0"+str.substring(4,5)+"-0"+str.substring(5,6);
+        }
+        System.out.println(str);
+        return str;
+	}
+
 	
 	public static void input_btn(JButton btn, int x, int y, int xsize, int ysize) {
 		// 버튼 생성 메소드
@@ -124,7 +149,7 @@ public class Signin_frame extends JFrame{
 		text_field(ID_field, 660, 322, 300, 30);
 		add(ID_field);
 
-		JTextField PW_field = new JTextField();
+		JPasswordField PW_field = new JPasswordField();
 		text_field(PW_field, 660, 382, 300, 30);
 		add(PW_field);
 		
@@ -178,7 +203,7 @@ public class Signin_frame extends JFrame{
 		
 		//콤보 박스
 		JComboBox yearCombo = new JComboBox();
-		birth_combo(yearCombo,660, 442, 70, 30, 1920, 2022);
+		birth_combo(yearCombo,660, 442, 70, 30,1950, 2010);
 		add(yearCombo);
 		
 		JLabel year_label = new JLabel("년"); // 년 레이블
@@ -219,15 +244,85 @@ public class Signin_frame extends JFrame{
 		//이벤트 처리 추가
 		ID_checkicon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// 중복 확인 버튼 이벤트 처리
+				/* <-- 아이디 중복 체크 이벤트 --> */
+				JButton b = (JButton)e.getSource();
+				if(b.getText().equals("중복확인")) {
+					if(db.findExistID(ID_field.getText())) {
+						JOptionPane.showMessageDialog(null, "이미 사용중인 아이디입니다.", "아이디 중복체크", JOptionPane.ERROR_MESSAGE);
+						ID_field.grabFocus();
+						return;
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "사용가능한 아이디입니다.", "아이디 중복 체크", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
 			}
 		});
 		
 		ok_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// 확인 버튼 눌렀을 때 모든 텍스트 필드가 비지 않았을 경우만 이벤트 처리
+				JButton b = (JButton)e.getSource();
 				
-				// 텍스트 필드가 빈 경우 메세지 박스로 오류 메세지 전송
+				/* TextField에 입력된 회원 정보들을 변수에 초기화 */
+				String uid = ID_field.getText();
+				String upass = "";
+				for(int i=0; i<PW_field.getPassword().length; i++) {
+					upass = upass + PW_field.getPassword()[i];
+				}
+				String uname = name_field.getText();
+				String uphone = phone1_field.getText() + phone2_field.getText() + phone3_field.getText();
+				String ucard = card_field1.getText() + card_field2.getText() + card_field3.getText() + card_field4.getText();
+				String uemail = email_field.getText() + "@" + email_field2.getText();
+				String uyear = yearCombo.getSelectedItem().toString() + monthCombo.getSelectedItem().toString() + dayCombo.getSelectedItem().toString();
+				
+				//String uAcc = "0";
+				//String uCheck = "0";
+				System.out.println(uid);
+				System.out.println(upass);
+				System.out.println(uname);
+				System.out.println(uphone);
+				System.out.println(ucard);
+				System.out.println(uemail);
+				System.out.println(uyear);
+				
+				LocalDate current_date = LocalDate.now();
+				int uage = (current_date.getYear() - (int)yearCombo.getSelectedItem()) + 1;
+				
+								
+				/* 가입하기 버튼 이벤트 */
+				// 실패하면 무조건 프로그램이 꺼짐 -> 수정 요망 계속 켜져있도록 해야함
+				if(b.getText().equals("확인")) {
+					if(uphone.length() > 11)
+					{
+						JOptionPane.showMessageDialog(null, "전화번호는 6자리로 입력하세요.");
+					}
+					
+					
+						/* 빈칸이 없을시 회원가입이 되는 코드 */
+					if(!uid.equals("") && !upass.equals("") && !uname.equals("") && !uphone.equals("") && !ucard.equals("")
+							&& !uemail.equals("") && !uyear.equals("") && !(uage == 0)) {
+						// 카드번호 전화번호가 존재하는지를 먼저 판별하고 회원 가입하기
+						if(db.joinCheck(uid, upass, uname, uage, uemail, ucard, Birthcheck(uyear, monthCombo.getSelectedItem().toString() , dayCombo.getSelectedItem().toString()), uphone)) {
+
+							System.out.println("회원가입 성공");
+							JOptionPane.showMessageDialog(null, "회원가입 성공!");
+							new Loginpage(); //회원가입 성공시 ID로그인 페이지로 이동
+							setVisible(false);
+						} else {
+							System.out.println("회원가입 실패");
+							JOptionPane.showMessageDialog(null, "회원가입 실패");
+							ID_field.setText("");
+							}
+					}
+					
+					else
+					{
+						JOptionPane.showMessageDialog(null, "모든 정보를 기입해주세요", "회원가입 실패", JOptionPane.ERROR_MESSAGE);
+						System.out.println("회원가입 실패 > 회원정보 미입력");
+					}
+				}
+												
+				setVisible(false);
 			}
 		});
 		
