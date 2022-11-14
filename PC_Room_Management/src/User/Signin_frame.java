@@ -75,7 +75,7 @@ public class Signin_frame extends JFrame{
 	
 	public Signin_frame(){
 		
-		String[] email = {"naver.com", "gmail.com", "daum.net","hanmail.net","직접 입력"}; // 이메일 콤보 박스 데이터
+		String[] email = {"직접 입력","naver.com", "gmail.com", "daum.net","hanmail.net"}; // 이메일 콤보 박스 데이터
 		// 버튼
 		JButton home_btn = new JButton(new ImageIcon("./image/home_btn.png")); //홈버튼 생성
 		input_btn(home_btn, 20, 20, 40, 40);
@@ -241,6 +241,24 @@ public class Signin_frame extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // x를 누를 경우 종료
 		getContentPane().setBackground(Color.WHITE); // 프레임 bg color
 		
+		
+		email_combo.addActionListener(new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				JComboBox cb = (JComboBox) e.getSource(); // 콤보박스 알아내기
+                int index = cb.getSelectedIndex();// 선택된 아이템의 인덱스
+				if(email[index] != "직접 입력")
+				{
+	                 email_field2.setText(email[index]);
+				}
+				  
+			}
+			
+		});
+		
 		//이벤트 처리 추가
 		ID_checkicon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -292,34 +310,56 @@ public class Signin_frame extends JFrame{
 				/* 가입하기 버튼 이벤트 */
 				// 실패하면 무조건 프로그램이 꺼짐 -> 수정 요망 계속 켜져있도록 해야함
 				if(b.getText().equals("확인")) {
-					if(uphone.length() > 11)
-					{
-						JOptionPane.showMessageDialog(null, "전화번호는 6자리로 입력하세요.");
-					}
-					
-					
-						/* 빈칸이 없을시 회원가입이 되는 코드 */
-					if(!uid.equals("") && !upass.equals("") && !uname.equals("") && !uphone.equals("") && !ucard.equals("")
-							&& !uemail.equals("") && !uyear.equals("") && !(uage == 0)) {
-						// 카드번호 전화번호가 존재하는지를 먼저 판별하고 회원 가입하기
-						if(db.joinCheck(uid, upass, uname, uage, uemail, ucard, Birthcheck(uyear, monthCombo.getSelectedItem().toString() , dayCombo.getSelectedItem().toString()), uphone)) {
-
-							System.out.println("회원가입 성공");
-							JOptionPane.showMessageDialog(null, "회원가입 성공!");
-							new Loginpage(); //회원가입 성공시 ID로그인 페이지로 이동
-							setVisible(false);
-						} else {
-							System.out.println("회원가입 실패");
-							JOptionPane.showMessageDialog(null, "회원가입 실패");
-							ID_field.setText("");
-							}
-					}
-					
-					else
+					if(uid.equals("") && upass.equals("") && uname.equals("") && uphone.equals("") && !ucard.equals("")
+							&&uemail.equals("") && uyear.equals("") && (uage == 0))
 					{
 						JOptionPane.showMessageDialog(null, "모든 정보를 기입해주세요", "회원가입 실패", JOptionPane.ERROR_MESSAGE);
 						System.out.println("회원가입 실패 > 회원정보 미입력");
 					}
+					
+					else
+					{
+						 
+							// 카드번호 전화번호가 존재하는지를 먼저 판별하고 회원 가입하기.
+							if((!(ucard.length() == 16) && (!(uphone.length() == 11))))
+							{
+								JOptionPane.showMessageDialog(null, "카드번호는 12자리, 전화번호는 11자리로 입력하세요.");
+							}
+							
+							else if(!(ucard.length() == 16))
+							{
+								JOptionPane.showMessageDialog(null, "카드번호는 12자리로 입력하세요.");
+								
+							}
+							
+							else if((!(uphone.length() == 11)))
+							{
+								JOptionPane.showMessageDialog(null, "전화번호는 11자리로 입력하세요.");
+							}
+							
+							else
+							{
+								if(db.joinCheck(uid, upass, uname, uage, uemail, ucard, Birthcheck(uyear, monthCombo.getSelectedItem().toString() , dayCombo.getSelectedItem().toString()), uphone)) {
+
+										System.out.println("회원가입 성공");
+										JOptionPane.showMessageDialog(null, "회원가입 성공!");
+										new Loginpage(); //회원가입 성공시 ID로그인 페이지로 이동
+										setVisible(false);
+									} 
+								
+								else {
+									System.out.println("회원가입 실패");
+									JOptionPane.showMessageDialog(null, "회원가입 실패");
+									ID_field.setText("");
+									}
+							
+							}
+							
+					}
+						/* 빈칸이 없을시 회원가입이 되는 코드 */
+					
+					
+					
 				}
 												
 				setVisible(false);
