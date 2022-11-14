@@ -361,8 +361,6 @@ public class Signin_frame extends JFrame{
 					
 					
 				}
-												
-				setVisible(false);
 			}
 		});
 		
