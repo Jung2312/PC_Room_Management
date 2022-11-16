@@ -323,12 +323,12 @@ public class Signin_frame extends JFrame{
 							// 카드번호 전화번호가 존재하는지를 먼저 판별하고 회원 가입하기.
 							if((!(ucard.length() == 16) && (!(uphone.length() == 11))))
 							{
-								JOptionPane.showMessageDialog(null, "카드번호는 12자리, 전화번호는 11자리로 입력하세요.");
+								JOptionPane.showMessageDialog(null, "카드번호는 16자리, 전화번호는 11자리로 입력하세요.");
 							}
 							
 							else if(!(ucard.length() == 16))
 							{
-								JOptionPane.showMessageDialog(null, "카드번호는 12자리로 입력하세요.");
+								JOptionPane.showMessageDialog(null, "카드번호는 16자리로 입력하세요.");
 								
 							}
 							
