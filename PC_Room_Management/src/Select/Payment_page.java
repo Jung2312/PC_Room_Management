@@ -33,21 +33,25 @@ public class Payment_page {
 		{
 			int won2 = (int) (won * 0.01);
 			won_check = won - won2;
+			JOptionPane.showMessageDialog(null, "회원 등급 할인 금액은 " + won_check + "입니다.");
 		}
 		else if(db.user_grade().equals("SILVER"))
 		{
 			int won2 = (int) (won * 0.02);
 			won_check = won - won2;
+			JOptionPane.showMessageDialog(null, "회원 등급 할인 금액은 " + won_check + "입니다.");
 		}
 		else if(db.user_grade().equals("GOLD"))
 		{
 			int won2 = (int) (won * 0.04);
 			won_check = won - won2;
+			JOptionPane.showMessageDialog(null, "회원 등급 할인 금액은 " + won_check + "입니다.");
 		}
 		else if(db.user_grade().equals("VIP"))
 		{
 			int won2 = (int) (won * 0.05);
 			won_check = won - won2;
+			JOptionPane.showMessageDialog(null, "회원 등급 할인 금액은 " + won_check + "입니다.");
 		}
 		
 		return won_check;
@@ -73,6 +77,8 @@ public class Payment_page {
 	}
 	
 	public Payment_page() {
+		grade = db.user_grade();
+		
 		JButton home = new JButton(new ImageIcon("image/home_btn.png")); //홈 버튼 할당
 		RoundedButton inquiry = new RoundedButton("문의"); //문의 버튼 할당
 		JButton setting = new JButton(new ImageIcon("image/setting_icon.png")); //설정 버튼 할당
