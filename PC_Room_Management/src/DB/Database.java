@@ -1,14 +1,17 @@
 package DB;
 
 import java.sql.*;
+import java.time.LocalDate;
 
 public class Database {
 	Connection con = null;
 	Statement stmt = null;
-
-	String url = "@";	
-	String user = "@";
-	String passwd = "@";		//본인이 설정한 root 계정의 비밀번호를 입력하면 된다.
+	  // 서버 이름
+	// 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
+	 
+	String url = "url";	
+	String user = "name";
+	String passwd = "pw";		//본인이 설정한 root 계정의 비밀번호를 입력하면 된다.
 	
 	public Database() {	//데이터베이스에 연결한다.
 		try {
@@ -65,8 +68,6 @@ public class Database {
 		String card = _c;
 		String email = _e;
 		int age = _a;
-		//String Accumuate = _t;
-		//String loginCheck = _l;
 		
 		try {
 			String insertStr = "INSERT INTO user VALUES('" + id + "', '" + pw + "', '" + name + "', '" + age + "','" + email + "', '" 
@@ -100,5 +101,175 @@ public class Database {
 		 	} 	 	
 		return false;
 	 } //find 
+	
+	// 시트 테이블에 아이디 존재 여부 판단
+	public boolean seatIDcheck()
+	{
+		String str = "SELECT seatID, seatRent from seat WHERE seatID IS not null AND seatRent = 0";
+		
+		try {
+			PreparedStatement pstmt = con.prepareStatement(str);
+			ResultSet rs = pstmt.executeQuery();
+			
+			
+			while(rs.next()) {
+				if (rs.getString("seatID") == null) 
+				{
+					return false;
+					
+				}
+				else
+				{
+					return true;
+				}
+			}	
+		 	} catch (SQLException e) {
+		 		e.printStackTrace();
+		 	} 	
+		
+		return false;
+		
+	}
+	
+	// 예약 시간, 종료 시간 추가
+	public boolean timeselect(String start, String end, int won, String now)
+	{
+		boolean flag = false;
+		
+		String sql = "UPDATE seat SET seatStart = ?, seatEnd = ? ,seatRent = ? WHERE seatID !='null' AND seatRent = 0";
+		
+		PreparedStatement ps = null;
+		// 쿼리를 넣어주는 부분
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setString(1, start);
+			ps.setString(2, end);
+			ps.setInt(3, 1);
+			
+			ps.executeUpdate(); 
+			
+			flag = true;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			flag = false;
+			System.out.println("실패 > " + e.toString());
+		}
+			
+		return flag;
+	}
+	
+	
+	// 회원의 누적 금액을 추가
+	public void user_price(int won)
+	{
+		String sql = "UPDATE user SET userAccumuate = userAccumuate + ? WHERE loginCheck = 1";
+		
+		PreparedStatement ps = null;
+		
+		try {
+			
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, won);
+			ps.executeUpdate();
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("실패 > " + e.toString());
+		}
+		
+	}
+	
+	// 홈버튼 누르면 로그아웃
+	public boolean logout()
+	{
+		boolean flag = false;
+		
+		String sql = "UPDATE user SET loginCheck = ? WHERE loginCheck = 1";
+		PreparedStatement ps = null;
+		
+		// 쿼리를 넣어주는 부분
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, 0);
+			ps.executeUpdate(); 
+			
+			flag = true;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			flag = false;
+			System.out.println("실패 > " + e.toString());
+		}
+			
+		return flag;
+	}
+	
+	// 회원 등급 지정
+	public String user_grade()
+	{
+		String sql =  "SELECT userAccumuate from user WHERE loginCheck = 1";
+		int userAccumuate = 0;
+		String grade = null;
+		
+		try {
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				userAccumuate = rs.getInt("userAccumuate");
+				}	
+			
+			if(userAccumuate >= 5000 && userAccumuate < 10000)
+			{
+				grade = "WHITE";
+			}
+			else if(userAccumuate >= 10000 && userAccumuate < 15000)
+			{
+				grade = "SILVER";
+			}
+		
+			else if(userAccumuate >= 15000 && userAccumuate < 20000)
+			{
+				grade = "GOLD";
+			}
+			
+			else if(userAccumuate >= 20000 && userAccumuate < 30000)
+			{
+				grade = "VIP";
+			}
+			
+			else
+			{
+				grade = "일반";
+			}
+			
+		 	} catch (SQLException e) {
+		 		e.printStackTrace();
+		 	}
+		
+		return grade;
+	}
+	
+	// 회원 삭제
+	public int userdel(String roleId)
+	{
+		int deleteCount = 0;
+		
+		
+		try {
+			String sql = "delete from user where userId = ?";			
+			PreparedStatement ps = con.prepareStatement(sql);			
+			ps.setString(1, roleId);			
+			deleteCount = ps.executeUpdate();	
+			
+		} catch(Exception e) {
+			System.out.println("실패 > " + e.toString());
+		}
+			
+		return deleteCount;
+	}
+	
+	
 
 }
