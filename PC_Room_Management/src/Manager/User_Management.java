@@ -1,7 +1,11 @@
 package Manager;
-import javax.swing.*;	
+import javax.management.relation.Role;
+import javax.swing.*;		
 import java.sql.*;
 import java.util.*;
+import java.util.List;
+
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
 import Btn_Design.RoundedButton;
@@ -10,12 +14,18 @@ import Btn_Design.RoundedButton4;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import Main.MainLogin;
-
+import DB.*;
 
 // 회원 관리
 public class User_Management extends JFrame {
+	String db_id = null;
+	int row;
+	Database db = new Database();
+	DefaultTableModel tableModel= null;
 	public static void input_btn(JButton btn, int x, int y, int xsize, int ysize) {
 		// 버튼 생성 메소드
 		btn.setContentAreaFilled(false);
@@ -33,13 +43,13 @@ public class User_Management extends JFrame {
 	
 	public User_Management() {
 		String[] colName = { "회원 ID", "회원명", "생년월일", "전화번호", "이메일" }; //회원 정보를 나타낼 열 값
-		DefaultTableModel tableModel = new DefaultTableModel(colName, 0);
+		tableModel = new DefaultTableModel(colName, 0);
 		
 		try
 		{
 			Connection conn = DriverManager.getConnection(
-					 "@"  // 서버 이름
-					 ,"@","@" // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
+					"#"  // 서버 이름
+					 ,"#","#" // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
 					 );
 			Statement stmt = null;
 			ResultSet rs = null;
@@ -49,16 +59,15 @@ public class User_Management extends JFrame {
 	        stmt.executeQuery(selectSql); //쿼리문 전송
 	        
 			rs = stmt.executeQuery(selectSql);
-			
 			while (rs.next()) {
 			    // create a single array of one row's worth of data
 			    String[] data = { rs.getString("userID"), rs.getString("userName"), rs.getString("userBrith"),
 			    		Phonecheck(rs.getString("userPhone")) ,rs.getString("userEmail")} ;
 			    
 			    Phonecheck(rs.getString("userPhone"));
-
 			    // and add this row of data into the table model
 			    tableModel.addRow(data);
+			    tableModel.fireTableDataChanged();
 			}
 			
 		}catch(SQLException e) {
@@ -110,6 +119,20 @@ public class User_Management extends JFrame {
 		add(cancle_btn); // 프레임에 버튼을 붙임
 		
 		//이벤트 처리 추가
+		
+		userinfo.addMouseListener(new MouseAdapter() {
+
+//			마우스 클릭시 처리를 담당하는 메소드 재정의
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				row = userinfo.getSelectedRow();
+				int col = userinfo.getSelectedColumn();
+				db_id = (String) userinfo.getModel().getValueAt(row, 0 ); 
+				System.out.println(db_id);
+			}
+
+		});
+		
 		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new MainLogin(); //홈버튼을 누르면 첫 화면으로 이동
@@ -147,7 +170,20 @@ public class User_Management extends JFrame {
 		
 		del_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// 클릭한 테이블 데이터 삭제
+				int reply = JOptionPane.showConfirmDialog(null, "ID : " + db_id + "회원을 삭제 하시겠습니까?", "회원 삭제", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+				if (reply == JOptionPane.YES_OPTION)
+				{
+					int deleteCount = db.userdel(db_id);
+					//List<Role> list = db.getRoles();
+					System.out.println(deleteCount);
+					tableModel.removeRow(row); 
+				}
+				
+				else
+				{
+					JOptionPane.showMessageDialog(null, "삭제를 취소했습니다.", "회원 삭제 취소", JOptionPane.INFORMATION_MESSAGE);
+				}
+					
 			}
 		});
 		

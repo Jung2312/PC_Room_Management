@@ -3,35 +3,95 @@ package Select;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.*;
 
 import Btn_Design.RoundedButton;
 import Chat.InquiryPage;
+import DB.Database;
 import Main.MainLogin;
 import Manager.manager_login;
 
 // 좌석 선택
 public class Payment_page {
+	
+	int won_check = 0;
+	String today = null;
+	String end = null;
+	String grade = null;
+	Database db = new Database();
+	
+	public int pay_grade(int won) // 회원 등급에 따른 금액 추산
+	{
+		if(db.user_grade().equals("WHITE"))
+		{
+			int won2 = (int) (won * 0.01);
+			won_check = won - won2;
+		}
+		else if(db.user_grade().equals("SILVER"))
+		{
+			int won2 = (int) (won * 0.02);
+			won_check = won - won2;
+		}
+		else if(db.user_grade().equals("GOLD"))
+		{
+			int won2 = (int) (won * 0.04);
+			won_check = won - won2;
+		}
+		else if(db.user_grade().equals("VIP"))
+		{
+			int won2 = (int) (won * 0.05);
+			won_check = won - won2;
+		}
+		
+		return won_check;
+	}
+	
+	public void payment(int time) // 예악한 시간을 확인하는 메소드
+	{
+		Date date = new Date();
+		 
+        // 포맷 정의하기
+        SimpleDateFormat sdformat = new SimpleDateFormat("HHmmss");
+        
+        // 포맷 적용하기
+        Calendar cal = Calendar.getInstance();
+
+        cal.setTime(date);
+
+        today = sdformat.format(cal.getTime());  
+        
+        cal.add(Calendar.MINUTE, time);
+        
+        end = sdformat.format(cal.getTime());
+	}
+	
 	public Payment_page() {
 		JButton home = new JButton(new ImageIcon("image/home_btn.png")); //홈 버튼 할당
 		RoundedButton inquiry = new RoundedButton("문의"); //문의 버튼 할당
 		JButton setting = new JButton(new ImageIcon("image/setting_icon.png")); //설정 버튼 할당
 		JButton payment = new JButton(); //결제 버튼 할당
 		JButton paycancle = new JButton(); //결제 취소 버튼 할당
-		JButton[] wonbtn = new JButton[6]; //시간(가격)선택 버튼 할당
+		final JButton[] wonbtn = new JButton[6]; //시간(가격)선택 버튼 할당
 
 		String[] won = {"1000원", "2000원", "3000원", "4000원", "5000원", "8000원"}; //라벨 내용
 		JLabel[] wonlabel = new JLabel[6]; //가격 라벨
 		JLabel paymentlabel = new JLabel("결제"); //결제창임을 알려주는 라벨
 		JLabel seltime = new JLabel("시간 선택"); //시간 선택 라벨
 		JLabel usergrade = new JLabel("회원 등급"); //회원 등급 라벨
-		JLabel gradelabel = new JLabel("GOLD"); //회원 등급을 나타내는 라벨
+		JLabel gradelabel = new JLabel(grade); //회원 등급을 나타내는 라벨
 		JLabel seat_price = new JLabel(new ImageIcon("image/Seatprice.png")); //좌석 시간 결제 백그라운드 라벨
 		
 		JFrame frame = new JFrame();
 		JPanel panel = new JPanel();
 		JPanel btnPanel = new JPanel(); //버튼 패널
+		
 		
 		
 		//배경, 좌석 결제
@@ -78,16 +138,63 @@ public class Payment_page {
 		paycancle.setFocusPainted(false); //결제 취소 버튼이 선택되었을 때 생기는 테두리 사용 안함
 		paycancle.setContentAreaFilled(false); //결제 취소 버튼 영역 채우지 않음
 		frame.add(paycancle); //결제 취소 버튼 출력
-		
+	
 		for(int i = 0; i < 6; i++) //시간 선택 버튼
 		{
-			wonbtn[i] = new JButton(); //시간 선택 버튼 초기화
+			wonbtn[i] = new JButton(won[i]); //시간 선택 버튼 초기화
 			wonbtn[i].setLocation(1045, 510); //시간 선택 버튼 위치
 			wonbtn[i].setBorderPainted(false); //시간 선택 버튼 테두리(외곽선) 없앰
 			wonbtn[i].setFocusPainted(false); //시간 선택 버튼이 선택되었을 때 생기는 테두리 사용 안함
 			wonbtn[i].setContentAreaFilled(false); //시간 선택 버튼 영역 채우지 않음
+			wonbtn[i].setHorizontalAlignment(SwingConstants.LEFT);
+			wonbtn[i].setVerticalAlignment(SwingConstants.BOTTOM);
+			
+			wonbtn[i].setForeground(Color.BLACK);
 			frame.add(wonbtn[i]); //시간 선택 버튼 출력
+			
+			wonbtn[i].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					switch(e.getActionCommand()){
+					
+					//TODO getActionCommand() 버튼의 텍스트를 얻어옵니다
+					case "1000원": 
+						pay_grade(1000);
+						payment(60);
+						break;
+						
+					case "2000원": 
+						pay_grade(2000);
+						payment(120);
+						break;
+						
+					case "3000원": 
+						pay_grade(3000);
+						payment( 180);
+						break;
+						
+					case "4000원": 
+						pay_grade(4000);
+						payment( 240);
+						break;	
+						
+					case "5000원": 
+						pay_grade(5000);
+						payment( 300);
+						break;	
+						
+					case "6000원": 
+						pay_grade(6000);
+						payment(360);
+						break;
+						
+					} 
+				}
+				
+			});
+			
 		}
+		
 		wonbtn[0].setBounds(180, 200, 230, 150); //1000원 버튼 위치, 크기
 		wonbtn[1].setBounds(528, 200, 230, 150); //2000원 버튼 위치, 크기
 		wonbtn[2].setBounds(180, 383, 230, 150); //3000원 버튼 위치, 크기
@@ -123,6 +230,7 @@ public class Payment_page {
 			wonlabel[i].setFont(new Font("맑은 고딕", Font.BOLD, 27)); //가격 라벨 글씨체, 굵기, 크기 설정
 			wonlabel[i].setForeground(Color.WHITE); //가격 라벨 글씨색
 			frame.add(wonlabel[i]); //가격 라벨 출력
+			
 		}
 		wonlabel[0].setBounds(300, 270, 100, 100); //1000원 라벨 위치
 		wonlabel[1].setBounds(645, 270, 100, 100); //2000원 라벨 위치
@@ -134,6 +242,10 @@ public class Payment_page {
 		//이벤트 처리 추가
 		home.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(db.logout())
+				{
+					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
+				}
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
 				frame.setVisible(false);
 			}
@@ -154,6 +266,50 @@ public class Payment_page {
 			}
 			
 		});
+		
+		payment.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(won_check == 0) // 금액 버튼을 선택 안 한 경우
+				{
+					JOptionPane.showMessageDialog(null, "금액을 선택하세요.");
+				}
+				
+				else
+				{
+					if(db.seatIDcheck() == true)
+					{
+						LocalDate now = LocalDate.now();
+						String sn = now.toString();
+						if(db.timeselect(today, end, won_check, sn))
+						{
+							db.user_price(won_check);
+							JOptionPane.showMessageDialog(null, "결제 완료되었습니다.");
+							new SeatFood_select();
+							frame.setVisible(false);
+						}
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "오류");
+					}
+					
+				}
+				
+				
+			}
+			
+		});
+		
+		paycancle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				new Seat_select();
+				frame.setVisible(false);
+			}
+		});
+
 				
 		//프레임 설정
 		frame.add(seat_price); //좌석 시간 결제 출력
