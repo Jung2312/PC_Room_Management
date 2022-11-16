@@ -54,6 +54,11 @@ public class Payment_page {
 			JOptionPane.showMessageDialog(null, "회원 등급 할인 금액은 " + won_check + "입니다.");
 		}
 		
+		else
+		{
+			won_check = won;
+		}
+		
 		return won_check;
 	}
 	
@@ -250,6 +255,7 @@ public class Payment_page {
 			public void actionPerformed(ActionEvent e) {
 				if(db.logout())
 				{
+					db.seatlogout(); // 아이디 삭제
 					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
 				}
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
@@ -290,6 +296,7 @@ public class Payment_page {
 						String sn = now.toString();
 						if(db.timeselect(today, end, won_check, sn))
 						{
+							db.manager_price("좌석 결제", sn, won_check);
 							db.user_price(won_check);
 							JOptionPane.showMessageDialog(null, "결제 완료되었습니다.");
 							new SeatFood_select();

@@ -181,6 +181,29 @@ public class Database {
 		
 	}
 	
+	public void manager_price(String name, String sn, int won)
+	{
+		String sql = "insert into manager(salesNAme, day, sales) values(?,?,?)";
+		
+		PreparedStatement ps = null;
+		
+		try {
+			
+			ps = con.prepareStatement(sql);
+			ps.setString(1,name);
+			ps.setString(2,sn);
+			ps.setInt(3, won);
+			
+			ps.executeUpdate();
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("실패 > " + e.toString());
+		}
+		
+	}
+	
 	// 홈버튼 누르면 로그아웃
 	public boolean logout()
 	{
@@ -206,6 +229,32 @@ public class Database {
 		return flag;
 	}
 	
+	// 홈버튼 누르면 좌석 데이터 삭제
+		public boolean seatlogout()
+		{
+			boolean flag = false;
+			
+			String sql = "UPDATE seat SET seatID = ? WHERE seatID !='null' AND seatRent = 0";
+			PreparedStatement ps = null;
+			
+			// 쿼리를 넣어주는 부분
+			try {
+				ps = con.prepareStatement(sql);
+				ps.setString(1, null);
+				ps.executeUpdate(); 
+				
+				flag = true;
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+				flag = false;
+				System.out.println("실패 > " + e.toString());
+			}
+			
+			return flag;
+		}
+
+	
 	// 회원 등급 지정
 	public String user_grade()
 	{
@@ -229,12 +278,12 @@ public class Database {
 				grade = "SILVER";
 			}
 		
-			else if(userAccumuate >= 15000 && userAccumuate < 20000)
+			else if(userAccumuate >= 15000 && userAccumuate < 50000)
 			{
 				grade = "GOLD";
 			}
 			
-			else if(userAccumuate >= 20000 && userAccumuate < 30000)
+			else if(userAccumuate >= 50000)
 			{
 				grade = "VIP";
 			}
