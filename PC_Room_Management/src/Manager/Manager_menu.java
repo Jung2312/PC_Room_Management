@@ -1,17 +1,25 @@
 package Manager;
 
-import javax.swing.*;
+
+import javax.swing.*;	
 
 import Btn_Design.RoundedButton4;
 import Main.MainLogin;
+import DB.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+	
 // 관리자 로그인시 들어오는 첫 화면(좌석 확인)
 public class Manager_menu extends JFrame{
 
+	Connection conn = null;
+	Database db = new Database();
+	
 	public static void input_btn(JButton btn, int x, int y, int xsize, int ysize) {
 		// 버튼 생성 메소드
 		btn.setContentAreaFilled(false);
@@ -22,13 +30,35 @@ public class Manager_menu extends JFrame{
 	
 	public Manager_menu()
 	{
+		try { 
+			 Class.forName("com.mysql.cj.jdbc.Driver");
+			 System.out.println("드라이버 검색 성공");
+		 }catch(ClassNotFoundException e) {
+			 System.err.println("드라이버 검색 실패");
+			 System.exit(0);
+		 }
+		 try {
+			 conn = DriverManager.getConnection(
+					 "."  // 서버 이름
+					 ,".","." // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
+					 );
+			 System.out.println("데이터베이스 연결 성공");
+		 }catch (SQLException e) {
+			 System.out.println(e);
+			 System.err.println("데이터베이스 연결 실패");
+			 System.exit(0);
+		 }
+		
+		int size = db_amount();
+		int[] rent_num = new int[size];
+		
 		int cnt = 0;
 		String[] btn_Title = { "1", "2", "3",
 	            "4", "5", "6", "7", "8", "9","10", "11", "12", 
 				"13", "14","15", "16", "17", "18", "19","20", "21", "22", "23", "24",
 				 "25","26", "27", "28", "29","30"}; // 버튼 이름 배열
 		
-		int seat = 0;
+		int seat = 30;
 		JLabel seat_num = new JLabel("남은 좌석 " + seat + "/" + 30); 
 		seat_num.setBounds(334, 80, 200, 30);
 		seat_num.setFont(new Font("맑은 고딕", Font.BOLD, 20)); // 폰트
@@ -59,12 +89,50 @@ public class Manager_menu extends JFrame{
 		//input_btn(one_seat,330, 140, 92, 86);
 		//seat_btn.setFont(new Font("맑은 고딕", Font.BOLD, 24));
 		
+		List<Integer> intList = new ArrayList<>();
+        for (int e : rent_num) {
+            intList.add(e);
+        }
+        
 		for(int i = 0; i < 30; i++) // 버튼 0번 부터 29번까지 붙임
 		{
 			
 			add(seat_btn[i] = new JButton(btn_Title[i]));
 	            // 버튼 생성하여 JButton 타입의 배열에 저장
+			if(intList.contains(i)) {
+				seat_btn[i].setContentAreaFilled(true);
+            	seat_btn[i].setBackground(new Color(220,220,220));
+            	int num = i + 1;
+            	seat_btn[i].addActionListener(new ActionListener() {
+            		public void actionPerformed(ActionEvent E) {
+            			int result = JOptionPane.showConfirmDialog(null,
+            					"좌석을 취소하시겠습니까?", "Confirm", 
+            					JOptionPane.YES_NO_OPTION);
+            			if(result == JOptionPane.YES_OPTION) {
+            				String sql = "UPDATE seat SET seatRent = 0, seatID = null WHERE seatNum = ?;";
+            				PreparedStatement pstmt = null;
+            				try {
+            					pstmt = conn.prepareStatement(sql);
+            					pstmt.setInt(1, num);
+            					pstmt.executeUpdate();
+            					System.out.println("삭제 성공");
+            					JOptionPane.showMessageDialog(null,"삭제 되었습니다.");
+            					seat_btn[num - 1].setContentAreaFilled(false);
+            					
+            					
+            				} catch (Exception e1) {
+            					System.out.println("예외 발생");
+            				}
+            			}
+            		}
+            	});
+			}
 			
+			else
+			{
+				seat_btn[i].setContentAreaFilled(false);
+			}
+            	
 			if(i % 6 == 0)
 			{
 				cnt = 0; // 위치 조정을 위한 변수
@@ -190,6 +258,19 @@ public class Manager_menu extends JFrame{
 		//이벤트 처리 추가
 		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(db.logout())
+				{
+					db.seatlogout(); // 아이디 삭제
+					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
+				}
+				try {
+					 if(conn != null) {
+						 conn.close();
+						 System.out.println("닫기 성공");
+					 }
+				 }catch (SQLException e1) {
+					 e1.printStackTrace();
+				 }
 				new MainLogin(); //홈버튼을 누르면 첫 화면으로 이동
 				setVisible(false);
 			}
@@ -199,6 +280,14 @@ public class Manager_menu extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				new User_Management(); //회원관리 버튼을 누르면 회원관리 페이지로 이동
 				setVisible(false);
+				try {
+					 if(conn != null) {
+						 conn.close();
+						 System.out.println("닫기 성공");
+					 }
+				 }catch (SQLException e1) {
+					 e1.printStackTrace();
+				 }
 			}
 		});
 		
@@ -206,6 +295,14 @@ public class Manager_menu extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				new Sales_Management(); //매출확인 버튼을 누르면 매출확인 페이지로 이동
 				setVisible(false);
+				try {
+					 if(conn != null) {
+						 conn.close();
+						 System.out.println("닫기 성공");
+					 }
+				 }catch (SQLException e1) {
+					 e1.printStackTrace();
+				 }
 			}
 		});
 		
@@ -213,6 +310,14 @@ public class Manager_menu extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				new inquiry_management(); //문의확인 버튼을 누르면 문의 확인 페이지로 이동
 				setVisible(false);
+				try {
+					 if(conn != null) {
+						 conn.close();
+						 System.out.println("닫기 성공");
+					 }
+				 }catch (SQLException e1) {
+					 e1.printStackTrace();
+				 }
 			}
 		});
 		
@@ -220,6 +325,14 @@ public class Manager_menu extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				new manager_login(); //설정 버튼을 누르면 메인 로그인 페이지로 이동
 				setVisible(false);
+				try {
+					 if(conn != null) {
+						 conn.close();
+						 System.out.println("닫기 성공");
+					 }
+				 }catch (SQLException e1) {
+					 e1.printStackTrace();
+				 }
 			}
 		});
 		
@@ -233,6 +346,39 @@ public class Manager_menu extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // x를 누를 경우 종료
 		getContentPane().setBackground(Color.WHITE); // 프레임 bg color
 	
+	}
+	
+	public int db_amount() {
+		String sql = "select count(*) from seat where seatRent > 0;";
+		PreparedStatement pstmt = null;
+		int count = 0;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+		} catch (Exception e) {
+            System.out.println("select 메서드 예외발생");
+        }
+		return count;
+	}
+	
+	public void Rent_Check(int[] a) {
+		String sql = "select seatNum from seat where seatRent > 0;";
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            int cnt = 0;
+            while (rs.next()) {
+              a[cnt] = rs.getInt("seatNum");
+              cnt++;
+            }
+  
+        } catch (Exception e) {
+            System.out.println("select 메서드 예외발생");
+        }
 	}
 	public static void main(String[] args) {
 		new Manager_menu();

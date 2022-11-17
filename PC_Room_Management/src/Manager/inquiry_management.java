@@ -1,20 +1,16 @@
 package Manager;
 
-import java.awt.Color;
+import java.awt.*;		
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.Font;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -23,11 +19,13 @@ import Btn_Design.RoundedButton;
 import Btn_Design.RoundedButton4;
 import Chat.InquiryPage;
 import Main.*;
+import DB.*;
 
 // 문의 내역
 public class inquiry_management extends JFrame{
 	Connection conn = null;
-
+	Database db = new Database();
+	
 	private static final long serialVersionUID = 1L;
 	public static void input_btn(JButton btn, int x, int y, int xsize, int ysize) {
 		// 버튼 생성 메소드
@@ -112,7 +110,6 @@ public class inquiry_management extends JFrame{
 		//이벤트 처리 추가
 		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new MainLogin(); //홈버튼을 누르면 첫 화면으로 이동
 				try {
 					 if(conn != null) {
 						 conn.close();
@@ -121,12 +118,20 @@ public class inquiry_management extends JFrame{
 				 }catch (SQLException e1) {
 					 e1.printStackTrace();
 				 }
+				if(db.logout())
+				{
+					db.seatlogout(); // 아이디 삭제
+					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
+				}
+				new MainLogin(); //홈버튼을 누르면 첫 화면으로 이동
+				setVisible(false);
 			}
 		});
 		
 		user_management.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new User_Management(); //회원관리 버튼을 누르면 회원관리 페이지로 이동
+				setVisible(false);
 				try {
 					 if(conn != null) {
 						 conn.close();
@@ -141,6 +146,7 @@ public class inquiry_management extends JFrame{
 		sales_check.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new Sales_Management(); //매출확인 버튼을 누르면 매출확인 페이지로 이동
+				setVisible(false);
 				try {
 					 if(conn != null) {
 						 conn.close();
@@ -155,18 +161,21 @@ public class inquiry_management extends JFrame{
 		inquiry_check.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new inquiry_management(); //문의확인 버튼을 누르면 문의 확인 페이지로 이동
+				setVisible(false);
 			}
 		});
 		
 		setting_icon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
+				setVisible(false);
 			}
 		});
 		
 		ok_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new Manager_menu(); //확인 버튼을 누르면 매니저 메뉴 페이지로 이동
+				setVisible(false);
 				try {
 					 if(conn != null) {
 						 conn.close();

@@ -310,8 +310,8 @@ public class Signin_frame extends JFrame{
 				/* 가입하기 버튼 이벤트 */
 				// 실패하면 무조건 프로그램이 꺼짐 -> 수정 요망 계속 켜져있도록 해야함
 				if(b.getText().equals("확인")) {
-					if(uid.equals("") && upass.equals("") && uname.equals("") && uphone.equals("") && ucard.equals("")
-		                     && uemail.equals("") && uyear.equals("") && (uage == 0))
+					if(uid.equals("") || upass.equals("") || uname.equals("") || uphone.equals("") && ucard.equals("")
+		                     || uemail.equals("") || uyear.equals("") || (uage == 0))
 					{
 						JOptionPane.showMessageDialog(null, "모든 정보를 기입해주세요", "회원가입 실패", JOptionPane.ERROR_MESSAGE);
 						System.out.println("회원가입 실패 > 회원정보 미입력");
@@ -366,6 +366,11 @@ public class Signin_frame extends JFrame{
 		
 		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(db.logout())
+				{
+					db.seatlogout(); // 아이디 삭제
+					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
+				}
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
 				setVisible(false);
 			}

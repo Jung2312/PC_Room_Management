@@ -1,13 +1,9 @@
 package Manager;
 
-import java.awt.Color;
+import java.awt.*;	
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,10 +15,13 @@ import javax.swing.JPanel;
 import Btn_Design.RoundedButton;
 import Chat.InquiryPage;
 import Main.MainLogin;
+import DB.*;
+
 
 // 관리자 로그인
 @SuppressWarnings("unused")
 public class manager_login {
+	Database db = new Database();
 	//관리자 로그인 화면 
     public manager_login() {
         JButton manager_Login = new JButton(new ImageIcon("image/manager_login.png")); //관리자 로그인 버튼
@@ -95,6 +94,11 @@ public class manager_login {
 		
 		home.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(db.logout())
+				{
+					db.seatlogout(); // 아이디 삭제
+					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
+				}
 				new MainLogin(); //설정 버튼을 누르면 메인 로그인 페이지로 이동
 				frame.setVisible(false);
 			}

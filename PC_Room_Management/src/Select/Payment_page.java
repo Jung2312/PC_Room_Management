@@ -22,6 +22,7 @@ import Manager.manager_login;
 public class Payment_page {
 	
 	int won_check = 0;
+	int[] money = {1000,2000,3000,4000,5000,8000};
 	String today = null;
 	String end = null;
 	String grade = null;
@@ -33,25 +34,21 @@ public class Payment_page {
 		{
 			int won2 = (int) (won * 0.01);
 			won_check = won - won2;
-			JOptionPane.showMessageDialog(null, "회원 등급 할인 금액은 " + won_check + "입니다.");
 		}
 		else if(db.user_grade().equals("SILVER"))
 		{
 			int won2 = (int) (won * 0.02);
 			won_check = won - won2;
-			JOptionPane.showMessageDialog(null, "회원 등급 할인 금액은 " + won_check + "입니다.");
 		}
 		else if(db.user_grade().equals("GOLD"))
 		{
 			int won2 = (int) (won * 0.04);
 			won_check = won - won2;
-			JOptionPane.showMessageDialog(null, "회원 등급 할인 금액은 " + won_check + "입니다.");
 		}
 		else if(db.user_grade().equals("VIP"))
 		{
 			int won2 = (int) (won * 0.05);
 			won_check = won - won2;
-			JOptionPane.showMessageDialog(null, "회원 등급 할인 금액은 " + won_check + "입니다.");
 		}
 		
 		else
@@ -91,7 +88,21 @@ public class Payment_page {
 		JButton paycancle = new JButton(); //결제 취소 버튼 할당
 		final JButton[] wonbtn = new JButton[6]; //시간(가격)선택 버튼 할당
 
-		String[] won = {"1000원", "2000원", "3000원", "4000원", "5000원", "8000원"}; //라벨 내용
+		int num = 0;
+		for(int i = 0; i < 6; i++)
+		{
+			if(i == 5)
+			{
+				money[i] = pay_grade(8000);
+			}
+			else
+			{
+				num += 1000;
+				money[i] = pay_grade(num);
+			}
+		}
+		
+		String[] won = {money[0] + "원", money[1]+"원", money[2]+"원", money[3]+"원", money[4]+"원", money[5]+"원"}; //라벨 내용
 		JLabel[] wonlabel = new JLabel[6]; //가격 라벨
 		JLabel paymentlabel = new JLabel("결제"); //결제창임을 알려주는 라벨
 		JLabel seltime = new JLabel("시간 선택"); //시간 선택 라벨
@@ -305,7 +316,7 @@ public class Payment_page {
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, "오류");
+						JOptionPane.showMessageDialog(null, "결제가 실패했습니다.");
 					}
 					
 				}

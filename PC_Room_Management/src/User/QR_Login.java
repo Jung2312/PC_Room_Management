@@ -1,11 +1,12 @@
 package User;
 
-import javax.swing.*;
+import javax.swing.*;	
 
 import Btn_Design.RoundedButton;
 import Chat.InquiryPage;
 import Main.MainLogin;
 import Manager.manager_login;
+import DB.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,7 @@ import java.awt.event.ActionListener;
 
 // 큐알 로그인
 public class QR_Login extends JFrame{
+	Database db = new Database();
 	public static void input_btn(JButton btn, int x, int y, int xsize, int ysize) {
 		// 버튼 생성 메소드
 		btn.setContentAreaFilled(false);
@@ -62,13 +64,20 @@ public class QR_Login extends JFrame{
 		//이벤트 처리 추가
 		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(db.logout())
+				{
+					db.seatlogout(); // 아이디 삭제
+					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
+				}
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
+				setVisible(false);
 			}
 		});
 
 		user_inquiry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
+				setVisible(false);
 			}
 		});
 		
