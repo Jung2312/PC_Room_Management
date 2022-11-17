@@ -7,19 +7,10 @@ import Main.MainLogin;
 import Manager.manager_login;
 
 import java.awt.event.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.PreparedStatement;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import Btn_Design.*;
 
 public class InquiryPage extends JFrame {
-	Connection conn = null;
-	String a = "1. 결제 문의";
-	String b = "";
 	public static void input_btn(JButton btn, int x, int y, int xsize, int ysize) {
 		// 버튼 생성 메소드
 		btn.setContentAreaFilled(false);
@@ -29,26 +20,6 @@ public class InquiryPage extends JFrame {
 	}
 	
 	public InquiryPage() {
-		try { 
-			 Class.forName("com.mysql.cj.jdbc.Driver");
-			 System.out.println("드라이버 검색 성공");
-		 }catch(ClassNotFoundException e) {
-			 System.err.println("드라이버 검색 실패");
-			 System.exit(0);
-		 }
-		 
-
-		 try {
-			 conn = DriverManager.getConnection(
-					 "jdbc:mysql://localhost:3306/connectdb?serverTimezone=UTC"  // 서버 이름
-					 ,"root","ejqmftnld1!" // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
-					 );
-			 System.out.println("데이터베이스 연결 성공");
-		 }catch (SQLException e) {
-			 System.out.println(e);
-			 System.err.println("데이터베이스 연결 실패");
-			 System.exit(0);
-		 }
 		//Container c = getContentPane();
 		//c.setLayout(new FlowLayout());
 		
@@ -56,14 +27,14 @@ public class InquiryPage extends JFrame {
 		inquiry.setBounds(810, 380, 55, 35); //문의 아이콘 위치, 사이즈
 		add(inquiry); //프레임에 버튼을 붙임
 		
-		JLabel firstPayment1 = new JLabel("결제가 안되는 경우"); //1. 결제 불가 선택시 나타나는 안내 메세지 (디폴트)
-		JLabel firstPayment2 = new JLabel("재로그인 후 결제 해주세요"); //1. 결제 불가 선택시 나타나는 안내 메세지 (디폴트)
-		firstPayment1.setFont(new Font("맑은 고딕", Font.BOLD, 24)); 
-		firstPayment2.setFont(new Font("맑은 고딕", Font.BOLD, 24));
-		firstPayment1.setBounds(810, 400, 250, 100);
-		firstPayment2.setBounds(810, 430, 300, 100);
-		add(firstPayment1); //안내 메세지 출력
-		add(firstPayment2); //안내 메세지 출력
+		JLabel in_label1 = new JLabel(); //안내 메세지
+		JLabel in_label2 = new JLabel(); //안내 메세지
+		in_label1.setFont(new Font("맑은 고딕", Font.BOLD, 24)); 
+		in_label2.setFont(new Font("맑은 고딕", Font.BOLD, 24));
+		in_label1.setBounds(810, 400, 600, 100);
+		in_label2.setBounds(810, 430, 600, 100);
+		add(in_label1); //안내 메세지 출력
+		add(in_label2); //안내 메세지 출력
 		
 		//화면 상단 버튼
 		JButton home_btn = new JButton(new ImageIcon("./image/home_btn.png")); //홈버튼 생성
@@ -80,11 +51,11 @@ public class InquiryPage extends JFrame {
 		
 		
 		//상세 문의 버튼
-		//JButton managercall = new JButton("관리자 호출"	); //관리자 호출 버튼
-		JButton[] btn = new JButton[4]; //문의 상세 선택 버튼
+		JButton[] btn = new JButton[4]; //디폴트 상세 선택 버튼
+		
 		String[] pm = new String[] { "1. 결제 불가", "2. 카드 인식 불가", "3. 좌석 인식 불가", "4. 음식 결제 문의" }; //결제 문의 상세 버튼 이름
-		String[] lgin = new String[] { "1. 로그인", "2. 로그인", "3. 로그인", "4. 로그인" }; //로그인 문의 상세 버튼 이름
-		String[] sgin = new String[] { "1. 회원가입", "2. 회원가입", "3. 회원가입", "4. 회원가입" }; //회원가입 문의 상세 버튼 이름
+		String[] lgin = new String[] { "1. ID 로그인 불가", "2. QR 로그인 불가", "3. 아이디 찾기 문의", "4. 비밀번호 찾기 오류" }; //로그인 문의 상세 버튼 이름
+		String[] sgin = new String[] { "1. 회원가입 오류", "2. 회원가입 화면 오류", "3. 회원정보 수정", "4. 회원탈퇴 문의" }; //회원가입 문의 상세 버튼 이름
 				
 		for(int i =0; i < 4; i++)
 		{
@@ -93,6 +64,24 @@ public class InquiryPage extends JFrame {
 			btn[i].setBackground(Color.WHITE); //결제 문의 상세 버튼 배경색 설정
 			btn[i].addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					switch(e.getActionCommand()) {
+					case "1. 결제 불가":
+						in_label1.setText("결제가 안되는 경우");
+						in_label2.setText("재로그인 후 결제 해주세요");
+						break;
+					case "2. 카드 인식 불가":
+						in_label1.setText("카드를 리더기에 재접촉 하거나");
+						in_label2.setText("관리자를 호출 해주세요");
+						break;
+					case "3. 좌석 인식 불가":
+						in_label1.setText("관리자를 호출 해주세요");
+						in_label2.setText("");
+						break;
+					case "4. 음식 결제 문의":
+						in_label1.setText("재로그인 후 음식 결제 창을 다시 열거나");
+						in_label2.setText("관리자를 호출 해주세요");
+						break;
+					}
 				}
 			});
 		}
@@ -115,61 +104,116 @@ public class InquiryPage extends JFrame {
 			choose_inquiry[i].setBackground(Color.WHITE); //문의 선택 버튼 배경색 설정
 			choose_inquiry[i].setBounds(90, (380+i*100), 650, 100); //문의 선택 버튼 위치, 사이즈 설정
 			add(choose_inquiry[i]); //문의 선택 버튼 붙임
+			
 			choose_inquiry[i].addActionListener(new ActionListener() { //문의 버튼 선택 시 이벤트 처리
-				@Override
 				public void actionPerformed(ActionEvent e) {
 					JButton CIbtn = (JButton)e.getSource();
 					if(CIbtn == choose_inquiry[0]) { //결제 문의 버튼 선택 시
-						a = CIbtn.getText();
-						for(int i = 0; i < 4; i++) 
-							btn[i].setText(pm[i]);					
-						btn[0].setBounds(810, 580, 310, 100); //첫번째 상세 버튼 위치, 사이즈 (추가)
+						for(int i = 0; i < 4; i++)
+						{
+							btn[0].setBounds(810, 580, 310, 100); //결제 문의 상세 버튼 위치, 사이즈
+							btn[i].setText(pm[i]);
+							btn[i].addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent e) {
+									switch(e.getActionCommand()) {
+									case "1. 결제 불가":
+										in_label1.setText("결제가 안되는 경우");
+										in_label2.setText("재로그인 후 결제 해주세요");
+										break;
+									case "2. 카드 인식 불가":
+										in_label1.setText("카드를 리더기에 재접촉 하거나");
+										in_label2.setText("관리자를 호출 해주세요");
+										break;
+									case "3. 좌석 인식 불가":
+										in_label1.setText("관리자를 호출 해주세요");
+										in_label2.setText("");
+										break;
+									case "4. 음식 결제 문의":
+										in_label1.setText("재로그인 후 음식 결제 창을 다시 열거나");
+										in_label2.setText("관리자를 호출 해주세요");
+										break;
+									}
+								}
+							});
+						}
 					}
 					else if(CIbtn == choose_inquiry[1]) { //로그인 문의 버튼 선택 시
-						a = CIbtn.getText();
 						for(int i = 0; i < 4; i++)
+						{
+							btn[0].setBounds(810, 580, 310, 100); //결제 문의 상세 버튼 위치, 사이즈
 							btn[i].setText(lgin[i]);
-						btn[0].setBounds(810, 580, 310, 100); //첫번째 상세 버튼 위치, 사이즈 (추가)
+							btn[i].addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent e) {
+									switch(e.getActionCommand()) {
+										case "1. ID 로그인 불가":
+											in_label1.setText("아이디/비밀번호를 맞게 입력했는지 확인하거나");
+											in_label2.setText("관리자를 호출 해주세요");
+											break;
+										case "2. QR 로그인 불가":
+											in_label1.setText("QR 로그인 창을 다시 열거나");
+											in_label2.setText("관리자를 호출 해주세요");
+											break;
+										case "3. 아이디 찾기 문의":
+											in_label1.setText("관리자를 호출 해주세요");
+											in_label2.setText("");
+											break;
+										case "4. 비밀번호 찾기 오류":
+											in_label1.setText("아이디/전화번호를 맞게 입력했는지 확인하거나");
+											in_label2.setText("관리자를 호출 해주세요");
+											break;
+									}
+								}
+							});
+						}
 					}
 					else if(CIbtn == choose_inquiry[2]) { //회원가입 문의 버튼 선택 시
-						a = CIbtn.getText();
 						for(int i = 0; i < 4; i++)
+						{
+							btn[0].setBounds(810, 580, 310, 100); //첫번째 상세 버튼 위치, 사이즈
 							btn[i].setText(sgin[i]);
-						btn[0].setBounds(810, 580, 310, 100); //첫번째 상세 버튼 위치, 사이즈 (추가)
+							btn[i].addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent e) {
+									switch(e.getActionCommand()) {
+										case "1. 회원가입 오류":
+											in_label1.setText("아이디 중복을 확인 해주시고");
+											in_label2.setText("비밀번호를 맞게 입력했는지 확인 해주세요");
+											break;
+										case "2. 회원가입 화면 오류":
+											in_label1.setText("관리자를 호출 해주세요");
+											in_label2.setText("");
+											break;
+										case "3. 회원정보 수정":
+											in_label1.setText("관리자를 호출 해주세요");
+											in_label2.setText("");
+											break;
+										case "4. 회원탈퇴 문의":
+											in_label1.setText("회원 탈퇴 시 관리자를 호출 해주세요");
+											in_label2.setText("회원 탈퇴 시 회원 등급이 리셋됩니다");
+											break;
+									}
+								}
+							});
+						}
+							
 					}
 					else if(CIbtn == choose_inquiry[3]) { //관리자 호출 버튼 선택 시
-						a = CIbtn.getText();
 						btn[0].setBounds(810, 580, 620, 200); //결제 문의 상세 버튼 위치, 사이즈
 						btn[0].setText("관리자 호출");
-					}	
-				}	
-			});
-		}
-		for(int i = 0; i < 4; i++) {
-			btn[i].addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					JButton btn2 = (JButton)e.getSource();
-					b = btn2.getText();
-					insert(a,b);
+						btn[0].addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								switch(e.getActionCommand()) {
+								case "관리자 호출":
+									in_label1.setText("관리자를 호출하였습니다");
+									in_label2.setText("잠시만 기다려주세요");
+									break;
+								}
+							}
+						});
+					}
 				}
 			});
 		}
 		
-		home_btn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new MainLogin(); //홈버튼을 누르면 첫 화면으로 이동
-				 try {
-					 if(conn != null) {
-						 conn.close();
-						 System.out.println("닫기 성공");
-					 }
-				 }catch (SQLException e1) {
-					 e1.printStackTrace();
-				 }
-			}
-		});
-		
-
 		
 		//이벤트 처리 추가
 		home_btn.addActionListener(new ActionListener() {
@@ -185,7 +229,6 @@ public class InquiryPage extends JFrame {
 				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
 				setVisible(false);
 			}
-			
 		});
 		
 		//화면 설정
@@ -198,30 +241,6 @@ public class InquiryPage extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // x를 누를 경우 종료
 		getContentPane().setBackground(Color.WHITE); // 프레임 bg color
 	}
-	
-	public void insert(String inquiry, String inquiry_detail) {
-		SimpleDateFormat a = new SimpleDateFormat("yyyy-MM-dd");
-		Date now = new Date();
-		String now1 = a.format(now);
-        String sql = "insert into inquiry(day, inquiry, detailedInquiry) values(?,?,?)";
-        PreparedStatement pstmt = null;
-        try {
-        	pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, now1);
-            pstmt.setString(2, inquiry);
-            pstmt.setString(3, inquiry_detail);
-            
-            int result = pstmt.executeUpdate();
-            if(result==1) {
-                System.out.println("데이터 삽입 성공!");
-                
-            }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            System.out.println("실패");
-        }
-    }
 
 	public static void main(String[] args) {
 		new InquiryPage();
