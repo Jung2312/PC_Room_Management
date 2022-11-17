@@ -1,6 +1,6 @@
 package User;
 
-import java.awt.Color;	
+import java.awt.Color;		
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -17,10 +17,13 @@ import Btn_Design.RoundedButton;
 import Chat.InquiryPage;
 import Main.MainLogin;
 import Manager.*;
+import DB.*;
 
 // qr, 일반 로그인 선택
 @SuppressWarnings("unused")
 public class Login_QR_ID {
+	Database db = new Database();
+	
     public Login_QR_ID() {
         JButton Login = new JButton(new ImageIcon("image/id_login.png")); //ID 로그인 버튼
         JButton QR = new JButton(new ImageIcon("image/qr_login.png")); //QR 로그인 버튼
@@ -81,6 +84,11 @@ public class Login_QR_ID {
 		//이벤트 처리 추가
 		home.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(db.logout())
+				{
+					db.seatlogout(); // 아이디 삭제
+					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
+				}
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
 				frame.setVisible(false);
 			}

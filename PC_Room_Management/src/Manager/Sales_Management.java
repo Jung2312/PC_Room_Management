@@ -8,17 +8,21 @@ import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import Btn_Design.RoundedButton;
 import Btn_Design.RoundedButton4;
+import DB.Database;
 import Main.MainLogin;
 
 // 매출 내역
 public class Sales_Management extends JFrame{
 
+	Database db = new Database();
+	
 	public static void input_btn(JButton btn, int x, int y, int xsize, int ysize) {
 		// 버튼 생성 메소드
 		btn.setContentAreaFilled(false);
@@ -84,6 +88,11 @@ public class Sales_Management extends JFrame{
 		//이벤트 처리 추가
 		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(db.logout())
+				{
+					db.seatlogout(); // 아이디 삭제
+					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
+				}
 				new MainLogin(); //홈버튼을 누르면 첫 화면으로 이동
 				setVisible(false);
 			}

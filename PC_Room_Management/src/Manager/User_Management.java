@@ -135,6 +135,11 @@ public class User_Management extends JFrame {
 		
 		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(db.logout())
+				{
+					db.seatlogout(); // 아이디 삭제
+					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
+				}
 				new MainLogin(); //홈버튼을 누르면 첫 화면으로 이동
 				setVisible(false);
 			}
