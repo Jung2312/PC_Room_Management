@@ -11,10 +11,19 @@ import Chat.InquiryPage;
 import Main.MainLogin;
 import Manager.manager_login;
 
+import javax.swing.table.DefaultTableModel;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.sql.Time;
+import java.sql.Timestamp;
+
 // 좌석 선택
 public class Seat_select extends JFrame{
-	
-	
 	public static void input_btn(JButton btn, int x, int y, int xsize, int ysize) {
 		// 버튼 생성 메소드
 		btn.setContentAreaFilled(false);
@@ -23,15 +32,36 @@ public class Seat_select extends JFrame{
 		btn.setBounds(x, y, xsize+2, ysize+2); // 버튼 위치, 사이즈
 	}
 	
+	Connection conn = null; //DB 접속
 	public Seat_select()
 	{
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("드라이버 검색 성공");
+			
+		}
+		catch(ClassNotFoundException e) {
+			System.err.println("드라이버 검색 실패");
+			System.exit(0);
+		}
+		try {
+			 conn = DriverManager.getConnection(
+					 "url"  // 서버 이름
+					 ,"name","pw" // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
+					 );
+			 System.out.println("데이터베이스 연결 성공");
+		 }catch (SQLException e) {
+			 System.out.println(e);
+			 System.err.println("데이터베이스 연결 실패");
+			 System.exit(0);
+		 }
+		
 		int cnt = 0;
 		String[] btn_Title = { "1", "2", "3",
 	            "4", "5", "6", "7", "8", "9","10", "11", "12", 
 				"13", "14","15", "16", "17", "18", "19","20", "21", "22", "23", "24",
 				 "25","26", "27", "28", "29","30"}; // 버튼 이름 배열
-
-
+		
 	
 		JButton home_btn = new JButton(new ImageIcon("./image/home_btn.png")); //홈버튼 생성
 		input_btn(home_btn, 20, 20, 40, 40);
@@ -45,12 +75,12 @@ public class Seat_select extends JFrame{
 		input_btn(setting_icon, 1450, 20, 40, 40);
 		add(setting_icon); // 프레임에 버튼을 붙임
 		
-		RoundedButton ok_btn = new RoundedButton("확인"); // 확인 버튼
+		/*RoundedButton ok_btn = new RoundedButton("확인"); // 확인 버튼
 		input_btn(ok_btn, 620, 700, 120, 30);
-		add(ok_btn); // 프레임에 버튼을 붙임
+		add(ok_btn); // 프레임에 버튼을 붙임*/ //좌석 버튼 누르면 메시지박스 뜨므로 확인 버튼 필요X
 		
 		RoundedButton cancle_btn = new RoundedButton("취소"); // 취소 버튼
-		input_btn(cancle_btn, 770, 700, 120, 30);
+		input_btn(cancle_btn, 690, 720, 120, 30);
 		add(cancle_btn); // 프레임에 버튼을 붙임
 		
 		// 좌석 버튼
@@ -207,9 +237,126 @@ public class Seat_select extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
 				setVisible(false);
-			}
-			
+			}	
 		});
+		
+		for(int i = 0; i < 30; i++) {
+	         String sql = "SELECT seatRent, seatNum, seatStart, seatEnd, seatID FROM seat WHERE seatNum = ?";
+	         
+			//예약 되어있는 좌석 user에서 seat로 아이디 전송(확인용) => 이미 렌트 되어있는 것에 아이디 전송하는 것이므로  좌석 선택에서는 로그인체크 = 1, 대여여부 = 0인 것(udid2)만 아이디 넘겨주면 될 것 같음
+	         String udid = "UPDATE seat SET seatID = (SELECT userID FROM user WHERE loginCheck = 1) WHERE seatRent = 1";
+	         String udid2 = "UPDATE seat SET seatID = (SELECT userID FROM user WHERE loginCheck = 1) WHERE seatRent = 0 and seatNum = ?";
+	         
+	         PreparedStatement pstmt = null; //sql 실행
+	         PreparedStatement pstmt1 = null; //udid 실행
+             
+	         try {
+	        	 	//SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+	        	 	String seat_num = seat_btn[i].getText();
+	        	 	pstmt = conn.prepareStatement(sql); //sql 실행
+	        	 	pstmt.setString(1, seat_num);
+	        	 	ResultSet rs = pstmt.executeQuery(); //sql 실행 결과
+	        	 	
+	        	 	pstmt1 = conn.prepareStatement(udid); //udid 실행
+                    
+	        	 	while(rs.next()) {
+	        	 		if(rs.getString("seatRent").equals("1")) //좌석 대여 여부 1일 경우
+	        	 		{
+	        	 			/*String start = sdf.format(rs.getTime("seatStart"));
+	        	 			*String end = sdf.format(rs.getTime("seatEnd"));
+	        	 			*
+	        	 			*Date t_start = sdf.parse(start);
+	        	 			*Date t_end = sdf.parse(end);
+	        	 			*
+	        	 			*long timeMil1 = t_start.getTime();
+	        	    		*long timeMil2 = t_end.getTime();
+	        	 			*
+	        	 			*long diff = timeMil2 - timeMil1;
+	        	 			*
+	        	 			*long diffMin = (diff / (1000 * 60)) % 60;
+	        	    		long diffHour = diff / (1000 * 60 * 60);*/
+	        	    		
+	        	 			int rs1 = pstmt1.executeUpdate(); //udid실행 결과
+	        	 			seat_btn[i].setContentAreaFilled(true);
+	        	 			//seat_btn[i].setEnabled(false);
+	        	 		}
+	               }
+	         	}
+	         	catch(Exception e) {
+	         		System.out.println(e.toString());
+	         	}
+	         
+	         seat_btn[i].addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	               
+	               PreparedStatement pstmt = null; //sql 실행
+	               PreparedStatement pstmt2 = null; //udid2 실행
+	               for(int i = 0; i < 30;i++)
+	               {
+	            	  SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+	                  String seat_num = seat_btn[i].getText();
+	                  try {
+	                	  	pstmt = conn.prepareStatement(sql);
+	                        pstmt.setString(1, seat_num);
+	                        ResultSet rs = pstmt.executeQuery(); //sql 실행 결과
+	                        
+	                        pstmt2 = conn.prepareStatement(udid2);
+	                        pstmt2.setString(1, seat_num);
+	                        
+	                        if(seat_btn[i].equals(e.getSource()))
+	                        {
+	                           while(rs.next()) {
+	         	                   String seat_id = rs.getString("seatID");
+	                        	   if(rs.getString("seatNum").equals(seat_num))
+	                        	   {
+	                        		   if(rs.getString("seatRent").equals("1"))
+	                        		   {
+	                        			 //Timestamp curr = new Timestamp(System.currentTimeMillis()); //현재시간 구하는 tiemstamp
+	    	                        	   
+	    	                        	   String start = sdf.format(rs.getTime("seatStart")); //시작시간
+	    	                        	   //String currtime = sdf.format(curr); //현재시간
+	    	                        	   String end = sdf.format(rs.getTime("seatEnd")); //종료시간
+	    	   	        	 			
+	    	                        	   Date t_start = sdf.parse(start);
+	    	                        	   //Date t_curr = sdf.parse(currtime);
+	    	                        	   Date t_end = sdf.parse(end);
+	    	   	        	 			
+	    	                        	   long timeMil1 = t_start.getTime(); 
+	    	                        	   //long timec = t_curr.getTime();
+	    	                        	   long timeMil2 = t_end.getTime();
+	    	                        	   
+	    	                        	   long diff = timeMil2 - timeMil1; //종료시간 - 시작시간(디비에 저장된 시간을 빼는 것으로 줄어들지 않고 남은시간 그대로)
+	    	                        	   //long diff1 = timeMil2 - timec; //종료시간 - 현재시간(실시간으로 시간이 줄어듦) -> 남은 시간이 0시간 0분이 되면
+	    	   	        	 			
+	    	                        	   long diffMin = (diff / (1000 * 60)) % 60;
+	    	                        	   long diffHour = diff / (1000 * 60 * 60);
+	    	                        	   JOptionPane.showMessageDialog(null,  seat_id + "\n" + seat_num + "번 좌석 남은 시간 : "+ diffHour + "시간" + diffMin + "분");
+	                        		   }
+	                        			   
+	                        		   else
+	                        		   {
+	                        			   	int result = JOptionPane.showConfirmDialog(null, seat_num +"번 좌석을 선택하였습니다.\n" +
+	        		                               seat_num + "번 좌석을 결제 하시겠습니까?", seat_num + "좌석", JOptionPane.YES_NO_OPTION);
+	                        			   	if(result == JOptionPane.YES_OPTION)
+	                        			   	{
+	                        			   		int rs2 = pstmt2.executeUpdate(); //udid2실행 결과
+	                        			   		new Payment_page();
+	                        			   		setVisible(false);
+	                        			   	}
+	                        			   	else
+	                        			   		return;
+	                        		   	} 
+	                        	   	}
+	                           	}
+	                        }      
+	                  	}
+	                  	catch(Exception e1) {
+	                  		System.out.println(e1.toString());
+	                  	}
+	               	}
+	            }
+	         });
+	      }
 				
 		
 		//화면 설정
@@ -225,7 +372,5 @@ public class Seat_select extends JFrame{
 	
 	public static void main(String[] args) {
 		new Seat_select();
-
 	}
-
 }
