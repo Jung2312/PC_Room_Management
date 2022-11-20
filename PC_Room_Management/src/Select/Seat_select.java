@@ -247,38 +247,54 @@ public class Seat_select extends JFrame{
 	         String udid = "UPDATE seat SET seatID = (SELECT userID FROM user WHERE loginCheck = 1) WHERE seatRent = 1";
 	         String udid2 = "UPDATE seat SET seatID = (SELECT userID FROM user WHERE loginCheck = 1) WHERE seatRent = 0 and seatNum = ?";
 	         
+	         String reset = "UPDATE seat SET seatID = null, seatStart = null, seatEnd = null, seatRent = 0 WHERE seatID != 'null' and seatRent = 1";
+	         
 	         PreparedStatement pstmt = null; //sql 실행
 	         PreparedStatement pstmt1 = null; //udid 실행
+	         PreparedStatement pstmt3 = null; //reset 실행
              
 	         try {
-	        	 	//SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+	        	 	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 	        	 	String seat_num = seat_btn[i].getText();
 	        	 	pstmt = conn.prepareStatement(sql); //sql 실행
 	        	 	pstmt.setString(1, seat_num);
 	        	 	ResultSet rs = pstmt.executeQuery(); //sql 실행 결과
-	        	 	
+
 	        	 	pstmt1 = conn.prepareStatement(udid); //udid 실행
+
+                    pstmt3 = conn.prepareStatement(reset);
                     
 	        	 	while(rs.next()) {
 	        	 		if(rs.getString("seatRent").equals("1")) //좌석 대여 여부 1일 경우
 	        	 		{
-	        	 			/*String start = sdf.format(rs.getTime("seatStart"));
-	        	 			*String end = sdf.format(rs.getTime("seatEnd"));
-	        	 			*
-	        	 			*Date t_start = sdf.parse(start);
-	        	 			*Date t_end = sdf.parse(end);
-	        	 			*
-	        	 			*long timeMil1 = t_start.getTime();
-	        	    		*long timeMil2 = t_end.getTime();
-	        	 			*
-	        	 			*long diff = timeMil2 - timeMil1;
-	        	 			*
-	        	 			*long diffMin = (diff / (1000 * 60)) % 60;
-	        	    		long diffHour = diff / (1000 * 60 * 60);*/
+	        	 			Timestamp curr = new Timestamp(System.currentTimeMillis()); //현재시간 구하는 timestamp
+                     	   
+	        	 			String start = sdf.format(rs.getTime("seatStart")); //시작시간
+	        	 			String currtime = sdf.format(curr); //현재시간
+	        	 			String end = sdf.format(rs.getTime("seatEnd")); //종료시간
+	        	 			
+	        	 			Date t_start = sdf.parse(start);
+	        	 			Date t_curr = sdf.parse(currtime);
+	        	 			Date t_end = sdf.parse(end);
+	        	 			
+	        	 			long timeMil1 = t_start.getTime(); 
+	        	 			long timec = t_curr.getTime();
+	        	 			long timeMil2 = t_end.getTime();
+	        	 			
+	        	 			//long diff = timeMil2 - timeMil1; //종료시간 - 시작시간(디비에 저장된 시간을 빼는 것으로 줄어들지 않고 남은시간 그대로)
+	        	 			long diff1 = timeMil2 - timec; //종료시간 - 현재시간(실시간으로 시간이 줄어듦) -> 남은 시간이 0시간 0분이 되면
+	        	 			
+	        	 			long diffMin = (diff1 / (1000 * 60)) % 60;
+	        	 			long diffHour = diff1 / (1000 * 60 * 60);	
 	        	    		
-	        	 			int rs1 = pstmt1.executeUpdate(); //udid실행 결과
+	        	 			pstmt1.executeUpdate(); //udid실행 결과
 	        	 			seat_btn[i].setContentAreaFilled(true);
-	        	 			//seat_btn[i].setEnabled(false);
+	        	 			
+	        	 			if(diffHour == 0 && diffMin == 0)
+	        	 			{
+	        	 				pstmt3.executeUpdate(); //reset 실행 결과
+	        	 				seat_btn[i].setContentAreaFilled(false);
+	        	 			}
 	        	 		}
 	               }
 	         	}
@@ -291,6 +307,7 @@ public class Seat_select extends JFrame{
 	               
 	               PreparedStatement pstmt = null; //sql 실행
 	               PreparedStatement pstmt2 = null; //udid2 실행
+	  	         
 	               for(int i = 0; i < 30;i++)
 	               {
 	            	  SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
@@ -311,26 +328,27 @@ public class Seat_select extends JFrame{
 	                        	   {
 	                        		   if(rs.getString("seatRent").equals("1"))
 	                        		   {
-	                        			 //Timestamp curr = new Timestamp(System.currentTimeMillis()); //현재시간 구하는 tiemstamp
+	                        			   Timestamp curr = new Timestamp(System.currentTimeMillis()); //현재시간 구하는 timestamp
 	    	                        	   
 	    	                        	   String start = sdf.format(rs.getTime("seatStart")); //시작시간
-	    	                        	   //String currtime = sdf.format(curr); //현재시간
+	    	                        	   String currtime = sdf.format(curr); //현재시간
 	    	                        	   String end = sdf.format(rs.getTime("seatEnd")); //종료시간
 	    	   	        	 			
 	    	                        	   Date t_start = sdf.parse(start);
-	    	                        	   //Date t_curr = sdf.parse(currtime);
+	    	                        	   Date t_curr = sdf.parse(currtime);
 	    	                        	   Date t_end = sdf.parse(end);
 	    	   	        	 			
 	    	                        	   long timeMil1 = t_start.getTime(); 
-	    	                        	   //long timec = t_curr.getTime();
+	    	                        	   long timec = t_curr.getTime();
 	    	                        	   long timeMil2 = t_end.getTime();
 	    	                        	   
-	    	                        	   long diff = timeMil2 - timeMil1; //종료시간 - 시작시간(디비에 저장된 시간을 빼는 것으로 줄어들지 않고 남은시간 그대로)
-	    	                        	   //long diff1 = timeMil2 - timec; //종료시간 - 현재시간(실시간으로 시간이 줄어듦) -> 남은 시간이 0시간 0분이 되면
+	    	                        	   //long diff = timeMil2 - timeMil1; //종료시간 - 시작시간(디비에 저장된 시간을 빼는 것으로 줄어들지 않고 남은시간 그대로)
+	    	                        	   long diff1 = timeMil2 - timec; //종료시간 - 현재시간(실시간으로 시간이 줄어듦) -> 남은 시간이 0시간 0분이 되면
 	    	   	        	 			
-	    	                        	   long diffMin = (diff / (1000 * 60)) % 60;
-	    	                        	   long diffHour = diff / (1000 * 60 * 60);
-	    	                        	   JOptionPane.showMessageDialog(null,  seat_id + "\n" + seat_num + "번 좌석 남은 시간 : "+ diffHour + "시간" + diffMin + "분");
+	    	                        	   long diffMin = (diff1 / (1000 * 60)) % 60;
+	    	                        	   long diffHour = diff1 / (1000 * 60 * 60);
+	    	                        	   if(diffHour != 0 || diffMin != 0)
+	    	                        		   JOptionPane.showMessageDialog(null,  seat_id + "\n" + seat_num + "번 좌석 남은 시간 : "+ diffHour + "시간" + diffMin + "분");
 	                        		   }
 	                        			   
 	                        		   else
@@ -339,7 +357,7 @@ public class Seat_select extends JFrame{
 	        		                               seat_num + "번 좌석을 결제 하시겠습니까?", seat_num + "좌석", JOptionPane.YES_NO_OPTION);
 	                        			   	if(result == JOptionPane.YES_OPTION)
 	                        			   	{
-	                        			   		int rs2 = pstmt2.executeUpdate(); //udid2실행 결과
+	                        			   		pstmt2.executeUpdate(); //udid2실행 결과
 	                        			   		new Payment_page();
 	                        			   		setVisible(false);
 	                        			   	}
