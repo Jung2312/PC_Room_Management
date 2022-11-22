@@ -10,6 +10,7 @@ import Btn_Design.RoundedButton;
 import Chat.InquiryPage;
 import Main.MainLogin;
 import Manager.manager_login;
+import DB.Database;
 
 import javax.swing.table.DefaultTableModel;
 import java.sql.Connection;
@@ -33,6 +34,7 @@ public class Seat_select extends JFrame{
 	}
 	
 	Connection conn = null; //DB 접속
+	Database db = new Database();
 	public Seat_select()
 	{
 		try {
@@ -220,6 +222,11 @@ public class Seat_select extends JFrame{
 		//이벤트 처리 추가
 		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(db.logout())
+				{
+					db.seatlogout(); // 아이디 삭제
+					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
+				}
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
 				setVisible(false);
 			}

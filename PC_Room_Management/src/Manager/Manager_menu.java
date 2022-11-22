@@ -39,8 +39,8 @@ public class Manager_menu extends JFrame{
 		 }
 		 try {
 			 conn = DriverManager.getConnection(
-					 "."  // 서버 이름
-					 ,".","." // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
+					 "url"  // 서버 이름
+					 ,"name","pw" // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
 					 );
 			 System.out.println("데이터베이스 연결 성공");
 		 }catch (SQLException e) {
@@ -88,167 +88,127 @@ public class Manager_menu extends JFrame{
 		JButton[] seat_btn = new JButton[30];
 		//input_btn(one_seat,330, 140, 92, 86);
 		//seat_btn.setFont(new Font("맑은 고딕", Font.BOLD, 24));
-		
-		List<Integer> intList = new ArrayList<>();
-        for (int e : rent_num) {
-            intList.add(e);
-        }
-        
+				
 		for(int i = 0; i < 30; i++) // 버튼 0번 부터 29번까지 붙임
 		{
 			
 			add(seat_btn[i] = new JButton(btn_Title[i]));
-	            // 버튼 생성하여 JButton 타입의 배열에 저장
-			if(intList.contains(i)) {
-				seat_btn[i].setContentAreaFilled(true);
-            	seat_btn[i].setBackground(new Color(220,220,220));
-            	int num = i + 1;
-            	seat_btn[i].addActionListener(new ActionListener() {
-            		public void actionPerformed(ActionEvent E) {
-            			int result = JOptionPane.showConfirmDialog(null,
-            					"좌석을 취소하시겠습니까?", "Confirm", 
-            					JOptionPane.YES_NO_OPTION);
-            			if(result == JOptionPane.YES_OPTION) {
-            				String sql = "UPDATE seat SET seatRent = 0, seatID = null WHERE seatNum = ?;";
-            				PreparedStatement pstmt = null;
-            				try {
-            					pstmt = conn.prepareStatement(sql);
-            					pstmt.setInt(1, num);
-            					pstmt.executeUpdate();
-            					System.out.println("삭제 성공");
-            					JOptionPane.showMessageDialog(null,"삭제 되었습니다.");
-            					seat_btn[num - 1].setContentAreaFilled(false);
-            					
-            					
-            				} catch (Exception e1) {
-            					System.out.println("예외 발생");
-            				}
-            			}
-            		}
-            	});
-			}
-			
-			else
-			{
-				seat_btn[i].setContentAreaFilled(false);
-			}
-            	
+			    // 버튼 생성하여 JButton 타입의 배열에 저장
+					
 			if(i % 6 == 0)
 			{
 				cnt = 0; // 위치 조정을 위한 변수
 			}
-        	
+		        	
 			
-            if(i <= 5)
-            {
-            	if(i % 2 != 0 || i == 0)
-            	{
-            		input_btn(seat_btn[i],330+cnt, 132, 92, 92);
-                	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
-                	seat_btn[i].setBackground(new Color(240, 240, 240)); // 이용 중인 좌석일 경우 나타낼 색
-                	cnt += 110;
-            	}
-            	
-            	else if(i % 2 == 0)
-            	{
-            		input_btn(seat_btn[i],330+cnt+100, 132, 92, 92);
-                	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
-                	seat_btn[i].setBackground(new Color(240, 240, 240));
-                	cnt += 210;
-            	}
-            	
-            }
-            
-            
-            else if(6 <= i && i <= 11)
-            {
-            	if(i % 2 == 0)
-            	{
-            		input_btn(seat_btn[i],330+cnt, 242, 92, 92);
-                	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
-                	seat_btn[i].setBackground(new Color(240, 240, 240));
-                	cnt += 110;
-            	}
-            	
-            	
-            	else if(i % 2 != 0)
-            	{
-            		System.out.println(cnt);
-            		input_btn(seat_btn[i],330+cnt, 242, 92, 92);
-                	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
-                	seat_btn[i].setBackground(new Color(240, 240, 240));
-                	cnt += 210;
-            	}
-            	
-            }
-            
-            else if(12 <= i && i <= 17)
-            {
-            	if(i % 2 == 0)
-            	{
-            		input_btn(seat_btn[i],330+cnt, 350, 92, 92);
-                	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
-                	seat_btn[i].setBackground(new Color(240, 240, 240));
-                	cnt += 110;
-            	}
-            	
-            	
-            	else if(i % 2 != 0)
-            	{
-            		System.out.println(cnt);
-            		input_btn(seat_btn[i],330+cnt, 350, 92, 92);
-                	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
-                	seat_btn[i].setBackground(new Color(240, 240, 240));
-                	cnt += 210;
-            	}
-            	
-            }
-            
-            else if(18 <= i && i <= 23)
-            {
-            	if(i % 2 == 0)
-            	{
-            		input_btn(seat_btn[i],330+cnt, 460, 92, 92);
-                	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
-                	seat_btn[i].setBackground(new Color(240, 240, 240));
-                	cnt += 110;
-            	}
-            	
-            	
-            	else if(i % 2 != 0)
-            	{
-            		System.out.println(cnt);
-            		input_btn(seat_btn[i],330+cnt, 460, 92, 92);
-                	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
-                	seat_btn[i].setBackground(new Color(240, 240, 240));;
-                	cnt += 210;
-            	}
-            	
-            }
-            
-            else
-            {
-            	if(i % 2 == 0)
-            	{
-            		input_btn(seat_btn[i],330+cnt, 570, 92, 92);
-                	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
-                	seat_btn[i].setBackground(new Color(240, 240, 240));
-                	cnt += 110;
-            	}
-            	
-            	
-            	else if(i % 2 != 0)
-            	{
-            		System.out.println(cnt);
-            		input_btn(seat_btn[i],330+cnt, 570, 92, 92);
-                	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
-                	seat_btn[i].setBackground(new Color(240, 240, 240));
-                	cnt += 210;
-            	}
-            }
-
+		    if(i <= 5)
+		    {
+		       if(i % 2 != 0 || i == 0)
+		       {
+		            input_btn(seat_btn[i],330+cnt, 132, 92, 92);
+		            seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
+		            seat_btn[i].setBackground(new Color(240, 240, 240)); // 이용 중인 좌석일 경우 나타낼 색
+		            cnt += 110;
+		       }
+		            	
+		       else if(i % 2 == 0)
+		       {
+		            input_btn(seat_btn[i],330+cnt+100, 132, 92, 92);
+		            seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
+		            seat_btn[i].setBackground(new Color(240, 240, 240));
+		            cnt += 210;
+		       }
+		            	
+		    }
+		            
+		            
+		    else if(6 <= i && i <= 11)
+		    {
+		        if(i % 2 == 0)
+		        {
+		            input_btn(seat_btn[i],330+cnt, 242, 92, 92);
+		            seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
+		            seat_btn[i].setBackground(new Color(240, 240, 240));
+		            cnt += 110;
+		        }
+		            	
+		            	
+		        else if(i % 2 != 0)
+		        {
+		            System.out.println(cnt);
+		            input_btn(seat_btn[i],330+cnt, 242, 92, 92);
+		            seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
+		            seat_btn[i].setBackground(new Color(240, 240, 240));
+		            cnt += 210;
+		        }
+		            	
+		    }
+		            
+		    else if(12 <= i && i <= 17)
+		    {
+		        if(i % 2 == 0)
+		        {
+		            input_btn(seat_btn[i],330+cnt, 350, 92, 92);
+		            seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
+		            seat_btn[i].setBackground(new Color(240, 240, 240));
+		            cnt += 110;
+		        }
+		            	
+		            	
+		        else if(i % 2 != 0)
+		        {
+		            System.out.println(cnt);
+		            input_btn(seat_btn[i],330+cnt, 350, 92, 92);
+		            seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
+		            seat_btn[i].setBackground(new Color(240, 240, 240));
+		            cnt += 210;
+		        }
+		            	
+		    }
+		            
+		    else if(18 <= i && i <= 23)
+		    {
+		        if(i % 2 == 0)
+		        {
+		            input_btn(seat_btn[i],330+cnt, 460, 92, 92);
+		            seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
+		            seat_btn[i].setBackground(new Color(240, 240, 240));
+		            cnt += 110;
+		        }
+		            	
+		            	
+		        else if(i % 2 != 0)
+		        {
+		            System.out.println(cnt);
+		            input_btn(seat_btn[i],330+cnt, 460, 92, 92);
+		            seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
+		            seat_btn[i].setBackground(new Color(240, 240, 240));;
+		            cnt += 210;
+		        }
+		            	
+		    }
+		            
+		    else
+		    {
+		        if(i % 2 == 0)
+		        {
+		            input_btn(seat_btn[i],330+cnt, 570, 92, 92);
+		            seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
+		            seat_btn[i].setBackground(new Color(240, 240, 240));
+		            cnt += 110;
+		        }
+		            	
+		            	
+		        else if(i % 2 != 0)
+		        {
+		            System.out.println(cnt);
+		            input_btn(seat_btn[i],330+cnt, 570, 92, 92);
+		            seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
+		            seat_btn[i].setBackground(new Color(240, 240, 240));
+		            cnt += 210;
+		        }
+		    }
 		}
-		
 		
 		// 좌석 이미지 레이블
 		JLabel seat_image = new JLabel(new ImageIcon("./image/seat_image.png"));
@@ -256,6 +216,106 @@ public class Manager_menu extends JFrame{
 		add(seat_image);
 		
 		//이벤트 처리 추가
+		for(int i = 0; i < 30; i++)
+		{
+			 String sql = "SELECT seatRent, seatNum, seatStart, seatEnd, seatID FROM seat WHERE seatNum = ?";
+	         
+	         String reset = "UPDATE seat SET seatID = null, seatStart = null, seatEnd = null, seatRent = 0 WHERE seatID != 'null' and seatRent = 1";
+	         
+	         String del_res = "UPDATE seat SET seatID = null, seatRent = 0 WHERE seatNum = ? and seatRent = 1";
+	         
+	         PreparedStatement pstmt = null; //sql 실행
+	         PreparedStatement pstmt1 = null; //reset 실행
+             
+	         try {
+	        	 	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+	        	 	String seatnum = seat_btn[i].getText();
+	        	 	pstmt = conn.prepareStatement(sql); //sql 실행
+	        	 	pstmt.setString(1, seatnum);
+	        	 	ResultSet rs = pstmt.executeQuery(); //sql 실행 결과
+
+                    pstmt1 = conn.prepareStatement(reset); //reset 실행
+                    
+	        	 	while(rs.next()) {
+	        	 		if(rs.getString("seatRent").equals("1")) //좌석 대여 여부 1일 경우
+	        	 		{
+	        	 			seat_btn[i].setContentAreaFilled(true);
+	        	 			
+	        	 			Timestamp curr = new Timestamp(System.currentTimeMillis()); //현재시간 구하는 timestamp
+                     	   
+	        	 			String start = sdf.format(rs.getTime("seatStart")); //시작시간
+	        	 			String currtime = sdf.format(curr); //현재시간
+	        	 			String end = sdf.format(rs.getTime("seatEnd")); //종료시간
+	        	 			
+	        	 			Date t_start = sdf.parse(start);
+	        	 			Date t_curr = sdf.parse(currtime);
+	        	 			Date t_end = sdf.parse(end);
+	        	 			
+	        	 			long timeMil1 = t_start.getTime(); 
+	        	 			long timec = t_curr.getTime();
+	        	 			long timeMil2 = t_end.getTime();
+	        	 			
+	        	 			//long diff = timeMil2 - timeMil1; //종료시간 - 시작시간(디비에 저장된 시간을 빼는 것으로 줄어들지 않고 남은시간 그대로)
+	        	 			long diff1 = timeMil2 - timec; //종료시간 - 현재시간(실시간으로 시간이 줄어듦) -> 남은 시간이 0시간 0분이 되면
+	        	 			
+	        	 			long diffMin = (diff1 / (1000 * 60)) % 60;
+	        	 			long diffHour = diff1 / (1000 * 60 * 60);	
+	        	 			
+	        	 			if(diffHour == 0 && diffMin == 0)
+	        	 			{
+	        	 				pstmt1.executeUpdate(); //reset 실행 결과
+	        	 				seat_btn[i].setContentAreaFilled(false);
+	        	 			}
+	        	 		}
+	               }
+	         	}
+	         	catch(Exception e) {
+	         		System.out.println(e.toString());
+	         	}
+	         
+	         seat_btn[i].addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	               
+	               PreparedStatement pstmt = null; //sql 실행
+	  	           PreparedStatement pstmt2 = null; //cancle_res 실행
+	  	         
+	               for(int i = 0; i < 30;i++)
+	               {
+	                  String seatnum = seat_btn[i].getText();
+	                  try {
+	                	  	pstmt = conn.prepareStatement(sql);
+	                        pstmt.setString(1, seatnum);
+	                        ResultSet rs = pstmt.executeQuery(); //sql 실행 결과
+	                        
+	                        pstmt2 = conn.prepareStatement(del_res); //cancle_res 실행
+	                        pstmt2.setString(1, seatnum);
+	                        
+	                        if(seat_btn[i].equals(e.getSource()))
+	                        {
+	                           while(rs.next()) {
+	                        	   int result = JOptionPane.showConfirmDialog(null, "좌석을 삭제 하시겠습니까?", 
+	                        			   "Confirm", JOptionPane.YES_NO_OPTION);
+	                        	   if(result == JOptionPane.YES_OPTION)
+	                        	   {
+	                        		   pstmt2.executeUpdate();
+	                        		   JOptionPane.showMessageDialog(null, "좌석이 삭제 되었습니다.");
+	                        		   seat_btn[i].setContentAreaFilled(false);
+	                        	   }
+	                        	   else
+	                        	   {
+	                        		   JOptionPane.showMessageDialog(null, "좌석 삭제에 실패하였습니다");
+	                        	   }
+	                           	}
+	                        }      
+	                  	}
+	                  	catch(Exception e1) {
+	                  		System.out.println(e1.toString());
+	                  	}
+	               	}
+	            }
+	         });
+		}
+		
 		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(db.logout())
