@@ -32,13 +32,16 @@ public class Database {
 		String pw = _p;
 		
 		try {
-			String checkingStr = "SELECT userPassword FROM user WHERE userID='" + id + "'";
+			String checkingStr = "SELECT userPassword, loginCheck FROM user WHERE userID='" + id + "'";
+			String loginupdate = "UPDATE user SET loginCheck = 1 WHERE userID = '" + id + "'";
 			ResultSet result = stmt.executeQuery(checkingStr);
+			PreparedStatement pstmt = con.prepareStatement(loginupdate); //로그인 체크 1로 업데이트
 			
 			int count = 0;
 			while(result.next()) {
 				if(pw.equals(result.getString("userPassword"))) {
 					flag = true;
+					pstmt.executeUpdate(loginupdate);
 					System.out.println("로그인 성공");
 				}
 				
