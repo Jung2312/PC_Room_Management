@@ -3,11 +3,22 @@ package Manager;
 import javax.swing.*;
 
 import Btn_Design.RoundedButton4;
+import Chat.InquiryPage;
 import Main.MainLogin;
+import Select.Payment_page;
+import DB.Database;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 // 관리자 로그인시 들어오는 첫 화면(좌석 확인)
 public class Manager_menu extends JFrame{
@@ -20,8 +31,31 @@ public class Manager_menu extends JFrame{
 		btn.setBounds(x, y, xsize+2, ysize+2); // 버튼 위치, 사이즈
 	}
 	
+	Connection conn = null; //DB 접속
+	Database db = new Database();
 	public Manager_menu()
 	{
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("드라이버 검색 성공");
+			
+		}
+		catch(ClassNotFoundException e) {
+			System.err.println("드라이버 검색 실패");
+			System.exit(0);
+		}
+		try {
+			 conn = DriverManager.getConnection(
+					 "url"  // 서버 이름
+					 ,"name","pw" // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
+					 );
+			 System.out.println("데이터베이스 연결 성공");
+		 }catch (SQLException e) {
+			 System.out.println(e);
+			 System.err.println("데이터베이스 연결 실패");
+			 System.exit(0);
+		 }
+		
 		int cnt = 0;
 		String[] btn_Title = { "1", "2", "3",
 	            "4", "5", "6", "7", "8", "9","10", "11", "12", 
@@ -54,6 +88,7 @@ public class Manager_menu extends JFrame{
 		input_btn(setting_icon, 1460, 20, 40, 40);
 		add(setting_icon); // 프레임에 버튼을 붙임
 		
+
 		// 좌석 버튼
 		JButton[] seat_btn = new JButton[30];
 		//input_btn(one_seat,330, 140, 92, 86);
@@ -187,10 +222,115 @@ public class Manager_menu extends JFrame{
 		seat_image.setBounds(150, 30, 1206, 743);
 		add(seat_image);
 		
+		
 		//이벤트 처리 추가
+		for(int i = 0; i < 30; i++)
+		{
+			 String sql = "SELECT seatRent, seatNum, seatStart, seatEnd, seatID FROM seat WHERE seatNum = ?";
+	         
+	         String reset = "UPDATE seat SET seatID = null, seatStart = null, seatEnd = null, seatRent = 0 WHERE seatID != 'null' and seatRent = 1";
+	         
+	         String del_res = "UPDATE seat SET seatID = null, seatRent = 0 WHERE seatNum = ? and seatRent = 1";
+	         
+	         PreparedStatement pstmt = null; //sql 실행
+	         PreparedStatement pstmt1 = null; //reset 실행
+             
+	         try {
+	        	 	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+	        	 	String seatnum = seat_btn[i].getText();
+	        	 	pstmt = conn.prepareStatement(sql); //sql 실행
+	        	 	pstmt.setString(1, seatnum);
+	        	 	ResultSet rs = pstmt.executeQuery(); //sql 실행 결과
+
+                    pstmt1 = conn.prepareStatement(reset); //reset 실행
+                    
+	        	 	while(rs.next()) {
+	        	 		if(rs.getString("seatRent").equals("1")) //좌석 대여 여부 1일 경우
+	        	 		{
+	        	 			seat_btn[i].setContentAreaFilled(true);
+	        	 			
+	        	 			Timestamp curr = new Timestamp(System.currentTimeMillis()); //현재시간 구하는 timestamp
+                     	   
+	        	 			String start = sdf.format(rs.getTime("seatStart")); //시작시간
+	        	 			String currtime = sdf.format(curr); //현재시간
+	        	 			String end = sdf.format(rs.getTime("seatEnd")); //종료시간
+	        	 			
+	        	 			Date t_start = sdf.parse(start);
+	        	 			Date t_curr = sdf.parse(currtime);
+	        	 			Date t_end = sdf.parse(end);
+	        	 			
+	        	 			long timeMil1 = t_start.getTime(); 
+	        	 			long timec = t_curr.getTime();
+	        	 			long timeMil2 = t_end.getTime();
+	        	 			
+	        	 			//long diff = timeMil2 - timeMil1; //종료시간 - 시작시간(디비에 저장된 시간을 빼는 것으로 줄어들지 않고 남은시간 그대로)
+	        	 			long diff1 = timeMil2 - timec; //종료시간 - 현재시간(실시간으로 시간이 줄어듦) -> 남은 시간이 0시간 0분이 되면
+	        	 			
+	        	 			long diffMin = (diff1 / (1000 * 60)) % 60;
+	        	 			long diffHour = diff1 / (1000 * 60 * 60);	
+	        	 			
+	        	 			if(diffHour == 0 && diffMin == 0)
+	        	 			{
+	        	 				pstmt1.executeUpdate(); //reset 실행 결과
+	        	 				seat_btn[i].setContentAreaFilled(false);
+	        	 			}
+	        	 		}
+	               }
+	         	}
+	         	catch(Exception e) {
+	         		System.out.println(e.toString());
+	         	}
+	         
+	         seat_btn[i].addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	               
+	               PreparedStatement pstmt = null; //sql 실행
+	  	           PreparedStatement pstmt2 = null; //cancle_res 실행
+	  	         
+	               for(int i = 0; i < 30;i++)
+	               {
+	                  String seatnum = seat_btn[i].getText();
+	                  try {
+	                	  	pstmt = conn.prepareStatement(sql);
+	                        pstmt.setString(1, seatnum);
+	                        ResultSet rs = pstmt.executeQuery(); //sql 실행 결과
+	                        
+	                        pstmt2 = conn.prepareStatement(del_res); //cancle_res 실행
+	                        pstmt2.setString(1, seatnum);
+	                        
+	                        if(seat_btn[i].equals(e.getSource()))
+	                        {
+	                           while(rs.next()) {
+	                        	   int result = JOptionPane.showConfirmDialog(null, "좌석을 삭제 하시겠습니까?", 
+	                        			   "Confirm", JOptionPane.YES_NO_OPTION);
+	                        	   if(result == JOptionPane.YES_OPTION)
+	                        	   {
+	                        		   pstmt2.executeUpdate();
+	                        		   JOptionPane.showMessageDialog(null, "좌석이 삭제 되었습니다.");
+	                        		   seat_btn[i].setContentAreaFilled(false);
+	                        	   }
+	                        	   else
+	                        	   {
+	                        		   JOptionPane.showMessageDialog(null, "좌석 삭제에 실패하였습니다");
+	                        	   }
+	                           	}
+	                        }      
+	                  	}
+	                  	catch(Exception e1) {
+	                  		System.out.println(e1.toString());
+	                  	}
+	               	}
+	            }
+	         });
+		}
 		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new MainLogin(); //홈버튼을 누르면 첫 화면으로 이동
+				if(db.logout())
+				{
+					db.seatlogout(); // 아이디 삭제
+					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
+				}
+				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
 				setVisible(false);
 			}
 		});
