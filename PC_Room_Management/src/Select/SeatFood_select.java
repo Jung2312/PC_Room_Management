@@ -6,6 +6,7 @@ import Chat.InquiryPage;
 import Main.MainLogin;
 import Manager.manager_login;
 import User.QR_Login;
+import DB.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -21,7 +22,8 @@ public class SeatFood_select extends JFrame{
 		btn.setFocusPainted(false);
 		btn.setBounds(x, y, xsize+2, ysize+2); // 버튼 위치, 사이즈
 	}
-	
+
+	Database db = new Database();
 	public SeatFood_select() {
 		// 버튼
 		JButton home_btn = new JButton(new ImageIcon("./image/home_btn.png")); //홈버튼 생성
@@ -56,6 +58,11 @@ public class SeatFood_select extends JFrame{
 		//이벤트 처리 추가
 		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(db.logout())
+				{
+					db.seatlogout(); // 아이디 삭제
+					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
+				}
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
 				setVisible(false);
 			}

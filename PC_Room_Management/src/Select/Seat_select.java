@@ -136,6 +136,7 @@ public class Seat_select extends JFrame{
             	
             	else if(i % 2 != 0)
             	{
+            		System.out.println(cnt);
             		input_btn(seat_btn[i],330+cnt, 242, 92, 92);
                 	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
                 	seat_btn[i].setBackground(new Color(240, 240, 240));
@@ -157,6 +158,7 @@ public class Seat_select extends JFrame{
             	
             	else if(i % 2 != 0)
             	{
+            		System.out.println(cnt);
             		input_btn(seat_btn[i],330+cnt, 350, 92, 92);
                 	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
                 	seat_btn[i].setBackground(new Color(240, 240, 240));
@@ -178,6 +180,7 @@ public class Seat_select extends JFrame{
             	
             	else if(i % 2 != 0)
             	{
+            		System.out.println(cnt);
             		input_btn(seat_btn[i],330+cnt, 460, 92, 92);
                 	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
                 	seat_btn[i].setBackground(new Color(240, 240, 240));;
@@ -199,6 +202,7 @@ public class Seat_select extends JFrame{
             	
             	else if(i % 2 != 0)
             	{
+            		System.out.println(cnt);
             		input_btn(seat_btn[i],330+cnt, 570, 92, 92);
                 	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
                 	seat_btn[i].setBackground(new Color(240, 240, 240));
@@ -218,19 +222,11 @@ public class Seat_select extends JFrame{
 		//이벤트 처리 추가
 		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					conn.close();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
 				if(db.logout())
 				{
 					db.seatlogout(); // 아이디 삭제
 					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
 				}
-				db.dbclose();
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
 				setVisible(false);
 			}
@@ -238,13 +234,6 @@ public class Seat_select extends JFrame{
 
 		user_inquiry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					conn.close();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				db.dbclose();
 				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
 				setVisible(false);
 			}
@@ -253,13 +242,6 @@ public class Seat_select extends JFrame{
 		setting_icon.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				try {
-					conn.close();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				db.dbclose();
 				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
 				setVisible(false);
 			}	
@@ -269,7 +251,7 @@ public class Seat_select extends JFrame{
 	         String sql = "SELECT seatRent, seatNum, seatStart, seatEnd, seatID FROM seat WHERE seatNum = ?";
 	         
 			//예약 되어있는 좌석 user에서 seat로 아이디 전송(확인용) => 이미 렌트 되어있는 것에 아이디 전송하는 것이므로  좌석 선택에서는 로그인체크 = 1, 대여여부 = 0인 것(udid2)만 아이디 넘겨주면 될 것 같음
-	         String udid = "UPDATE seat SET seatID = (SELECT userID FROM user WHERE loginCheck = 1) WHERE seatRent = 1";
+	         //String udid = "UPDATE seat SET seatID = (SELECT userID FROM user WHERE loginCheck = 1) WHERE seatRent = 1";
 	         String udid2 = "UPDATE seat SET seatID = (SELECT userID FROM user WHERE loginCheck = 1) WHERE seatRent = 0 and seatNum = ?";
 	         
 	         String reset = "UPDATE seat SET seatID = null, seatStart = null, seatEnd = null, seatRent = 0 WHERE seatID != 'null' and seatRent = 1";
@@ -285,7 +267,7 @@ public class Seat_select extends JFrame{
 	        	 	pstmt.setString(1, seat_num);
 	        	 	ResultSet rs = pstmt.executeQuery(); //sql 실행 결과
 
-	        	 	pstmt1 = conn.prepareStatement(udid); //udid 실행
+	        	 	//pstmt1 = conn.prepareStatement(udid); //udid 실행
 
                     pstmt3 = conn.prepareStatement(reset);
                     
@@ -312,7 +294,7 @@ public class Seat_select extends JFrame{
 	        	 			long diffMin = (diff1 / (1000 * 60)) % 60;
 	        	 			long diffHour = diff1 / (1000 * 60 * 60);	
 	        	    		
-	        	 			pstmt1.executeUpdate(); //udid실행 결과
+	        	 			//pstmt1.executeUpdate(); //udid실행 결과
 	        	 			seat_btn[i].setContentAreaFilled(true);
 	        	 			
 	        	 			if(diffHour == 0 && diffMin == 0)
