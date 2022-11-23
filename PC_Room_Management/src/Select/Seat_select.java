@@ -136,7 +136,6 @@ public class Seat_select extends JFrame{
             	
             	else if(i % 2 != 0)
             	{
-            		System.out.println(cnt);
             		input_btn(seat_btn[i],330+cnt, 242, 92, 92);
                 	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
                 	seat_btn[i].setBackground(new Color(240, 240, 240));
@@ -158,7 +157,6 @@ public class Seat_select extends JFrame{
             	
             	else if(i % 2 != 0)
             	{
-            		System.out.println(cnt);
             		input_btn(seat_btn[i],330+cnt, 350, 92, 92);
                 	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
                 	seat_btn[i].setBackground(new Color(240, 240, 240));
@@ -180,7 +178,6 @@ public class Seat_select extends JFrame{
             	
             	else if(i % 2 != 0)
             	{
-            		System.out.println(cnt);
             		input_btn(seat_btn[i],330+cnt, 460, 92, 92);
                 	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
                 	seat_btn[i].setBackground(new Color(240, 240, 240));;
@@ -202,7 +199,6 @@ public class Seat_select extends JFrame{
             	
             	else if(i % 2 != 0)
             	{
-            		System.out.println(cnt);
             		input_btn(seat_btn[i],330+cnt, 570, 92, 92);
                 	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
                 	seat_btn[i].setBackground(new Color(240, 240, 240));
@@ -222,11 +218,19 @@ public class Seat_select extends JFrame{
 		//이벤트 처리 추가
 		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					conn.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 				if(db.logout())
 				{
 					db.seatlogout(); // 아이디 삭제
 					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
 				}
+				db.dbclose();
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
 				setVisible(false);
 			}
@@ -234,6 +238,13 @@ public class Seat_select extends JFrame{
 
 		user_inquiry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					conn.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				db.dbclose();
 				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
 				setVisible(false);
 			}
@@ -242,6 +253,13 @@ public class Seat_select extends JFrame{
 		setting_icon.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
+				try {
+					conn.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				db.dbclose();
 				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
 				setVisible(false);
 			}	

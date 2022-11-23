@@ -64,11 +64,7 @@ public class QR_Login extends JFrame{
 		//이벤트 처리 추가
 		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(db.logout())
-				{
-					db.seatlogout(); // 아이디 삭제
-					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
-				}
+				db.dbclose();
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
 				setVisible(false);
 			}
@@ -76,6 +72,7 @@ public class QR_Login extends JFrame{
 
 		user_inquiry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				db.dbclose();
 				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
 				setVisible(false);
 			}
@@ -84,6 +81,7 @@ public class QR_Login extends JFrame{
 		setting_icon.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
+				db.dbclose();
 				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
 				setVisible(false);
 			}
@@ -100,6 +98,7 @@ public class QR_Login extends JFrame{
 		
 		cancle_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				db.dbclose();
 				new Login_QR_ID(); //취소 버튼을 누르면 로그인선택 페이지로 이동
 				setVisible(false);
 			}

@@ -343,6 +343,7 @@ public class Signin_frame extends JFrame{
 
 										System.out.println("회원가입 성공");
 										JOptionPane.showMessageDialog(null, "회원가입 성공!");
+										db.dbclose();
 										new Loginpage(); //회원가입 성공시 ID로그인 페이지로 이동
 										setVisible(false);
 									} 
@@ -366,11 +367,7 @@ public class Signin_frame extends JFrame{
 		
 		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(db.logout())
-				{
-					db.seatlogout(); // 아이디 삭제
-					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
-				}
+				db.dbclose();
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
 				setVisible(false);
 			}
@@ -378,6 +375,7 @@ public class Signin_frame extends JFrame{
 
 		user_inquiry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				db.dbclose();
 				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
 				setVisible(false);
 			}
@@ -386,6 +384,7 @@ public class Signin_frame extends JFrame{
 		setting_icon.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
+				db.dbclose();
 				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
 				setVisible(false);
 			}
@@ -394,6 +393,7 @@ public class Signin_frame extends JFrame{
 		
 		cancle_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				db.dbclose();
 				new MainLogin(); //취소 버튼을 누르면 로그인 페이지로 이동
 				setVisible(false);
 			}

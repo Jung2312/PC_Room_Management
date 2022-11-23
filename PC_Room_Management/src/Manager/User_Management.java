@@ -24,6 +24,8 @@ import DB.*;
 public class User_Management extends JFrame {
 	String db_id = null;
 	int row;
+	Connection conn = null;
+	Statement stmt = null;
 	Database db = new Database();
 	DefaultTableModel tableModel= null;
 	public static void input_btn(JButton btn, int x, int y, int xsize, int ysize) {
@@ -140,6 +142,13 @@ public class User_Management extends JFrame {
 					db.seatlogout(); // 아이디 삭제
 					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
 				}
+				try {
+					conn.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				db.dbclose();
 				new MainLogin(); //홈버튼을 누르면 첫 화면으로 이동
 				setVisible(false);
 			}
@@ -147,6 +156,13 @@ public class User_Management extends JFrame {
 		
 		user_management.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					conn.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				db.dbclose();
 				new User_Management(); //회원관리 버튼을 누르면 회원관리 페이지로 이동
 				setVisible(false);
 			}
@@ -154,6 +170,13 @@ public class User_Management extends JFrame {
 		
 		sales_check.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					conn.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				db.dbclose();
 				new Sales_Management(); //매출확인 버튼을 누르면 매출확인 페이지로 이동
 				setVisible(false);
 			}
@@ -161,6 +184,13 @@ public class User_Management extends JFrame {
 		
 		inquiry_check.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					conn.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				db.dbclose();
 				new inquiry_management(); //문의확인 버튼을 누르면 문의 확인 페이지로 이동
 				setVisible(false);
 			}
@@ -168,6 +198,13 @@ public class User_Management extends JFrame {
 		
 		setting_icon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					conn.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				db.dbclose();
 				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
 				setVisible(false);
 			}

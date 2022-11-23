@@ -8,12 +8,59 @@ import javax.swing.*;
 
 import Btn_Design.RoundedButton;
 import Chat.InquiryPage;
+import DB.Database;
 import Main.MainLogin;
 import Manager.manager_login;
 
 // 음식 선택
 public class Menu_select {
+	int won_check = 0;
+	int[] money = {2000,1800,4500,4000,2000,2400};
+	String salesName = null; // 상품명
+	String grade = null;
+	Database db = new Database();	
+	
+	public int pay_grade(int won) // 회원 등급에 따른 금액 추산
+	{
+		if(db.user_grade().equals("WHITE"))
+		{
+			int won2 = (int) (won * 0.01);
+			won_check = won - won2;
+		}
+		else if(db.user_grade().equals("SILVER"))
+		{
+			int won2 = (int) (won * 0.02);
+			won_check = won - won2;
+		}
+		else if(db.user_grade().equals("GOLD"))
+		{
+			int won2 = (int) (won * 0.04);
+			won_check = won - won2;
+		}
+		else if(db.user_grade().equals("VIP"))
+		{
+			int won2 = (int) (won * 0.05);
+			won_check = won - won2;
+		}
+		
+		else
+		{
+			won_check = won;
+		}
+		
+		return won_check;
+	}
+	
 	public Menu_select() {
+		grade = db.user_grade();
+		
+		int num = 0;
+		for(int i = 0; i < 6; i++)
+		{
+			money[i] = pay_grade(money[i]);
+		}
+		won_check = 0;
+		
 		JButton home = new JButton(new ImageIcon("image/home_btn.png")); //홈 버튼 할당
 		RoundedButton inquiry = new RoundedButton("문의"); //문의 버튼 할당
 		JButton setting = new JButton(new ImageIcon("image/setting_icon.png")); //설정 버튼 할당
@@ -21,7 +68,7 @@ public class Menu_select {
 		JButton paycancle = new JButton(); //결제 취소 버튼 할당
 		JButton[] wonbtn = new JButton[6]; //시간(가격)선택 버튼 할당
 
-		String[] won = {"2000원", "1800원", "4500원", "4000원", "2000원", "2400원"}; //라벨 내용
+		String[] won = {money[0] + "원", money[1]+"원", money[2]+"원", money[3]+"원", money[4]+"원", money[5]+"원"}; //라벨 내용
 		JLabel[] wonlabel = new JLabel[6]; //가격 라벨
 		JLabel paymentlabel = new JLabel("결제"); //결제창임을 알려주는 라벨
 		JLabel seltime = new JLabel("음식 선택"); //음식 선택 라벨
@@ -83,10 +130,11 @@ public class Menu_select {
 		{
 			wonbtn[i] = new JButton(); //음식 선택 버튼 초기화
 			wonbtn[i].setLocation(1045, 510); //음식 선택 버튼 위치
-			wonbtn[i].setBorderPainted(false); //음식 선택 버튼 테두리(외곽선) 없앰
+			wonbtn[i].setBorderPainted(true); //음식 선택 버튼 테두리(외곽선) 없앰
 			wonbtn[i].setFocusPainted(false); //음식 선택 버튼이 선택되었을 때 생기는 테두리 사용 안함
 			wonbtn[i].setContentAreaFilled(false); //음식 선택 버튼 영역 채우지 않음
 			frame.add(wonbtn[i]); //음식 선택 버튼 출력
+			wonbtn[i].setForeground(Color.BLACK);
 		}
 		wonbtn[0].setBounds(180, 200, 230, 150); //2000원 버튼 위치, 크기
 		wonbtn[1].setBounds(528, 200, 230, 150); //1800원 버튼 위치, 크기
@@ -95,7 +143,57 @@ public class Menu_select {
 		wonbtn[4].setBounds(180, 568, 230, 150); //2000원 버튼 위치, 크기
 		wonbtn[5].setBounds(528, 568, 230, 150); //2400원 버튼 위치, 크기
 		
-
+		
+		/* <-- 버튼마다 이벤트 추가 --> */
+		wonbtn[0].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				won_check = money[0];
+				salesName = "라면";
+			}
+		});
+		
+		wonbtn[1].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				won_check = money[1];
+				salesName = "과자";
+			}
+		});
+		
+		wonbtn[2].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				won_check = money[2];
+				salesName = "아이스티";
+			}
+		});
+		
+		wonbtn[3].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				won_check = money[3];
+				salesName = "아메리카노";
+			}
+		});
+		
+		wonbtn[4].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				won_check = money[4];
+				salesName = "사이다";
+			}
+		});
+		
+		wonbtn[5].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				won_check = money[5];
+				salesName = "콜라";
+			}
+		});
+		
+		
 		//라벨 설정
 		seltime.setFont(new Font("맑은 고딕", Font.BOLD, 40)); //음식 선택 라벨 글씨체, 굵기, 크기 설정
 		seltime.setSize(615, 55); //음식 선택 라벨 크기
@@ -134,6 +232,12 @@ public class Menu_select {
 		//이벤트 처리 추가
 		home.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(db.logout())
+				{
+					db.seatlogout(); // 아이디 삭제
+					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
+				}
+				db.dbclose();
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
 				frame.setVisible(false);
 			}
@@ -141,6 +245,7 @@ public class Menu_select {
 
 		inquiry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				db.dbclose();
 				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
 				frame.setVisible(false);
 			}
@@ -149,6 +254,7 @@ public class Menu_select {
 		setting.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
+				db.dbclose();
 				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
 				frame.setVisible(false);
 			}

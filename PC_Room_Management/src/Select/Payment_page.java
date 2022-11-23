@@ -165,7 +165,7 @@ public class Payment_page {
 		{
 			wonbtn[i] = new JButton(won[i]); //시간 선택 버튼 초기화
 			wonbtn[i].setLocation(1045, 510); //시간 선택 버튼 위치
-			wonbtn[i].setBorderPainted(false); //시간 선택 버튼 테두리(외곽선) 없앰
+			wonbtn[i].setBorderPainted(true); //시간 선택 버튼 테두리(외곽선) 없앰
 			wonbtn[i].setFocusPainted(false); //시간 선택 버튼이 선택되었을 때 생기는 테두리 사용 안함
 			wonbtn[i].setContentAreaFilled(false); //시간 선택 버튼 영역 채우지 않음
 			wonbtn[i].setHorizontalAlignment(SwingConstants.LEFT);
@@ -269,6 +269,7 @@ public class Payment_page {
 					db.seatlogout(); // 아이디 삭제
 					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
 				}
+				db.dbclose();
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
 				frame.setVisible(false);
 			}
@@ -276,6 +277,7 @@ public class Payment_page {
 
 		inquiry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				db.dbclose();
 				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
 				frame.setVisible(false);
 			}
@@ -284,6 +286,7 @@ public class Payment_page {
 		setting.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
+				db.dbclose();
 				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
 				frame.setVisible(false);
 			}
@@ -310,6 +313,7 @@ public class Payment_page {
 							db.manager_price("좌석 결제", sn, won_check);
 							db.user_price(won_check);
 							JOptionPane.showMessageDialog(null, "결제 완료되었습니다.");
+							db.dbclose();
 							new SeatFood_select();
 							frame.setVisible(false);
 						}
@@ -329,6 +333,7 @@ public class Payment_page {
 		paycancle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
+				db.dbclose();
 				new Seat_select();
 				frame.setVisible(false);
 			}

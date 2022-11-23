@@ -1,7 +1,7 @@
 package Manager;
 
 
-import javax.swing.*;	
+import javax.swing.*;		
 
 import Btn_Design.RoundedButton4;
 import Main.MainLogin;
@@ -11,8 +11,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.Date;
 	
 // 관리자 로그인시 들어오는 첫 화면(좌석 확인)
 public class Manager_menu extends JFrame{
@@ -135,7 +136,6 @@ public class Manager_menu extends JFrame{
 		            	
 		        else if(i % 2 != 0)
 		        {
-		            System.out.println(cnt);
 		            input_btn(seat_btn[i],330+cnt, 242, 92, 92);
 		            seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
 		            seat_btn[i].setBackground(new Color(240, 240, 240));
@@ -157,7 +157,6 @@ public class Manager_menu extends JFrame{
 		            	
 		        else if(i % 2 != 0)
 		        {
-		            System.out.println(cnt);
 		            input_btn(seat_btn[i],330+cnt, 350, 92, 92);
 		            seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
 		            seat_btn[i].setBackground(new Color(240, 240, 240));
@@ -179,7 +178,6 @@ public class Manager_menu extends JFrame{
 		            	
 		        else if(i % 2 != 0)
 		        {
-		            System.out.println(cnt);
 		            input_btn(seat_btn[i],330+cnt, 460, 92, 92);
 		            seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
 		            seat_btn[i].setBackground(new Color(240, 240, 240));;
@@ -201,7 +199,6 @@ public class Manager_menu extends JFrame{
 		            	
 		        else if(i % 2 != 0)
 		        {
-		            System.out.println(cnt);
 		            input_btn(seat_btn[i],330+cnt, 570, 92, 92);
 		            seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
 		            seat_btn[i].setBackground(new Color(240, 240, 240));
@@ -331,6 +328,7 @@ public class Manager_menu extends JFrame{
 				 }catch (SQLException e1) {
 					 e1.printStackTrace();
 				 }
+				db.dbclose();
 				new MainLogin(); //홈버튼을 누르면 첫 화면으로 이동
 				setVisible(false);
 			}
@@ -338,8 +336,7 @@ public class Manager_menu extends JFrame{
 		
 		user_management.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new User_Management(); //회원관리 버튼을 누르면 회원관리 페이지로 이동
-				setVisible(false);
+				
 				try {
 					 if(conn != null) {
 						 conn.close();
@@ -348,13 +345,15 @@ public class Manager_menu extends JFrame{
 				 }catch (SQLException e1) {
 					 e1.printStackTrace();
 				 }
+				db.dbclose();
+				new User_Management(); //회원관리 버튼을 누르면 회원관리 페이지로 이동
+				setVisible(false);
 			}
 		});
 		
 		sales_check.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new Sales_Management(); //매출확인 버튼을 누르면 매출확인 페이지로 이동
-				setVisible(false);
+				
 				try {
 					 if(conn != null) {
 						 conn.close();
@@ -363,13 +362,15 @@ public class Manager_menu extends JFrame{
 				 }catch (SQLException e1) {
 					 e1.printStackTrace();
 				 }
+				db.dbclose();
+				new Sales_Management(); //매출확인 버튼을 누르면 매출확인 페이지로 이동
+				setVisible(false);
 			}
 		});
 		
 		inquiry_check.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new inquiry_management(); //문의확인 버튼을 누르면 문의 확인 페이지로 이동
-				setVisible(false);
+				
 				try {
 					 if(conn != null) {
 						 conn.close();
@@ -378,6 +379,9 @@ public class Manager_menu extends JFrame{
 				 }catch (SQLException e1) {
 					 e1.printStackTrace();
 				 }
+				db.dbclose();
+				new inquiry_management(); //문의확인 버튼을 누르면 문의 확인 페이지로 이동
+				setVisible(false);
 			}
 		});
 		
@@ -393,6 +397,9 @@ public class Manager_menu extends JFrame{
 				 }catch (SQLException e1) {
 					 e1.printStackTrace();
 				 }
+				db.dbclose();
+				new manager_login(); //설정 버튼을 누르면 메인 로그인 페이지로 이동
+				setVisible(false);
 			}
 		});
 		

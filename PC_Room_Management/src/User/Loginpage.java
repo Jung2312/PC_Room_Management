@@ -133,11 +133,7 @@ public class Loginpage {
 		//이벤트 처리 추가
 		home.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(db.logout())
-				{
-					db.seatlogout(); // 아이디 삭제
-					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
-				}
+				db.dbclose();
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
 				frame.setVisible(false);
 			}
@@ -146,6 +142,7 @@ public class Loginpage {
 		setting.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
+				db.dbclose();
 				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
 				frame.setVisible(false);
 			}
@@ -154,6 +151,7 @@ public class Loginpage {
 
 		inquiry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				db.dbclose();
 				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
 				frame.setVisible(false);
 			}
@@ -161,6 +159,7 @@ public class Loginpage {
 		
 		searchbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				db.dbclose();
 				new SearchIDPW(); //아이디 찾기를 누를시 아이디 찾는 페이지로 이동
 				frame.setVisible(false);
 			}
@@ -190,6 +189,7 @@ public class Loginpage {
 						if(db.logincheck(uid, upass)) {	
 							System.out.println("로그인 성공");
 							JOptionPane.showMessageDialog(null, "로그인에 성공하였습니다");
+							db.dbclose();
 							new SeatFood_select(); //로그인 성공시 자리배치 페이지로 이동
 							frame.setVisible(false);
 						} else {
@@ -203,6 +203,7 @@ public class Loginpage {
 		
 		cancle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				db.dbclose();
 				new Login_QR_ID(); //취소 버튼을 누르면 로그인선택 페이지로 이동
 				frame.setVisible(false);
 			}
