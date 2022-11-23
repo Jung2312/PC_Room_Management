@@ -303,15 +303,13 @@ public class Signin_frame extends JFrame{
 				System.out.println(uemail);
 				System.out.println(uyear);
 				
-				LocalDate current_date = LocalDate.now();
-				int uage = (current_date.getYear() - (int)yearCombo.getSelectedItem()) + 1;
 				
 								
 				/* 가입하기 버튼 이벤트 */
 				// 실패하면 무조건 프로그램이 꺼짐 -> 수정 요망 계속 켜져있도록 해야함
 				if(b.getText().equals("확인")) {
 					if(uid.equals("") || upass.equals("") || uname.equals("") || uphone.equals("") && ucard.equals("")
-		                     || uemail.equals("") || uyear.equals("") || (uage == 0))
+		                     || uemail.equals("") || uyear.equals(""))
 					{
 						JOptionPane.showMessageDialog(null, "모든 정보를 기입해주세요", "회원가입 실패", JOptionPane.ERROR_MESSAGE);
 						System.out.println("회원가입 실패 > 회원정보 미입력");
@@ -339,7 +337,7 @@ public class Signin_frame extends JFrame{
 							
 							else
 							{
-								if(db.joinCheck(uid, upass, uname, uage, uemail, ucard, Birthcheck(uyear, monthCombo.getSelectedItem().toString() , dayCombo.getSelectedItem().toString()), uphone)) {
+								if(db.joinCheck(uid, upass, uname, uemail, ucard, Birthcheck(uyear, monthCombo.getSelectedItem().toString() , dayCombo.getSelectedItem().toString()), uphone)) {
 
 										System.out.println("회원가입 성공");
 										JOptionPane.showMessageDialog(null, "회원가입 성공!");

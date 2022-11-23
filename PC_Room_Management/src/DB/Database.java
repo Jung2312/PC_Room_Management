@@ -60,7 +60,7 @@ public class Database {
 	}
 	
 	/* 회원가입 메소드 */
-	public boolean joinCheck(String _i, String _p, String _n, int _a, String _e, String _c, String _b, String _h) {
+	public boolean joinCheck(String _i, String _p, String _n, String _e, String _c, String _b, String _h) {
 		boolean flag = false;
 		
 		String id = _i;
@@ -70,10 +70,9 @@ public class Database {
 		String phone = _h;
 		String card = _c;
 		String email = _e;
-		int age = _a;
 		
 		try {
-			String insertStr = "INSERT INTO user VALUES('" + id + "', '" + pw + "', '" + name + "', '" + age + "','" + email + "', '" 
+			String insertStr = "INSERT INTO user VALUES('" + id + "', '" + pw + "', '" + name + "', '"  + email + "', '" 
 					+ card + "', '" + birth + "', '" + phone + "', '" + "0" + "', '" + "0" + "')";
 			stmt.executeUpdate(insertStr);
 				
