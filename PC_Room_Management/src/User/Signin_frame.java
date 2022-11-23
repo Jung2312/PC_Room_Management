@@ -308,7 +308,7 @@ public class Signin_frame extends JFrame{
 				/* 가입하기 버튼 이벤트 */
 				// 실패하면 무조건 프로그램이 꺼짐 -> 수정 요망 계속 켜져있도록 해야함
 				if(b.getText().equals("확인")) {
-					if(uid.equals("") || upass.equals("") || uname.equals("") || uphone.equals("") && ucard.equals("")
+					if(uid.equals("") || upass.equals("") || uname.equals("") || uphone.equals("") || ucard.equals("")
 		                     || uemail.equals("") || uyear.equals(""))
 					{
 						JOptionPane.showMessageDialog(null, "모든 정보를 기입해주세요", "회원가입 실패", JOptionPane.ERROR_MESSAGE);
