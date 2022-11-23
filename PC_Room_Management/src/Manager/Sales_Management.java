@@ -57,10 +57,8 @@ public class Sales_Management extends JFrame{
 		 }
 		 
 		String[] colName = { "날짜", "상품명","상품금액", "총매출액"}; //회원 정보를 나타낼 열 값
-		String[][] Info = {
-				{"2022-10-23", "라면", "200000"},
-				{"2022-10-23", "라면", "202000"},
-		};
+		int num = db_amount();
+		String[][] Info = new String[num][4];
 		sales_check(Info);
 		
 		DefaultTableModel sales = new DefaultTableModel(Info, colName)
