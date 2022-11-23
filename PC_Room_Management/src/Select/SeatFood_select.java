@@ -6,7 +6,7 @@ import Chat.InquiryPage;
 import Main.MainLogin;
 import Manager.manager_login;
 import User.QR_Login;
-import DB.Database;
+import DB.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
