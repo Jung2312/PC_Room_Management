@@ -322,6 +322,18 @@ public class Database {
 		return deleteCount;
 	}
 	
-	
+	// 디비 클로즈
+		public void dbclose()
+		{
+		
+			try {
+				con.close();
+				stmt.close();
+				
+			} catch(Exception e) {
+				System.out.println("실패 > " + e.toString());
+			}
+				
+		}
 
 }

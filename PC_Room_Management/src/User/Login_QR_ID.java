@@ -84,11 +84,6 @@ public class Login_QR_ID {
 		//이벤트 처리 추가
 		home.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(db.logout())
-				{
-					db.seatlogout(); // 아이디 삭제
-					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
-				}
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
 				frame.setVisible(false);
 			}

@@ -147,6 +147,12 @@ public class SearchIDPW {
 			            	if(rs.next())
 				            {
 					            JOptionPane.showMessageDialog(null, "비밀번호는 " + rs.getString("userPassword")+ "입니다."); // 데이터가 있는 경우 레이블에 비밀번호 출력
+					            try {
+									conn.close();
+								} catch (SQLException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
 					            new Loginpage();
 					            frame.setVisible(false);
 				            }
@@ -165,6 +171,12 @@ public class SearchIDPW {
 		
 		backbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					conn.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				new Loginpage(); //뒤로 버튼을 누를시 로그인 페이지로 이동
 				frame.setVisible(false);
 			}
