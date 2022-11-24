@@ -9,9 +9,9 @@ public class Database {
 	  // 서버 이름
 	// 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
 	 
-	String url = "url";	
-	String user = "name";
-	String passwd = "pw";		//본인이 설정한 root 계정의 비밀번호를 입력하면 된다.
+	String url = "url.";	
+	String user = "id.";
+	String passwd = "pw.";		//본인이 설정한 root 계정의 비밀번호를 입력하면 된다.
 	
 	public Database() {	//데이터베이스에 연결한다.
 		try {
@@ -72,9 +72,18 @@ public class Database {
 		String email = _e;
 		
 		try {
-			String insertStr = "INSERT INTO user VALUES('" + id + "', '" + pw + "', '" + name + "', '"  + email + "', '" 
-					+ card + "', '" + birth + "', '" + phone + "', '" + "0" + "', '" + "0" + "')";
-			stmt.executeUpdate(insertStr);
+			String insertStr = "INSERT INTO user (userID, userPassword, userName, userBrith,"
+					+ "userPhone, cardNum, userEmail) VALUES (?, ?, ?, ?, ?, ?, ?)";
+			
+			PreparedStatement pstmt = con.prepareStatement(insertStr);
+			pstmt.setString(1, id);
+			pstmt.setString(2, pw);
+			pstmt.setString(3, name);
+			pstmt.setString(4, birth);
+			pstmt.setString(5, phone);
+			pstmt.setString(6, card);
+			pstmt.setString(7, email);
+			pstmt.executeUpdate();
 				
 			flag = true;
 			System.out.println("회원가입 성공");
@@ -89,15 +98,17 @@ public class Database {
 	/* 아이디 중복 메소드 */
 	public boolean findExistID(String id)
 	 {
-		String sql = "SELECT userID from user";
+		String sql = "SELECT userID from user where userID = ?";
 		try {
 			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
 				if (rs.getString("userID").equals(id)) {
 						return true;
 					}
-				}	
+				}
+				
 		 	} catch (SQLException e) {
 		 		e.printStackTrace();
 		 	} 	 	

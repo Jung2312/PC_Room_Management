@@ -58,6 +58,7 @@ public class Seat_select extends JFrame{
 			 System.exit(0);
 		 }
 		
+		int num = seat_check();
 		int cnt = 0;
 		String[] btn_Title = { "1", "2", "3",
 	            "4", "5", "6", "7", "8", "9","10", "11", "12", 
@@ -84,6 +85,10 @@ public class Seat_select extends JFrame{
 		RoundedButton cancle_btn = new RoundedButton("취소"); // 취소 버튼
 		input_btn(cancle_btn, 690, 720, 120, 30);
 		add(cancle_btn); // 프레임에 버튼을 붙임
+		
+		/* <-- 레이블 설정 --> */
+		JLabel seat = new JLabel("남는 좌석: " + num + "/30");
+		
 		
 		// 좌석 버튼
 		JButton[] seat_btn = new JButton[30];
@@ -136,7 +141,6 @@ public class Seat_select extends JFrame{
             	
             	else if(i % 2 != 0)
             	{
-            		System.out.println(cnt);
             		input_btn(seat_btn[i],330+cnt, 242, 92, 92);
                 	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
                 	seat_btn[i].setBackground(new Color(240, 240, 240));
@@ -158,7 +162,6 @@ public class Seat_select extends JFrame{
             	
             	else if(i % 2 != 0)
             	{
-            		System.out.println(cnt);
             		input_btn(seat_btn[i],330+cnt, 350, 92, 92);
                 	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
                 	seat_btn[i].setBackground(new Color(240, 240, 240));
@@ -180,7 +183,6 @@ public class Seat_select extends JFrame{
             	
             	else if(i % 2 != 0)
             	{
-            		System.out.println(cnt);
             		input_btn(seat_btn[i],330+cnt, 460, 92, 92);
                 	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
                 	seat_btn[i].setBackground(new Color(240, 240, 240));;
@@ -202,7 +204,6 @@ public class Seat_select extends JFrame{
             	
             	else if(i % 2 != 0)
             	{
-            		System.out.println(cnt);
             		input_btn(seat_btn[i],330+cnt, 570, 92, 92);
                 	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
                 	seat_btn[i].setBackground(new Color(240, 240, 240));
@@ -222,11 +223,19 @@ public class Seat_select extends JFrame{
 		//이벤트 처리 추가
 		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					conn.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 				if(db.logout())
 				{
 					db.seatlogout(); // 아이디 삭제
 					JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
 				}
+				db.dbclose();
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
 				setVisible(false);
 			}
@@ -234,6 +243,13 @@ public class Seat_select extends JFrame{
 
 		user_inquiry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					conn.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				db.dbclose();
 				new InquiryPage(); //문의 버튼을 누르면 문의 페이지로 이동
 				setVisible(false);
 			}
@@ -242,6 +258,13 @@ public class Seat_select extends JFrame{
 		setting_icon.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
+				try {
+					conn.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				db.dbclose();
 				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
 				setVisible(false);
 			}	
@@ -251,7 +274,7 @@ public class Seat_select extends JFrame{
 	         String sql = "SELECT seatRent, seatNum, seatStart, seatEnd, seatID FROM seat WHERE seatNum = ?";
 	         
 			//예약 되어있는 좌석 user에서 seat로 아이디 전송(확인용) => 이미 렌트 되어있는 것에 아이디 전송하는 것이므로  좌석 선택에서는 로그인체크 = 1, 대여여부 = 0인 것(udid2)만 아이디 넘겨주면 될 것 같음
-	         //String udid = "UPDATE seat SET seatID = (SELECT userID FROM user WHERE loginCheck = 1) WHERE seatRent = 1";
+	         String udid = "UPDATE seat SET seatID = (SELECT userID FROM user WHERE loginCheck = 1) WHERE seatRent = 1";
 	         String udid2 = "UPDATE seat SET seatID = (SELECT userID FROM user WHERE loginCheck = 1) WHERE seatRent = 0 and seatNum = ?";
 	         
 	         String reset = "UPDATE seat SET seatID = null, seatStart = null, seatEnd = null, seatRent = 0 WHERE seatID != 'null' and seatRent = 1";
@@ -267,7 +290,7 @@ public class Seat_select extends JFrame{
 	        	 	pstmt.setString(1, seat_num);
 	        	 	ResultSet rs = pstmt.executeQuery(); //sql 실행 결과
 
-	        	 	//pstmt1 = conn.prepareStatement(udid); //udid 실행
+	        	 	pstmt1 = conn.prepareStatement(udid); //udid 실행
 
                     pstmt3 = conn.prepareStatement(reset);
                     
@@ -294,7 +317,7 @@ public class Seat_select extends JFrame{
 	        	 			long diffMin = (diff1 / (1000 * 60)) % 60;
 	        	 			long diffHour = diff1 / (1000 * 60 * 60);	
 	        	    		
-	        	 			//pstmt1.executeUpdate(); //udid실행 결과
+	        	 			pstmt1.executeUpdate(); //udid실행 결과
 	        	 			seat_btn[i].setContentAreaFilled(true);
 	        	 			
 	        	 			if(diffHour == 0 && diffMin == 0)
@@ -393,6 +416,23 @@ public class Seat_select extends JFrame{
 		setLocationRelativeTo(null); //창 모니터 가운데 정렬
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // x를 누를 경우 종료
 		getContentPane().setBackground(Color.WHITE); // 프레임 bg color
+	}
+	
+	
+	public int seat_check() {
+		String sql = "select count(*) from seat where seatRent = 0;";
+		PreparedStatement pstmt = null;
+		int count = 0;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+		} catch (Exception e) {
+            System.out.println("select 메서드 예외발생");
+        }
+		return count;
 	}
 	
 	public static void main(String[] args) {

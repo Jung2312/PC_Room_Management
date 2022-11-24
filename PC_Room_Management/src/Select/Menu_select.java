@@ -3,6 +3,7 @@ package Select;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 
 import javax.swing.*;
 
@@ -259,6 +260,48 @@ public class Menu_select {
 				frame.setVisible(false);
 			}
 			
+		});
+		
+		paycancle.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				new SeatFood_select(); //취소 버튼을 누르면 전 페이지로 이동
+				frame.setVisible(false);
+			}
+			
+		});
+		
+		payment.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(won_check == 0) // 금액 버튼을 선택 안 한 경우
+				{
+					JOptionPane.showMessageDialog(null, "상품을 선택하세요.");
+				}		
+				else
+				{
+					int qut_data = JOptionPane.showConfirmDialog(null, "음식을 결제하시겠습니까??","주문내역", 
+							JOptionPane.YES_NO_OPTION);
+					if(qut_data == 0) { //[예] 버튼
+						LocalDate now = LocalDate.now();
+						String sn = now.toString();
+						db.manager_price(salesName, sn, won_check);
+						db.user_price(won_check);
+						JOptionPane.showMessageDialog(null, "결제되었습니다."+"\n"+"[주문내역]\n"+salesName+":"+won_check);
+						db.dbclose();
+						new SeatFood_select();
+						frame.setVisible(false);
+					}
+					else if(qut_data == 1) { //[아니오] 버튼
+						JOptionPane.showMessageDialog(null, "주문을 취소했습니다.");
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "결제를 실패했습니다.");
+					}
+				}	
+			}		
 		});
 				
 		//프레임 설정
