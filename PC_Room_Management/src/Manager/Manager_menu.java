@@ -51,17 +51,22 @@ public class Manager_menu extends JFrame{
 			 System.exit(0);
 		 }
 		
+		int num = seat_check();
+		
 		int cnt = 0;
 		String[] btn_Title = { "1", "2", "3",
 	            "4", "5", "6", "7", "8", "9","10", "11", "12", 
 				"13", "14","15", "16", "17", "18", "19","20", "21", "22", "23", "24",
 				 "25","26", "27", "28", "29","30"}; // 버튼 이름 배열
 		
-		int seat = 0;
-		JLabel seat_num = new JLabel("남은 좌석 " + seat + "/" + 30); 
-		seat_num.setBounds(334, 80, 200, 30);
-		seat_num.setFont(new Font("맑은 고딕", Font.BOLD, 20)); // 폰트
-		add(seat_num);
+		
+		/* <-- 레이블 설정 --> */
+		JLabel seat = new JLabel("남는 좌석: " + num + "/30");
+		/* <-- 레이블 위치 조정 --> */		
+		seat.setFont(new Font("맑은 고딕", Font.BOLD, 20)); //결제 라벨 글씨체, 굵기, 크기 설정
+		seat.setSize(615, 55); //결제 라벨 크기
+		seat.setLocation(330, 95); //결제 라벨 위치
+		add(seat); //결제 라벨 출력
 	
 		JButton home_btn = new JButton(new ImageIcon("./image/home_btn.png")); //홈버튼 생성
 		input_btn(home_btn, 20, 20, 40, 40);
@@ -372,6 +377,23 @@ public class Manager_menu extends JFrame{
 		getContentPane().setBackground(Color.WHITE); // 프레임 bg color
 	
 	}
+	
+	public int seat_check() {
+		String sql = "select count(*) from seat where seatRent = 0;";
+		PreparedStatement pstmt = null;
+		int count = 0;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+		} catch (Exception e) {
+            System.out.println("select 메서드 예외발생");
+        }
+		return count;
+	}
+	
 	public static void main(String[] args) {
 		new Manager_menu();
 

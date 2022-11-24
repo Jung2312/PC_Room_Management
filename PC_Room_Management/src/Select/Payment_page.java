@@ -163,10 +163,10 @@ public class Payment_page {
 	
 		for(int i = 0; i < 6; i++) //시간 선택 버튼
 		{
-			wonbtn[i] = new JButton(won[i]); //시간 선택 버튼 초기화
+			wonbtn[i] = new JButton(); //시간 선택 버튼 초기화
 			wonbtn[i].setLocation(1045, 510); //시간 선택 버튼 위치
 			wonbtn[i].setBorderPainted(true); //시간 선택 버튼 테두리(외곽선) 없앰
-			wonbtn[i].setFocusPainted(false); //시간 선택 버튼이 선택되었을 때 생기는 테두리 사용 안함
+			wonbtn[i].setFocusPainted(true); //시간 선택 버튼이 선택되었을 때 생기는 테두리 사용 안함
 			wonbtn[i].setContentAreaFilled(false); //시간 선택 버튼 영역 채우지 않음
 			wonbtn[i].setHorizontalAlignment(SwingConstants.LEFT);
 			wonbtn[i].setVerticalAlignment(SwingConstants.BOTTOM);
@@ -174,46 +174,7 @@ public class Payment_page {
 			wonbtn[i].setForeground(Color.BLACK);
 			frame.add(wonbtn[i]); //시간 선택 버튼 출력
 			
-			wonbtn[i].addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					switch(e.getActionCommand()){
-					
-					//TODO getActionCommand() 버튼의 텍스트를 얻어옵니다
-					case "1000원": 
-						pay_grade(1000);
-						payment(60);
-						break;
-						
-					case "2000원": 
-						pay_grade(2000);
-						payment(120);
-						break;
-						
-					case "3000원": 
-						pay_grade(3000);
-						payment( 180);
-						break;
-						
-					case "4000원": 
-						pay_grade(4000);
-						payment( 240);
-						break;	
-						
-					case "5000원": 
-						pay_grade(5000);
-						payment( 300);
-						break;	
-						
-					case "6000원": 
-						pay_grade(6000);
-						payment(360);
-						break;
-						
-					} 
-				}
-				
-			});
+		
 			
 		}
 		
@@ -224,6 +185,55 @@ public class Payment_page {
 		wonbtn[4].setBounds(180, 568, 230, 150); //5000원 버튼 위치, 크기
 		wonbtn[5].setBounds(528, 568, 230, 150); //8000원 버튼 위치, 크기
 		
+		/* <-- 버튼마다 이벤트 추가 --> */
+		wonbtn[0].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				won_check = money[0];
+				payment(60);
+			}
+		});
+		
+		wonbtn[1].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				won_check = money[1];
+				payment(120);
+			}
+		});
+		
+		wonbtn[2].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				won_check = money[2];
+				payment(180);
+			}
+		});
+		
+		wonbtn[3].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				won_check = money[3];
+				payment(240);
+			}
+		});
+		
+		wonbtn[4].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				won_check = money[4];
+				payment(300);
+			}
+		});
+		
+		wonbtn[5].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				won_check = money[5];
+				payment(360);
+			}
+		});
+
 
 		//라벨 설정
 		seltime.setFont(new Font("맑은 고딕", Font.BOLD, 40)); //시간 선택 라벨 글씨체, 굵기, 크기 설정
@@ -304,23 +314,30 @@ public class Payment_page {
 				
 				else
 				{
-					if(db.seatIDcheck() == true)
+					if(db.seatIDcheck())
 					{
-						LocalDate now = LocalDate.now();
-						String sn = now.toString();
-						if(db.timeselect(today, end, won_check, sn))
-						{
-							db.manager_price("좌석 결제", sn, won_check);
-							db.user_price(won_check);
-							JOptionPane.showMessageDialog(null, "결제 완료되었습니다.");
-							db.dbclose();
-							new SeatFood_select();
-							frame.setVisible(false);
+						int qut_data = JOptionPane.showConfirmDialog(null, "결제하시겠습니까?","좌석 결제", 
+								JOptionPane.YES_NO_OPTION);
+						if(qut_data == 0) { //[예] 버튼
+							LocalDate now = LocalDate.now();
+							String sn = now.toString();
+							if(db.timeselect(today, end, won_check, sn))
+							{
+								db.manager_price("좌석 결제", sn, won_check);
+								db.user_price(won_check);
+								JOptionPane.showMessageDialog(null, "결제되었습니다."+"\n"+"[주문내역]\n"+"좌석 결제"+":"+won_check);
+								db.dbclose();
+								new SeatFood_select();
+								frame.setVisible(false);
+							}
+						}
+						else if(qut_data == 1) { //[아니오] 버튼
+							JOptionPane.showMessageDialog(null, "결제를 취소했습니다.");
 						}
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, "결제가 실패했습니다.");
+						JOptionPane.showMessageDialog(null, "결제를 실패했습니다.");
 					}
 					
 				}
