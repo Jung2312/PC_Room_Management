@@ -45,8 +45,8 @@ public class inquiry_management extends JFrame{
 		 }
 		 try {
 			 conn = DriverManager.getConnection(
-					 "jdbc:mysql://localhost:3306/connectdb?serverTimezone=UTC"  // 서버 이름
-					 ,"root","ejqmftnld1!" // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
+					 "url"  // 서버 이름
+					 ,"root","pw" // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
 					 );
 			 System.out.println("데이터베이스 연결 성공");
 		 }catch (SQLException e) {
@@ -198,7 +198,7 @@ public class inquiry_management extends JFrame{
 		getContentPane().setBackground(Color.WHITE); // 프레임 bg color
 	}
 	public int db_amount() {
-		String sql = "select count(*) from inquiry where inquiry > 0;";
+		String sql = "select count(*) from manager where inquiry is not null;";
 		PreparedStatement pstmt = null;
 		int count = 0;
 		try {
@@ -214,7 +214,7 @@ public class inquiry_management extends JFrame{
 	}
 	
 	public void inquiry_check(String [][] a) {
-		String sql = "select day, inquiry, detailedInquiry from inquiry where inquiry > 0;";
+		String sql = "select day, inquiry, detailedInquiry from manager where inquiry is not null;";
         PreparedStatement pstmt = null;
         try {
             pstmt = conn.prepareStatement(sql);

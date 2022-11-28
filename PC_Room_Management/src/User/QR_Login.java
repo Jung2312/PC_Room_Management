@@ -6,6 +6,7 @@ import Btn_Design.RoundedButton;
 import Chat.InquiryPage;
 import Main.MainLogin;
 import Manager.manager_login;
+import Select.SeatFood_select;
 import DB.*;
 
 import java.awt.*;
@@ -90,9 +91,17 @@ public class QR_Login extends JFrame{
 		
 		ok_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// 확인을 눌렀을 경우 로그인 체크 여부가 1이 되어있는 데이터가 있는 경우에만 다음 화면으로
-				
-				// 전부 0인 경우 로그인 되지 않았다는 메세지 박스 출력
+				if(db.Qrcheck())
+				{
+					JOptionPane.showMessageDialog(null, "로그인 되었습니다.");
+					db.dbclose();
+					new SeatFood_select();
+					setVisible(false);
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "로그인 되지 않았습니다.", "로그인 실패", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		

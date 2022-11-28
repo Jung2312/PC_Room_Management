@@ -9,9 +9,9 @@ public class Database {
 	  // 서버 이름
 	// 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
 	 
-	String url = "url.";	
-	String user = "id.";
-	String passwd = "pw.";		//본인이 설정한 root 계정의 비밀번호를 입력하면 된다.
+	String url = "url";	
+	String user = "name";
+	String passwd = "pw";		//본인이 설정한 root 계정의 비밀번호를 입력하면 된다.
 	
 	public Database() {	//데이터베이스에 연결한다.
 		try {
@@ -21,6 +21,54 @@ public class Database {
 			System.out.println("MySQL 서버 연동 성공");
 		} catch(Exception e) {
 			System.out.println("MySQL 서버 연동 실패 > " + e.toString());
+		}
+	}
+	
+	
+	// qr 로그인
+	public boolean Qrcheck() {
+		boolean flag = false;
+		
+		
+		try {
+			String checkingStr = "SELECT loginCheck FROM user WHERE loginCheck = 1";
+			
+			ResultSet result = stmt.executeQuery(checkingStr);
+			
+			while(result.next()) {
+				if(result.getString("loginCheck") != null) {
+					flag = true;
+					System.out.println("로그인 성공");
+				}
+				
+				else {
+					flag = false;
+					System.out.println("로그인 실패");
+				}
+			}
+		} catch(Exception e) {
+			flag = false;
+			System.out.println("로그인 실패 > " + e.toString());
+		}
+		
+		return flag;
+	}
+	
+	
+	// 문의 추가
+	public void inquiryInput(String day, String btn_name, String detail)
+	{
+		try {
+			String insertStr = "INSERT INTO manager (day, inquiry, detailedInquiry) VALUES (?, ?, ?)";
+			PreparedStatement pstmt = con.prepareStatement(insertStr);
+			pstmt.setString(1, day);
+			pstmt.setString(2, btn_name);
+			pstmt.setString(3, detail);
+			pstmt.executeUpdate();
+			
+		} catch(Exception e) {
+			
+			System.out.println("전송 실패 > " + e.toString());
 		}
 	}
 

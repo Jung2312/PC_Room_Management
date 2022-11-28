@@ -1,16 +1,21 @@
 package Chat;
 
-import java.awt.*;	
+import java.awt.*;		
 import javax.swing.*;
 
 import Main.MainLogin;
 import Manager.manager_login;
 
 import java.awt.event.*;
+import java.time.LocalDate;
 
 import Btn_Design.*;
+import DB.Database;
 
 public class InquiryPage extends JFrame {
+	
+	Database db = new Database();
+	
 	public static void input_btn(JButton btn, int x, int y, int xsize, int ysize) {
 		// 버튼 생성 메소드
 		btn.setContentAreaFilled(false);
@@ -66,18 +71,22 @@ public class InquiryPage extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					switch(e.getActionCommand()) {
 					case "1. 결제 불가":
+						db.inquiryInput(LocalDate.now().toString(),"결제 문의","결제 불가");
 						in_label1.setText("결제가 안되는 경우");
 						in_label2.setText("재로그인 후 결제 해주세요");
 						break;
 					case "2. 카드 인식 불가":
+						db.inquiryInput(LocalDate.now().toString(),"결제 문의","카드 인식 불가");
 						in_label1.setText("카드를 리더기에 재접촉 하거나");
 						in_label2.setText("관리자를 호출 해주세요");
 						break;
 					case "3. 좌석 인식 불가":
+						db.inquiryInput(LocalDate.now().toString(),"결제 문의","좌석 인식 불가");
 						in_label1.setText("관리자를 호출 해주세요");
 						in_label2.setText("");
 						break;
 					case "4. 음식 결제 문의":
+						db.inquiryInput(LocalDate.now().toString(),"결제 문의","음식 결제 문의");
 						in_label1.setText("재로그인 후 음식 결제 창을 다시 열거나");
 						in_label2.setText("관리자를 호출 해주세요");
 						break;
@@ -117,18 +126,22 @@ public class InquiryPage extends JFrame {
 								public void actionPerformed(ActionEvent e) {
 									switch(e.getActionCommand()) {
 									case "1. 결제 불가":
+										db.inquiryInput(LocalDate.now().toString(),"결제 문의","결제 불가");
 										in_label1.setText("결제가 안되는 경우");
 										in_label2.setText("재로그인 후 결제 해주세요");
 										break;
 									case "2. 카드 인식 불가":
+										db.inquiryInput(LocalDate.now().toString(),"결제 문의","카드 인식 불가");
 										in_label1.setText("카드를 리더기에 재접촉 하거나");
 										in_label2.setText("관리자를 호출 해주세요");
 										break;
 									case "3. 좌석 인식 불가":
+										db.inquiryInput(LocalDate.now().toString(),"결제 문의","좌석 인식 불가");
 										in_label1.setText("관리자를 호출 해주세요");
 										in_label2.setText("");
 										break;
 									case "4. 음식 결제 문의":
+										db.inquiryInput(LocalDate.now().toString(),"결제 문의","음식 결제 문의");
 										in_label1.setText("재로그인 후 음식 결제 창을 다시 열거나");
 										in_label2.setText("관리자를 호출 해주세요");
 										break;
@@ -146,18 +159,22 @@ public class InquiryPage extends JFrame {
 								public void actionPerformed(ActionEvent e) {
 									switch(e.getActionCommand()) {
 										case "1. ID 로그인 불가":
+											db.inquiryInput(LocalDate.now().toString(),"로그인 문의","ID 로그인 불가");
 											in_label1.setText("아이디/비밀번호를 맞게 입력했는지 확인하거나");
 											in_label2.setText("관리자를 호출 해주세요");
 											break;
 										case "2. QR 로그인 불가":
+											db.inquiryInput(LocalDate.now().toString(),"로그인 문의","QR 로그인 불가");
 											in_label1.setText("QR 로그인 창을 다시 열거나");
 											in_label2.setText("관리자를 호출 해주세요");
 											break;
 										case "3. 아이디 찾기 문의":
+											db.inquiryInput(LocalDate.now().toString(),"로그인 문의","아이디 찾기 문의");
 											in_label1.setText("관리자를 호출 해주세요");
 											in_label2.setText("");
 											break;
 										case "4. 비밀번호 찾기 오류":
+											db.inquiryInput(LocalDate.now().toString(),"로그인 문의","비밀번호 찾기 오류");
 											in_label1.setText("아이디/전화번호를 맞게 입력했는지 확인하거나");
 											in_label2.setText("관리자를 호출 해주세요");
 											break;
@@ -175,18 +192,22 @@ public class InquiryPage extends JFrame {
 								public void actionPerformed(ActionEvent e) {
 									switch(e.getActionCommand()) {
 										case "1. 회원가입 오류":
+											db.inquiryInput(LocalDate.now().toString(),"회원가입 문의","회원가입 오류");
 											in_label1.setText("아이디 중복을 확인 해주시고");
 											in_label2.setText("비밀번호를 맞게 입력했는지 확인 해주세요");
 											break;
 										case "2. 회원가입 화면 오류":
+											db.inquiryInput(LocalDate.now().toString(),"회원가입 문의","회원가입 화면 오류");
 											in_label1.setText("관리자를 호출 해주세요");
 											in_label2.setText("");
 											break;
 										case "3. 회원정보 수정":
+											db.inquiryInput(LocalDate.now().toString(),"회원가입 문의","회원정보 수정");
 											in_label1.setText("관리자를 호출 해주세요");
 											in_label2.setText("");
 											break;
 										case "4. 회원탈퇴 문의":
+											db.inquiryInput(LocalDate.now().toString(),"회원가입 문의","회원탈퇴 문의");
 											in_label1.setText("회원 탈퇴 시 관리자를 호출 해주세요");
 											in_label2.setText("회원 탈퇴 시 회원 등급이 리셋됩니다");
 											break;
@@ -203,6 +224,7 @@ public class InquiryPage extends JFrame {
 							public void actionPerformed(ActionEvent e) {
 								switch(e.getActionCommand()) {
 								case "관리자 호출":
+									db.inquiryInput(LocalDate.now().toString(),"관리자 호출","관리자 호출");
 									in_label1.setText("관리자를 호출하였습니다");
 									in_label2.setText("잠시만 기다려주세요");
 									break;
@@ -218,6 +240,8 @@ public class InquiryPage extends JFrame {
 		//이벤트 처리 추가
 		home_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				db.logout();
+				db.dbclose();
 				new MainLogin(); //홈 버튼을 누르면 첫 화면으로 이동
 				setVisible(false);
 			}
@@ -226,6 +250,7 @@ public class InquiryPage extends JFrame {
 		setting_icon.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
+				db.dbclose();
 				new manager_login(); //설정 버튼을 누르면 관리자 로그인 페이지로 이동
 				setVisible(false);
 			}

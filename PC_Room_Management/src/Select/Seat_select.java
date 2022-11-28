@@ -144,7 +144,6 @@ public class Seat_select extends JFrame{
             	
             	else if(i % 2 != 0)
             	{
-            		System.out.println(cnt);
             		input_btn(seat_btn[i],330+cnt, 242, 92, 92);
                 	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
                 	seat_btn[i].setBackground(new Color(240, 240, 240));
@@ -166,7 +165,6 @@ public class Seat_select extends JFrame{
             	
             	else if(i % 2 != 0)
             	{
-            		System.out.println(cnt);
             		input_btn(seat_btn[i],330+cnt, 350, 92, 92);
                 	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
                 	seat_btn[i].setBackground(new Color(240, 240, 240));
@@ -188,7 +186,6 @@ public class Seat_select extends JFrame{
             	
             	else if(i % 2 != 0)
             	{
-            		System.out.println(cnt);
             		input_btn(seat_btn[i],330+cnt, 460, 92, 92);
                 	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
                 	seat_btn[i].setBackground(new Color(240, 240, 240));;
@@ -210,7 +207,6 @@ public class Seat_select extends JFrame{
             	
             	else if(i % 2 != 0)
             	{
-            		System.out.println(cnt);
             		input_btn(seat_btn[i],330+cnt, 570, 92, 92);
                 	seat_btn[i].setFont(new Font("맑은 고딕", Font.BOLD, 24));
                 	seat_btn[i].setBackground(new Color(240, 240, 240));
