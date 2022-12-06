@@ -46,7 +46,7 @@ public class inquiry_management extends JFrame{
 		 try {
 			 conn = DriverManager.getConnection(
 					 "url"  // 서버 이름
-					 ,"root","pw" // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
+					 ,"name","pw" // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
 					 );
 			 System.out.println("데이터베이스 연결 성공");
 		 }catch (SQLException e) {

@@ -44,8 +44,8 @@ public class SearchIDPW {
 		}
 		try {
 			 conn = DriverManager.getConnection(
-					 "@"  // 서버 이름
-					 ,"@","@" // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
+					 "url"  // 서버 이름
+					 ,"name","pw" // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
 					 );
 			 System.out.println("데이터베이스 연결 성공");
 		 }catch (SQLException e) {
