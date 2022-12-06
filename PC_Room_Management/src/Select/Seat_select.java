@@ -251,6 +251,14 @@ public class Seat_select extends JFrame{
 			}	
 		});
 		
+		cancle_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new SeatFood_select();
+				setVisible(false);
+			}
+		});
+		
+		
 		for(int i = 0; i < 30; i++) {
 	         String sql = "SELECT seatRent, seatNum, seatStart, seatEnd, seatID FROM seat WHERE seatNum = ?";
 	         

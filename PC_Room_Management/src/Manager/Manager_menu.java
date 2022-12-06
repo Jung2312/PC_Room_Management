@@ -28,6 +28,8 @@ public class Manager_menu extends JFrame{
 	
 	Connection conn = null; //DB 접속
 	Database db = new Database();
+	JLabel seat = null;
+	
 	public Manager_menu()
 	{
 		try {
@@ -61,7 +63,7 @@ public class Manager_menu extends JFrame{
 		
 		
 		/* <-- 레이블 설정 --> */
-		JLabel seat = new JLabel("남는 좌석: " + num + "/30");
+		seat = new JLabel("남는 좌석: " + num + "/30");
 		/* <-- 레이블 위치 조정 --> */		
 		seat.setFont(new Font("맑은 고딕", Font.BOLD, 20)); //결제 라벨 글씨체, 굵기, 크기 설정
 		seat.setSize(615, 55); //결제 라벨 크기
@@ -230,7 +232,7 @@ public class Manager_menu extends JFrame{
 	         
 	         String reset = "UPDATE seat SET seatID = null, seatStart = null, seatEnd = null, seatRent = 0 WHERE seatID != 'null' and seatRent = 1";
 	         
-	         String del_res = "UPDATE seat SET seatID = null, seatRent = 0, seatStart = null, seatEnd = null, WHERE seatNum = ? and seatRent = 1";
+	         String del_res = "UPDATE seat SET seatID = null, seatRent = 0, seatStart = null, seatEnd = null WHERE seatNum = ? and seatRent = 1";
 	         
 	         PreparedStatement pstmt = null; //sql 실행
 	         PreparedStatement pstmt1 = null; //reset 실행
@@ -239,10 +241,10 @@ public class Manager_menu extends JFrame{
 	        	 	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 	        	 	String seatnum = seat_btn[i].getText();
 	        	 	pstmt = conn.prepareStatement(sql); //sql 실행
-	        	 	pstmt.setString(1, seatnum);
+	        	 	pstmt.setInt(1, Integer.parseInt(seatnum));
 	        	 	ResultSet rs = pstmt.executeQuery(); //sql 실행 결과
 
-                 pstmt1 = conn.prepareStatement(reset); //reset 실행
+	        	 	pstmt1 = conn.prepareStatement(reset); //reset 실행
                  
 	        	 	while(rs.next()) {
 	        	 		if(rs.getString("seatRent").equals("1")) //좌석 대여 여부 1일 경우
@@ -292,11 +294,11 @@ public class Manager_menu extends JFrame{
 	                  String seatnum = seat_btn[i].getText();
 	                  try {
 	                	  	pstmt = conn.prepareStatement(sql);
-	                        pstmt.setString(1, seatnum);
+	                        pstmt.setInt(1, Integer.parseInt(seatnum));
 	                        ResultSet rs = pstmt.executeQuery(); //sql 실행 결과
 	                        
 	                        pstmt2 = conn.prepareStatement(del_res); //del_res 실행
-	                        pstmt2.setString(1, seatnum);
+	                        pstmt2.setInt(1, Integer.parseInt(seatnum));
 	                        
 	                        if(seat_btn[i].equals(e.getSource()))
 	                        {
@@ -309,6 +311,7 @@ public class Manager_menu extends JFrame{
 		                        	   {
 		                        		   pstmt2.executeUpdate();
 		                        		   JOptionPane.showMessageDialog(null, "좌석이 삭제 되었습니다.");
+		                        		   seat = new JLabel("남는 좌석: " + seat_check()+ "/30");
 		                        		   seat_btn[i].setContentAreaFilled(false);
 		                        	   }
 		                        	   else

@@ -49,9 +49,9 @@ public class User_Management extends JFrame {
 		
 		try
 		{
-			Connection conn = DriverManager.getConnection(
-					"#"  // 서버 이름
-					 ,"#","#" // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
+			conn = DriverManager.getConnection(
+					"url"  // 서버 이름
+					 ,"name","pw" // 이름, 비밀번호(커넥션 정보는 깃허브에 업로드 하지 말 것)
 					 );
 			Statement stmt = null;
 			ResultSet rs = null;
